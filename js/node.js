@@ -14,6 +14,7 @@ var prime = prime || {};
      * Conceptual node. Atomic element in an association engine.
      * @constructor
      * @requires prime#utils
+     * @requires prime#peers
      * @param load {string} Node load.
      */
     prime.node = function (load) {
