@@ -3,15 +3,18 @@
     module("Utils");
 
     test("Objects", function () {
-        var tmp;
+        equal($utils.isEmpty({}), true, "Empty object");
+        equal($utils.isEmpty({foo: 'bar'}), false, "Non-empty object");
 
         deepEqual(
             $utils.keys({foo: "bar", hey: "ho"}),
             ['foo', 'hey'],
             "Obtaining keys of object"
         );
+    });
 
-        tmp = {};
+    test("Modifications", function () {
+        var tmp = {};
         $utils.set(tmp, 'hello', 'dolly');
         deepEqual(
             tmp,
@@ -31,6 +34,36 @@
             },
             "Setting object value on non-existing path"
         );
+
+        $utils.set(tmp, 'hello', 'little', 'pony');
+        deepEqual(
+            tmp,
+            {
+                hello: {
+                    my: {
+                        dear: 'dolly'
+                    },
+                    little: 'pony'
+                }
+            },
+            "Setting additional value on partially existing path"
+        );
+
+        equal($utils.unset(tmp, 'hello', 'boo'), false, "Attempting to unset invalid path");
+
+        $utils.unset(tmp, 'hello', 'my', 'dear');
+        deepEqual(
+            tmp,
+            {
+                hello: {
+                    little: 'pony'
+                }
+            },
+            "Object removed and cleaned up"
+        );
+
+        $utils.unset(tmp, 'hello', 'little');
+        deepEqual(tmp, {}, "Object completely emptied");
     });
 
     test("Copying", function () {
