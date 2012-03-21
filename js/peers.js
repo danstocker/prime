@@ -57,7 +57,7 @@ var prime = prime || {};
             /**
              * Adds node to peers collection
              * @param node {object} Node object
-             * @param [wear] {number} Peer wear.
+             * @param [wear] {number} Peer wear (incremental connection weight).
              */
             add: function (node, wear) {
                 var load = node.load(),
@@ -77,14 +77,14 @@ var prime = prime || {};
                         .tread();
 
                     // updating by-tread lookup
-                    delete byTread[treadBefore][load];
+                    $utils.unset(byTread, treadBefore, load);
                     $utils.set(byTread, treadAfter, load, peer);
                 } else {
                     // creating peer
                     peer = $peer(node);
 
                     // adding new peer to lookups
-                    byLoad[load] = peer;
+                    $utils.set(byLoad, load, peer);
                     $utils.set(byTread, peer.tread(), load, peer);
                 }
 

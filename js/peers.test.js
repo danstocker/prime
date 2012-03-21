@@ -17,6 +17,17 @@
         equal(peers.byTread('1').hello.node(), node, "Same but with tread passed as param (string)");
         equal(peers.byTread(1, 'hello').node(), node, "Same but with tread and load passed as params");
     });
+
+    test("Modification", function () {
+        var node = $node('hello'),
+            peers = $peers();
+
+        peers.add(node);
+        deepEqual($utils.keys(peers.byTread()), ['1'], "Node added once");
+
+        peers.add(node);
+        deepEqual($utils.keys(peers.byTread()), ['2'], "Tread lookup follows changes");
+    });
 }(
     prime.peers,
     prime.utils,
