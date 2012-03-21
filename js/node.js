@@ -7,7 +7,7 @@
  */
 var prime = prime || {};
 
-(function ($utils) {
+(function ($utils, $peers) {
     var LOOKUP = {};
 
     /**
@@ -28,7 +28,7 @@ var prime = prime || {};
 
         var
             // collection of connected nodes
-            peers = {},
+            peers = $peers(),
             self;
 
         self = {
@@ -41,39 +41,39 @@ var prime = prime || {};
              * @param node {object|string} Node object or load.
              */
             hasPeer: function (node) {
-                if (typeof node === 'string') {
-                    return peers.hasOwnProperty(node);
-                } else if (typeof node === 'object') {
-                    return peers.hasOwnProperty(node.load());
-                }
-                return false;
+                var load = (
+                    typeof node === 'string' ?
+                        node :
+                        typeof node === 'object' ?
+                            node.load() :
+                            undefined
+                    );
+
+                return (typeof peers.byLoad(load) === 'object');
             },
 
             /**
              * Adds peer node(s) to node.
-             * TODO: revise getter behavior when usage is clear
              * @param [node] {object[]|object|string[]|string} One or more node object or load.
              */
             peers: function (node) {
-                var i, tmp;
+                var nodes, i;
                 if (node instanceof Array) {
                     // adding peer for each
-                    for (i = 0; i < node.length; i++) {
-                        self.peers(node[i]);
+                    nodes = node;
+                    for (i = 0; i < nodes.length; i++) {
+                        self.peers(nodes[i]);
                     }
                 } else {
                     if (typeof node === 'string') {
-                        tmp = node;
                         node = LOOKUP[node];
-                    } else if (typeof node === 'object') {
-                        tmp = node.load();
-                    } else {
+                    } else if (typeof node !== 'object') {
                         // acting as getter
-                        return $utils.keys(peers);
+                        return peers;
                     }
 
                     // adding node as peer
-                    peers[tmp] = node;
+                    peers.add(node);
 
                     if (!node.hasPeer(load)) {
                         // adding self to node as peer
@@ -99,5 +99,6 @@ var prime = prime || {};
         return $utils.keys(LOOKUP);
     }
 }(
-    prime.utils
+    prime.utils,
+    prime.peers
 ));

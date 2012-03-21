@@ -1,5 +1,5 @@
 /*global module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($node) {
+(function ($node, $utils) {
     module("Node");
 
     test("Creation", function () {
@@ -33,10 +33,32 @@
         $node('foo')
             .peers($node('car'));
 
-        deepEqual($node('foo').peers(), ['car'], "Peer addition confirmed (1/2)");
-        deepEqual($node('car').peers(), ['foo'], "Peer addition confirmed (2/2)");
+        deepEqual(
+            $utils.keys($node('foo').peers().byLoad()),
+            ['car'],
+            "Peer addition confirmed (1/2)"
+        );
+        deepEqual(
+            $utils.keys($node('car').peers().byLoad()),
+            ['foo'],
+            "Peer addition confirmed (2/2)"
+        );
+
+        equal(
+            $node('car')
+                .hasPeer('foo'),
+            true,
+            "Node 'car' now has peer 'foo' (by load)"
+        );
+        equal(
+            $node('car')
+                .hasPeer($node('foo')),
+            true,
+            "Node 'car' now has peer 'foo' (by reference)"
+        );
     });
 
 }(
-    prime.node
+    prime.node,
+    prime.utils
 ));

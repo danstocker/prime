@@ -12,9 +12,13 @@ var prime = prime || {};
      * Creates a new peer.
      * @constructor
      * @requires prime#node
-     * @param node {object} Node object.
+     * @param node {object|string} Node object.
      */
     prime.peer = function (node) {
+        node = typeof node === 'string' ?
+            prime.node(node) :
+            node;
+
         var tread = 1, // connection tread (weight)
             self;
 
