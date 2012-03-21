@@ -7,17 +7,18 @@
  */
 var prime = prime || {};
 
-(function (u_utils) {
+(function ($utils) {
     var LOOKUP = {};
 
     /**
      * Conceptual node. Atomic element in an association engine.
      * @constructor
+     * @requires prime#utils
      * @param load {string} Node load.
      */
     prime.node = function (load) {
         if (typeof load !== 'string') {
-            throw "prime.node: Invalid load (" + load +")";
+            throw "prime.node: Invalid load (" + load + ")";
         }
 
         if (LOOKUP.hasOwnProperty(load)) {
@@ -25,7 +26,9 @@ var prime = prime || {};
             return LOOKUP[load];
         }
 
-        var peers = {},     // collection of connected nodes
+        var
+            // collection of connected nodes
+            peers = {},
             self;
 
         self = {
@@ -66,7 +69,7 @@ var prime = prime || {};
                         tmp = node.load();
                     } else {
                         // acting as getter
-                        return u_utils.keys(peers);
+                        return $utils.keys(peers);
                     }
 
                     // adding node as peer
@@ -93,6 +96,8 @@ var prime = prime || {};
      * @returns {string[]} All node loads.
      */
     prime.node.lookupKeys = function () {
-        return u_utils.keys(LOOKUP);
+        return $utils.keys(LOOKUP);
     }
-}(prime.utils));
+}(
+    prime.utils
+));
