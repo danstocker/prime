@@ -1,4 +1,4 @@
-/*global module, test, ok, equal, notEqual, deepEqual, raises */
+/*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
 (function ($peer, $node) {
     module("Peer");
 

@@ -98,7 +98,7 @@ var prime = prime || {};
      */
     prime.node.lookupKeys = function () {
         return $utils.keys(LOOKUP);
-    }
+    };
 }(
     prime.utils,
     prime.peers

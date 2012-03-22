@@ -1,4 +1,4 @@
-/*global module, test, ok, equal, notEqual, deepEqual, raises */
+/*global prime, module, test, ok, equal, notEqual, deepEqual, raises */
 (function ($node, $utils) {
     module("Node");
 

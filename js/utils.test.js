@@ -1,4 +1,4 @@
-/*global module, test, ok, equal, notEqual, deepEqual, raises */
+/*global prime, module, test, ok, equal, notEqual, deepEqual, raises */
 (function ($utils) {
     module("Utils");
 
@@ -71,7 +71,7 @@
             dst = $utils.shallow(src);
         notEqual(src, dst, "Shallow copy is a different object");
         deepEqual(src, dst, "Shallow copy has identical contents");
-        equal(src['hello'], dst['hello'], "Shallow copy property references match");
+        equal(src.hello, dst.hello, "Shallow copy property references match");
     });
 }(
     prime.utils

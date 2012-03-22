@@ -51,5 +51,5 @@ var prime = prime || {};
         };
 
         return self;
-    }
+    };
 }());

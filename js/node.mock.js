@@ -4,5 +4,5 @@ var mocks = mocks || {};
 mocks.node = function (str) {
     return {
         load: function () {return str;}
-    }
+    };
 };
