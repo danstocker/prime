@@ -6,6 +6,7 @@
 /*global prime */
 (function ($utils, $peer) {
     /**
+     * Creates a collection of peers.
      * @class Represents a collection of peers.
      * @requires prime#utils
      * @requires prime#peer
@@ -25,7 +26,7 @@
             /**
              * Retrieves shallow copy of by-load buffer.
              * @param [load] {string} Load to look up.
-             * @returns {object}
+             * @returns {prime#node}
              */
             byLoad: function (load) {
                 if (typeof load === 'string') {
@@ -39,7 +40,8 @@
              * Retrieves shallow copy of by-tread buffer.
              * @param [tread] {number|string} Tread to look up.
              * @param [load] {string} Load to look up.
-             * @returns {object}
+             * @returns {prime#node|object} A node object or lookup depending
+             * on the presence of parameters.
              */
             byTread: function (tread, load) {
                 if (
@@ -62,7 +64,7 @@
              * all available peers based on their tread.
              * TODO: reduce computational complexity from O(n)
              * @param norm {number} Normalized sum. 0 <= norm <= 1.
-             * @returns {object} Peer object.
+             * @returns {prime#peer}
              */
             byNorm: function (norm) {
                 var targetSum = norm * totalTread,
@@ -84,20 +86,23 @@
 
             /**
              * Retrieves a random peer, weighted by tread.
-             * @returns {object} Peer object.
+             * @returns {prime#peer}
              */
             random: function () {
                 return self.byNorm(Math.random());
             },
 
-            /** Retrieves total tread for all associated peers */
+            /**
+             * Retrieves total tread for all associated peers
+             * @type number
+             */
             totalTread: function () {
                 return totalTread;
             },
 
             /**
              * Adds node to peers collection
-             * @param node {object|string} Node object or load.
+             * @param node {prime#node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             add: function (node, wear) {

@@ -11,24 +11,33 @@
      * Creates a new peer.
      * @class Represents connection to another node.
      * @requires prime#node
-     * @param node {object} Node object.
+     * @param node {prime#node}
      */
     prime.peer = function (node) {
         var tread = 1, // connection tread (weight)
             self;
 
         self = /** @lends prime#peer */ {
-            /** Retrieves peer node */
+            /**
+             * Retrieves peer node
+             * @type prime#node
+             */
             node: function () {
                 return node;
             },
 
-            /** Retrieves peer node's load */
+            /**
+             * Retrieves peer node's load
+             * @type string
+             */
             load: function () {
                 return node.load();
             },
 
-            /** Retrieves connection tread */
+            /**
+             * Retrieves connection tread
+             * @type number
+             */
             tread: function () {
                 return tread;
             },
