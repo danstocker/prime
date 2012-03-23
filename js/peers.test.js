@@ -44,7 +44,7 @@
         var
             peers = $peers(),
             stats,
-            i, stdev;
+            i;
 
         // adding peers each with a tread of 1
         peers
@@ -60,19 +60,15 @@
 
         // statistical test
         stats = {
-            hello: -333,
-            there: -333,
-            world: -333
+            hello: 0,
+            there: 0,
+            world: 0
         };
-        for (i = 0; i < 999; i++) {
-            stats[peers.random().load()]++;
+        for (i = 0; i < 30; i++) {
+            stats[peers.byNorm((i + 1) / 30).load()]++;
         }
 
-        stdev = stats.hello * stats.hello +
-            stats.there * stats.there +
-            stats.world * stats.world;
-
-        ok(stdev < 2000, "Standard deviation (" + stdev + ") below 2000 (max. 250000)");
+        ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
     });
 }(
     prime.peers,
