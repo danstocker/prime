@@ -7,7 +7,8 @@
  */
 /*global prime */
 (function ($utils, $peers) {
-    var LOOKUP = {};
+    var LOOKUP = {},    // system wide registry of nodes
+        REACH = 0.5;    // probablility of subsequential hops
 
     /**
      * Conceptual node. Atomic element in an association engine.
@@ -42,7 +43,7 @@
 
             /**
              * Checks whether the node has a specified peer.
-             * @param node {object} Node object.
+             * @param node {prime#node}
              */
             hasPeer: function (node) {
                 return typeof peers.byLoad(node.load()) === 'object';
@@ -50,15 +51,28 @@
 
             /**
              * Hops to a peer node randomly, weighted by their tread.
-             * @returns {object} Node object.
+             * @returns {prime#node}
              */
             hop: function () {
                 return peers.random().node();
             },
 
             /**
+             * Hops to a peer node randomly, weighted by their tread.
+             * @returns {prime#node}
+             */
+            associate: function () {
+                var next = self.hop();
+                if (Math.random() < REACH) {
+                    return next.associate();
+                } else {
+                    return next;
+                }
+            },
+
+            /**
              * Adds peer node(s) to node.
-             * @param [node] {object[]|object} One or more node object.
+             * @param [node] {prime#node[]|prime#node} One or more node object.
              */
             peers: function (node) {
                 var nodes, i;
