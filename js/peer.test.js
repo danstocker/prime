@@ -3,20 +3,21 @@
     module("Peer");
 
     test("Creation", function () {
-        var node = $node('hello'),
-            peer = $peer(node);
+        var hello = $node('hello'),
+            blah = $node('blah'),
+            peer = $peer(hello);
 
-        equal(peer.node(), node, "Method '.node'");
+        equal(peer.node(), hello, "Method '.node'");
         equal(peer.load(), 'hello', "Method '.load'");
 
-        peer = $peer('blah');
+        peer = $peer(blah);
         equal(peer.load(), 'blah', "Peer created from string");
         equal(peer.node().load(), 'blah', "String-created peer has new node object");
     });
 
     test("Tread", function () {
-        var node = $node('hello'),
-            peer = $peer(node),
+        var hello = $node('hello'),
+            peer = $peer(hello),
             tmp;
 
         equal(peer.tread(), 1, "Initial tread 1");

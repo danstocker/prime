@@ -63,6 +63,7 @@ var prime = prime || {};
              * all available peers based on their tread.
              * TODO: reduce computational complexity from O(n)
              * @param norm {number} Normalized sum. 0 <= norm <= 1.
+             * @returns {object} Peer object.
              */
             byNorm: function (norm) {
                 var targetSum = norm * totalTread,
@@ -78,6 +79,16 @@ var prime = prime || {};
                         }
                     }
                 }
+
+                return undefined;
+            },
+
+            /**
+             * Retrieves a random peer, weighted by tread.
+             * @returns {object} Peer object.
+             */
+            random: function () {
+                return self.byNorm(Math.random());
             },
 
             /** Retrieves total tread for all associated peers */
@@ -87,7 +98,7 @@ var prime = prime || {};
 
             /**
              * Adds node to peers collection
-             * @param node {object} Node object
+             * @param node {object|string} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             add: function (node, wear) {

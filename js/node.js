@@ -30,6 +30,7 @@ var prime = prime || {};
         var
             // collection of connected nodes
             peers = $peers(),
+
             self;
 
         self = {
@@ -39,23 +40,23 @@ var prime = prime || {};
 
             /**
              * Checks whether the node has a specified peer.
-             * @param node {object|string} Node object or load.
+             * @param node {object} Node object.
              */
             hasPeer: function (node) {
-                var load = (
-                    typeof node === 'string' ?
-                        node :
-                        typeof node === 'object' ?
-                            node.load() :
-                            undefined
-                    );
+                return typeof peers.byLoad(node.load()) === 'object';
+            },
 
-                return (typeof peers.byLoad(load) === 'object');
+            /**
+             * Hops to a peer node randomly, weighted by their tread.
+             * @returns {object} Node object.
+             */
+            hop: function () {
+                return peers.random().node();
             },
 
             /**
              * Adds peer node(s) to node.
-             * @param [node] {object[]|object|string[]|string} One or more node object or load.
+             * @param [node] {object[]|object} One or more node object.
              */
             peers: function (node) {
                 var nodes, i;
@@ -66,9 +67,7 @@ var prime = prime || {};
                         self.peers(nodes[i]);
                     }
                 } else {
-                    if (typeof node === 'string') {
-                        node = LOOKUP[node];
-                    } else if (typeof node !== 'object') {
+                    if (typeof node !== 'object') {
                         // acting as getter
                         return peers;
                     }
@@ -76,9 +75,10 @@ var prime = prime || {};
                     // adding node as peer
                     peers.add(node);
 
-                    if (!node.hasPeer(load)) {
+                    // checking reciprocal peer
+                    if (!node.hasPeer(self)) {
                         // adding self to node as peer
-                        node.peers(load);
+                        node.peers(self);
                     }
                 }
 

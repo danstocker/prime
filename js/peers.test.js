@@ -3,32 +3,32 @@
     module("Peers");
 
     test("Addition", function () {
-        var node = $node('hello'),
+        var hello = $node('hello'),
             peers = $peers();
 
-        peers.add(node);
-        equal(peers.byLoad().hello.node(), node, "Node added to by-load buffer");
-        equal(peers.byLoad('hello').node(), node, ".byLoad may take load parameter");
+        peers.add(hello);
+        equal(peers.byLoad().hello.node(), hello, "Node added to by-load buffer");
+        equal(peers.byLoad('hello').node(), hello, ".byLoad may take load parameter");
         equal(peers.byLoad().hello.tread(), 1, "Newly added node's tread is 1 (default)");
 
         deepEqual($utils.keys(peers.byTread()), ['1'], "Tread value added to by-tread lookup");
-        equal(peers.byTread()[1].hello.node(), node, "Node added to by-tread buffer");
-        equal(peers.byTread(1).hello.node(), node, "Same but with tread passed as param (number)");
-        equal(peers.byTread('1').hello.node(), node, "Same but with tread passed as param (string)");
-        equal(peers.byTread(1, 'hello').node(), node, "Same but with tread and load passed as params");
+        equal(peers.byTread()[1].hello.node(), hello, "Node added to by-tread buffer");
+        equal(peers.byTread(1).hello.node(), hello, "Same but with tread passed as param (number)");
+        equal(peers.byTread('1').hello.node(), hello, "Same but with tread passed as param (string)");
+        equal(peers.byTread(1, 'hello').node(), hello, "Same but with tread and load passed as params");
     });
 
     test("Modification", function () {
-        var node = $node('hello'),
+        var hello = $node('hello'),
             peers = $peers();
 
         equal(peers.totalTread(), 0, "Total tread initially zero");
 
-        peers.add(node);
+        peers.add(hello);
         deepEqual($utils.keys(peers.byTread()), ['1'], "Node added once");
         equal(peers.totalTread(), 1, "Total tread equals to tread of only element");
 
-        peers.add(node);
+        peers.add(hello);
         deepEqual($utils.keys(peers.byTread()), ['2'], "Tread lookup follows changes in tread");
         equal(peers.totalTread(), 2, "Total tread follows tread change of only element");
 
@@ -36,7 +36,7 @@
         deepEqual($utils.keys(peers.byTread()).sort(), ['1', '2'], "Tread lookup follows node addition");
         equal(peers.totalTread(), 3, "Total tread follows node addition");
 
-        peers.add(node, 3);
+        peers.add(hello, 3);
         equal(peers.totalTread(), 6, "Tread of one node increased by custom wear");
     });
 
@@ -44,8 +44,9 @@
         var
             peers = $peers(),
             stats,
-            i;
+            i, stdev;
 
+        // adding peers each with a tread of 1
         peers
             .add($node('hello'))
             .add($node('there'))
@@ -64,15 +65,14 @@
             world: -333
         };
         for (i = 0; i < 999; i++) {
-            stats[peers.byNorm(Math.random()).load()]++;
+            stats[peers.random().load()]++;
         }
 
-        ok(
-            stats.hello * stats.hello +
-                stats.there * stats.there +
-                stats.world * stats.world < 2000,
-            "Standard deviation below 2000 (max. 250000)"
-        );
+        stdev = stats.hello * stats.hello +
+            stats.there * stats.there +
+            stats.world * stats.world;
+
+        ok(stdev < 2000, "Standard deviation (" + stdev + ") below 2000 (max. 250000)");
     });
 }(
     prime.peers,

@@ -3,10 +3,10 @@
     module("Node");
 
     test("Creation", function () {
-        var node = $node('creation test');
+        var hello = $node('hello');
 
-        equal(node.load(), 'creation test', "Creation increases lastId");
-        equal($node('creation test'), node, "Attempting to re-create node yields same node");
+        equal(hello.load(), 'hello', "Creation increases lastId");
+        equal($node('hello'), hello, "Attempting to re-create node yields same node");
 
         raises(function () {
             $node();
@@ -14,20 +14,14 @@
     });
 
     test("Peers", function () {
-        $node('car');
         $node('foo');
+        $node('car');
 
-        equal(
-            $node('car')
-                .hasPeer('foo'),
-            false,
-            "Node 'car' doesn't have peer 'foo' (by load)"
-        );
         equal(
             $node('car')
                 .hasPeer($node('foo')),
             false,
-            "Node 'car' doesn't have peer 'foo' (by reference)"
+            "Node 'car' doesn't have peer 'foo'"
         );
 
         $node('foo')
@@ -46,18 +40,36 @@
 
         equal(
             $node('car')
-                .hasPeer('foo'),
-            true,
-            "Node 'car' now has peer 'foo' (by load)"
-        );
-        equal(
-            $node('car')
                 .hasPeer($node('foo')),
             true,
-            "Node 'car' now has peer 'foo' (by reference)"
+            "Node 'car' now has peer 'foo'"
         );
     });
 
+    test("Traversal", function () {
+        // setting a peer ration of 1:3
+        $node('hello')
+            .peers([$node('car'), $node('foo')])
+            .peers()
+                .add($node('car'), 1)
+                .add($node('foo'), 5);
+
+        var
+            stats = {
+                car: 0,
+                foo: 0
+            },
+            i,
+            ratio;
+
+        for (i = 0; i < 1000; i++) {
+            stats[$node('hello').hop().load()]++;
+        }
+
+        ratio = stats.foo / stats.car;
+
+        ok(ratio < 3.5 && ratio > 2.5, "Node hop ratio matches tread ratio " + ratio + " ~= 3");
+    });
 }(
     prime.node,
     prime.utils
