@@ -54,17 +54,9 @@
              * @returns {prime#node}
              */
             hop: function () {
-                return peers.random().node();
-            },
-
-            /**
-             * Hops to a peer node randomly, weighted by their tread.
-             * @returns {prime#node}
-             */
-            associate: function () {
-                var next = self.hop();
+                var next = peers.random().node();
                 if (Math.random() < REACH) {
-                    return next.associate();
+                    return next.hop();
                 } else {
                     return next;
                 }

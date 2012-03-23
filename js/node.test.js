@@ -45,31 +45,6 @@
             "Node 'car' now has peer 'foo'"
         );
     });
-
-    test("Traversal", function () {
-        // setting a peer ration of 1:3
-        $node('hello')
-            .peers([$node('car'), $node('foo')])
-            .peers()
-                .add($node('car'), 1)
-                .add($node('foo'), 5);
-
-        var
-            stats = {
-                car: 0,
-                foo: 0
-            },
-            i,
-            ratio;
-
-        for (i = 0; i < 1000; i++) {
-            stats[$node('hello').hop().load()]++;
-        }
-
-        ratio = stats.foo / stats.car;
-
-        ok(ratio < 3.5 && ratio > 2.5, "Node hop ratio matches tread ratio " + ratio + " ~= 3");
-    });
 }(
     prime.node,
     prime.utils
