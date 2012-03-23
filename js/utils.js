@@ -64,7 +64,7 @@
 
             /**
              * Deletes value on path with all its parents that remain empty.
-             * Path is sprecified by argument list.
+             * Path is specified by argument list.
              * @param object {object} Root object.
              * @returns {boolean} Whether object is empty after removal.
              */

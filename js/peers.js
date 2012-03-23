@@ -57,7 +57,7 @@
             },
 
             /**
-             * Retrieves single peer matching the given normalized cummulative
+             * Retrieves single peer matching the given normalized cumulative
              * tread (NCT). NCT, between 0 and 1, pin-points a peer among
              * all available peers based on their tread.
              * TODO: reduce computational complexity from O(n)
@@ -105,7 +105,7 @@
                     peer,
                     treadBefore, treadAfter;
 
-                // checking whether node is alreay among peers
+                // checking whether node is already among peers
                 if (byLoad.hasOwnProperty(load) ||
                     typeof wear === 'number'
                     ) {

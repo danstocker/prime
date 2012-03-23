@@ -11,7 +11,7 @@
 
     /**
      * Conceptual node. Atomic element in an association engine.
-     * @class Reprsents a graph node.
+     * @class Represents a graph node.
      * @requires prime#utils
      * @requires prime#peers
      * @param load {string} Node load.

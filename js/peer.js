@@ -28,7 +28,7 @@
                 return node.load();
             },
 
-            /** Retrieves connecation tread */
+            /** Retrieves connection tread */
             tread: function () {
                 return tread;
             },
