@@ -5,12 +5,11 @@
  *
  * (c) 2012 by Dan Stocker
  */
-var prime = prime || {};
-
+/*global prime */
 (function () {
     /**
      * Creates a new peer.
-     * @constructor
+     * @class Represents connection to another node.
      * @requires prime#node
      * @param node {object} Node object.
      */
@@ -18,7 +17,7 @@ var prime = prime || {};
         var tread = 1, // connection tread (weight)
             self;
 
-        self = {
+        self = /** @lends prime#peer */ {
             /** Retrieves peer node */
             node: function () {
                 return node;

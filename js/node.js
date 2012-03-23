@@ -5,14 +5,13 @@
  *
  * (c) 2012 by Dan Stocker
  */
-var prime = prime || {};
-
+/*global prime */
 (function ($utils, $peers) {
     var LOOKUP = {};
 
     /**
      * Conceptual node. Atomic element in an association engine.
-     * @constructor
+     * @class Reprsents a graph node.
      * @requires prime#utils
      * @requires prime#peers
      * @param load {string} Node load.
@@ -28,12 +27,15 @@ var prime = prime || {};
         }
 
         var
-            // collection of connected nodes
+            /**
+             * Collection of nodes connected to current node
+             * @type prime#peers
+             */
             peers = $peers(),
 
             self;
 
-        self = {
+        self = /** @lends prime#node */ {
             load: function () {
                 return load;
             },

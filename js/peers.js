@@ -3,11 +3,10 @@
  *
  * (c) 2012 by Dan Stocker
  */
-var prime = prime || {};
-
+/*global prime */
 (function ($utils, $peer) {
     /**
-     * @constructor
+     * @class Represents a collection of peers.
      * @requires prime#utils
      * @requires prime#peer
      * @requires prime#node
@@ -22,7 +21,7 @@ var prime = prime || {};
 
             self;
 
-        self = {
+        self = /** @lends prime#peers */ {
             /**
              * Retrieves shallow copy of by-load buffer.
              * @param [load] {string} Load to look up.

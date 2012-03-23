@@ -5,11 +5,13 @@
  *
  * (c) 2012 by Dan Stocker
  */
-var prime = prime || {};
-
+/*global prime */
 (function () {
+    /**
+     * @namespace Holds various utility functions.
+     */
     prime.utils = (function () {
-        var self = {
+        var self = /** @lends prime#utils */ {
             /**
              * Tests whether an object is empty.
              * @param object {object} Test object.
