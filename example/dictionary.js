@@ -11,7 +11,7 @@ var dictionary = dictionary || {};
             $(data[i]);
         }
 
-        // extablishing connections
+        // establishing connections
         $('table')
             .peers($('cup')
                 .peers($('small'))
@@ -26,8 +26,6 @@ var dictionary = dictionary || {};
             load = $('table').hop().load();
             result[load] = (result[load] || 0) + 1;
         }
-
-        console.log(result);
 
         return result;
     };

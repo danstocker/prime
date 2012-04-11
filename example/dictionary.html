@@ -8,12 +8,37 @@
     <script type="text/javascript" src="dictionary.js"></script>
 
     <script type="text/javascript">
+        var colors = ['black', 'teal', 'purple', 'blue', 'red', 'green', 'magenta', 'grey'];
+
         /*global $, dictionary */
         $(function () {
-            $('body').append(dictionary.statistics());
+            var
+                $app = $('#application')
+                    .height(300)
+                    .width(500)
+                    .css('position', 'relative'),
+                statistics = dictionary.statistics(),
+                words = prime.utils.keys(statistics).sort(),
+                i, word;
+
+            for (i = 0; i < words.length; i++) {
+                word = words[i];
+                $('<div></div>')
+                    .text(word)
+                    .css({
+                        position: 'absolute',
+                        left: 30 * i,
+                        bottom: 0,
+                        height: statistics[word],
+                        width: 20,
+                        background: colors[i % 8]
+                    })
+                    .appendTo($app);
+            }
         });
     </script>
 </head>
 <body>
+<div id="application"></div>
 </body>
 </html>
