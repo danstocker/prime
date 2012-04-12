@@ -21,6 +21,7 @@
                 words = prime.utils.keys(statistics).sort(),
                 i, word;
 
+            // adding bars
             for (i = 0; i < words.length; i++) {
                 word = words[i];
                 $('<div></div>')
@@ -39,6 +40,8 @@
     </script>
 </head>
 <body>
-<div id="application"></div>
+<div id="application">
+<span>Random word associations along learned paths. Starting from the word "table" with 50% chance for each hop.</span>
+</div>
 </body>
 </html>
