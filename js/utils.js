@@ -5,13 +5,13 @@
  *
  * (c) 2012 by Dan Stocker
  */
-/*global prime */
-(function () {
+/*global prime, troop */
+troop.promise(prime, 'utils', function () {
     /**
      * @namespace Holds various utility functions.
      */
-    prime.utils = (function () {
-        var self = /** @lends prime#utils */ {
+    return troop.base.extend()
+        .addMethod({
             /**
              * Tests whether an object is empty.
              * @param object {object} Test object.
@@ -85,14 +85,14 @@
                     // when we reached the end of the path
                     // or have an empty node
                     if (path.length === 0 ||
-                        self.unset(object[key], path)
+                        this.unset(object[key], path)
                         ) {
                         // removing
                         delete object[key];
                     }
                 }
 
-                return self.isEmpty(object);
+                return this.isEmpty(object);
             },
 
             /**
@@ -110,8 +110,5 @@
                 }
                 return result;
             }
-        };
-
-        return self;
-    }());
-}());
+        });
+});
