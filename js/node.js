@@ -54,7 +54,7 @@
              * @returns {prime#node}
              */
             hop: function () {
-                var next = peers.random().node();
+                var next = peers.random().node;
                 if (Math.random() < REACH) {
                     return next.hop();
                 } else {

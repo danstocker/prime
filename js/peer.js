@@ -5,25 +5,21 @@
  *
  * (c) 2012 by Dan Stocker
  */
-/*global prime */
-(function () {
+/*global prime, troop */
+troop.promise(prime, 'peer', function () {
     /**
-     * Creates a new peer.
      * @class Represents connection to another node.
-     * @requires prime#node
-     * @param node {prime#node}
+     * @requires prime.node
      */
-    prime.peer = function (node) {
-        var tread = 1, // connection tread (weight)
-            self;
-
-        self = /** @lends prime#peer */ {
+    return troop.base.extend()
+        .addMethod({
             /**
-             * Retrieves peer node
-             * @type prime#node
+             * Creates a new peer.
+             * @param node {prime.node}
              */
-            node: function () {
-                return node;
+            init: function (node) {
+                this.node = node;
+                this.tread = 1; // connection tread (weight)
             },
 
             /**
@@ -31,15 +27,7 @@
              * @type string
              */
             load: function () {
-                return node.load();
-            },
-
-            /**
-             * Retrieves connection tread
-             * @type number
-             */
-            tread: function () {
-                return tread;
+                return this.node.load();
             },
 
             /**
@@ -48,12 +36,9 @@
              */
             wear: function (value) {
                 // setting value
-                tread += value || 1;
+                this.tread += value || 1;
 
-                return self;
+                return this;
             }
-        };
-
-        return self;
-    };
-}());
+        });
+});

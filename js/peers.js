@@ -74,7 +74,7 @@
                 for (load in byLoad) {
                     if (byLoad.hasOwnProperty(load)) {
                         peer = byLoad[load];
-                        currentSum += peer.tread();
+                        currentSum += peer.tread;
                         if (currentSum >= targetSum) {
                             return peer;
                         }
@@ -117,19 +117,19 @@
                     peer = byLoad[load];
 
                     // increasing tread on connection
-                    treadBefore = peer.tread();
+                    treadBefore = peer.tread;
                     treadAfter = peer
                         .wear(wear)
-                        .tread();
+                        .tread;
 
                     // removing old tread from lookup
                     $utils.unset(byTread, treadBefore, load);
                 } else {
                     // creating peer
-                    peer = $peer(node);
+                    peer = $peer.create(node);
 
                     treadBefore = 0;
-                    treadAfter = peer.tread();
+                    treadAfter = peer.tread;
 
                     // adding new peer to lookup
                     $utils.set(byLoad, load, peer);
