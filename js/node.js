@@ -47,14 +47,6 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             /**
-             * Retrieves load for all nodes.
-             * @returns {string[]} All node loads.
-             */
-            lookupKeys: function () {
-                return Object.keys(self.LOOKUP);
-            },
-
-            /**
              * Checks whether the node has a specified peer.
              * @param node {prime.Node}
              */
