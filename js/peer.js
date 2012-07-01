@@ -14,8 +14,9 @@ troop.promise(prime, 'Peer', function () {
             /**
              * Initializes a new peer.
              * @param node {prime.Node} Peer node.
+             * @param [tread] {number} Initial peer tread.
              */
-            init: function (node) {
+            init: function (node, tread) {
                 /**
                  * Peer node,
                  * @type {prime.Node}
@@ -26,7 +27,7 @@ troop.promise(prime, 'Peer', function () {
                  * Weariness (weight) of connection to peer node.
                  * @type {Number}
                  */
-                this.tread = 1;
+                this.tread = tread || 1;
             },
 
             /**

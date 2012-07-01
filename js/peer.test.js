@@ -9,10 +9,12 @@
 
         equal(peer.node, hello, "Method '.node'");
         equal(peer.node.load, 'hello', "Method '.load'");
+        equal(peer.tread, 1, "Default peer tread");
 
-        peer = $peer.create(blah);
+        peer = $peer.create(blah, 5);
         equal(peer.node.load, 'blah', "Peer created from string");
         equal(peer.node.load, 'blah', "String-created peer has new node object");
+        equal(peer.tread, 5, "Custom peer tread");
     });
 
     test("Tread", function () {
