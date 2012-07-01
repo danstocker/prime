@@ -26,7 +26,7 @@
         );
 
         node('foo')
-            .addPeer(node('car'));
+            .strengthen(node('car'));
 
         deepEqual(
             Object.keys(node('foo').peers.byLoad()),
@@ -47,18 +47,18 @@
         );
 
         prime.Node.addMock({
-            addPeer: function (node) {
+            strengthen: function (node) {
                 ok(node.load in {car: 1, bar: 1}, "Peer added");
             }
         });
 
         // adding as array
         node('foo')
-            .addPeers([node('bar'), node('car')]);
+            .connect([node('bar'), node('car')]);
 
         // adding as argument list
         node('foo')
-            .addPeers(node('bar'), node('car'));
+            .connect(node('bar'), node('car'));
 
         prime.Node.removeMocks();
     });

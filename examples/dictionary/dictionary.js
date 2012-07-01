@@ -12,14 +12,16 @@ var dictionary = dictionary || {};
         }
 
         // establishing connections
-        node('table')
-            .addPeers(node('cup')
-                .addPeers(node('small'))
-                .addPeers(node('white')))
-            .addPeers(node('cloth'))
-            .addPeers(node('food')
-                .addPeers(node('warm'))
-                .addPeers(node('taste')));
+        node('table').connect(
+            node('cup').connect(
+                node('small'),
+                node('white')),
+            node('cloth'),
+            node('food').connect(
+                node('warm'),
+                node('taste')
+            )
+        );
 
         // traversing connections, gathering statistics
         for (i = 0; i < 1000; i++) {

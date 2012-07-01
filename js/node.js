@@ -79,16 +79,17 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
             /**
              * Adds single peer node.
-             * @param [node] {prime.Node} Node to add as peer.
+             * @param node {prime.Node} Node to add as peer.
+             * @param [wear] {number} Edge weight increment.
              */
-            addPeer: function (node) {
+            strengthen: function (node, wear) {
                 // adding node as peer
-                this.peers.addNode(node);
+                this.peers.addNode(node, wear);
 
                 // checking reciprocal peer
                 if (!node.hasPeer(this)) {
                     // adding self to node as peer
-                    node.addPeer(this);
+                    node.strengthen(this, wear);
                 }
 
                 return this;
@@ -98,7 +99,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * Adds multiple peer nodes.
              * @param nodes {prime.Node[]} Array of nodes.
              */
-            addPeers: function (nodes) {
+            connect: function (nodes) {
                 var tmp = nodes instanceof Array ?
                     nodes :
                     arguments;
@@ -106,7 +107,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                 // adding peer for each
                 var i;
                 for (i = 0; i < tmp.length; i++) {
-                    this.addPeer(tmp[i]);
+                    this.strengthen(tmp[i]);
                 }
 
                 return this;
@@ -122,9 +123,11 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
  * @return {prime.Node}
  */
 prime.node = function (load) {
+    // shortcuts and local variable
     var Node = prime.Node,
         LOOKUP = Node.LOOKUP,
         node;
+
     if (LOOKUP.hasOwnProperty(load)) {
         // node exists in lookup, fetching
         return LOOKUP[load];
