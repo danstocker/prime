@@ -1,4 +1,4 @@
-/*global prime, module, test, ok, equal, notEqual, deepEqual, raises */
+/*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
 (function (node) {
     module("Node");
 
@@ -14,28 +14,29 @@
     });
 
     test("Peers", function () {
+        expect(8);
+
         node('foo');
         node('car');
 
         equal(
-            node('car')
-                .hasPeer(node('foo')),
+            node('foo').hasPeer(node('car')),
             false,
             "Node 'car' doesn't have peer 'foo'"
         );
 
         node('foo')
-            .addPeers(node('car'));
+            .addPeer(node('car'));
 
         deepEqual(
             Object.keys(node('foo').peers.byLoad()),
             ['car'],
-            "Peer addition confirmed (1/2)"
+            "Peer added to node"
         );
         deepEqual(
             Object.keys(node('car').peers.byLoad()),
             ['foo'],
-            "Peer addition confirmed (2/2)"
+            "Node added to peer"
         );
 
         equal(
@@ -44,6 +45,22 @@
             true,
             "Node 'car' now has peer 'foo'"
         );
+
+        prime.Node.addMock({
+            addPeer: function (node) {
+                ok(node.load in {car: 1, bar: 1}, "Peer added");
+            }
+        });
+
+        // adding as array
+        node('foo')
+            .addPeers([node('bar'), node('car')]);
+
+        // adding as argument list
+        node('foo')
+            .addPeers(node('bar'), node('car'));
+
+        prime.Node.removeMocks();
     });
 }(
     prime.node

@@ -30,7 +30,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              */
             init: function (load) {
                 if (typeof load !== 'string') {
-                    throw "prime.Node: Invalid load (" + load + ")";
+                    throw new TypeError("Argument 'load' in method .init not {string}");
                 }
 
                 /**
@@ -48,10 +48,20 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
             /**
              * Checks whether the node has a specified peer.
-             * @param node {prime.Node}
+             * @param node {prime.Node|string}
+             * @return {boolean}
              */
             hasPeer: function (node) {
-                return typeof this.peers.byLoad(node.load) === 'object';
+                var load;
+                if (prime.Node.isPrototypeOf(node)) {
+                    load = node.load;
+                } else if (typeof node === 'string') {
+                    load = node;
+                } else {
+                    throw new TypeError("Argument 'node' in method .hasPeer not {string} or {Node}");
+                }
+                // checking whether node is peer
+                return prime.Peer.isPrototypeOf(this.peers.byLoad(load));
             },
 
             /**
@@ -68,26 +78,35 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             /**
-             * Adds peer node(s) to node.
-             * @param [node] {prime.Node[]|prime.Node} One or more node object.
+             * Adds single peer node.
+             * @param [node] {prime.Node} Node to add as peer.
              */
-            addPeers: function (node) {
-                var nodes, i;
-                if (node instanceof Array) {
-                    // adding peer for each
-                    nodes = node;
-                    for (i = 0; i < nodes.length; i++) {
-                        this.addPeers(nodes[i]);
-                    }
-                } else {
-                    // adding node as peer
-                    this.peers.addNode(node);
+            addPeer: function (node) {
+                // adding node as peer
+                this.peers.addNode(node);
 
-                    // checking reciprocal peer
-                    if (!node.hasPeer(this)) {
-                        // adding self to node as peer
-                        node.addPeers(this);
-                    }
+                // checking reciprocal peer
+                if (!node.hasPeer(this)) {
+                    // adding self to node as peer
+                    node.addPeer(this);
+                }
+
+                return this;
+            },
+
+            /**
+             * Adds multiple peer nodes.
+             * @param nodes {prime.Node[]} Array of nodes.
+             */
+            addPeers: function (nodes) {
+                var tmp = nodes instanceof Array ?
+                    nodes :
+                    arguments;
+
+                // adding peer for each
+                var i;
+                for (i = 0; i < tmp.length; i++) {
+                    this.addPeer(tmp[i]);
                 }
 
                 return this;
