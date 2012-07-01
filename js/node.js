@@ -32,7 +32,7 @@
              * Collection of nodes connected to current node
              * @type prime#peers
              */
-            peers = $peers(),
+            peers = $peers.create(),
 
             self;
 

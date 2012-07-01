@@ -4,7 +4,7 @@
 
     test("Addition", function () {
         var hello = $node('hello'),
-            peers = $peers();
+            peers = $peers.create();
 
         peers.add(hello);
         equal(peers.byLoad().hello.node, hello, "Node added to by-load buffer");
@@ -20,29 +20,29 @@
 
     test("Modification", function () {
         var hello = $node('hello'),
-            peers = $peers();
+            peers = $peers.create();
 
-        equal(peers.totalTread(), 0, "Total tread initially zero");
+        equal(peers.totalTread, 0, "Total tread initially zero");
 
         peers.add(hello);
         deepEqual($utils.keys(peers.byTread()), ['1'], "Node added once");
-        equal(peers.totalTread(), 1, "Total tread equals to tread of only element");
+        equal(peers.totalTread, 1, "Total tread equals to tread of only element");
 
         peers.add(hello);
         deepEqual($utils.keys(peers.byTread()), ['2'], "Tread lookup follows changes in tread");
-        equal(peers.totalTread(), 2, "Total tread follows tread change of only element");
+        equal(peers.totalTread, 2, "Total tread follows tread change of only element");
 
         peers.add($node('world'));
         deepEqual($utils.keys(peers.byTread()).sort(), ['1', '2'], "Tread lookup follows node addition");
-        equal(peers.totalTread(), 3, "Total tread follows node addition");
+        equal(peers.totalTread, 3, "Total tread follows node addition");
 
         peers.add(hello, 3);
-        equal(peers.totalTread(), 6, "Tread of one node increased by custom wear");
+        equal(peers.totalTread, 6, "Tread of one node increased by custom wear");
     });
 
     test("Selection", function () {
         var
-            peers = $peers(),
+            peers = $peers.create(),
             stats,
             i;
 
@@ -52,7 +52,7 @@
             .add($node('there'))
             .add($node('world'));
 
-        equal(peers.totalTread(), 3, "All peers contributed to total tread");
+        equal(peers.totalTread, 3, "All peers contributed to total tread");
         equal(peers.byNorm(0).load(), 'hello', "First peer accessed by norm");
         equal(peers.byNorm(0.4).load(), 'there', "Second peer accessed by norm");
         equal(peers.byNorm(0.8).load(), 'world', "Third peer accessed by norm");

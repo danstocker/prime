@@ -3,36 +3,36 @@
  *
  * (c) 2012 by Dan Stocker
  */
-/*global prime */
-(function ($utils, $peer) {
+/*global prime, troop */
+troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
     /**
-     * Creates a collection of peers.
      * @class Represents a collection of peers.
      * @requires prime#utils
      * @requires prime#peer
      * @requires prime#node
      */
-    prime.peers = function () {
-        var
-            // peer buffers
-            byLoad = {}, // peers indexed by load
-            byTread = {}, // peers indexed by tread, then load
+    return troop.base.extend()
+        .addMethod({
+            /**
+             * Creates a collection of peers.
+             */
+            init: function () {
+                // peer buffers
+                this._byLoad = {}; // peers indexed by load
+                this._byTread = {}; // peers indexed by tread, then load
+                this.totalTread = 0; // sum of the tread of all peers
+            },
 
-            totalTread = 0, // sum of the tread of all peers
-
-            self;
-
-        self = /** @lends prime#peers */ {
             /**
              * Retrieves shallow copy of by-load buffer.
              * @param [load] {string} Load to look up.
-             * @returns {prime#node}
+             * @returns {prime.node}
              */
             byLoad: function (load) {
                 if (typeof load === 'string') {
-                    return byLoad[load];
+                    return this._byLoad[load];
                 } else {
-                    return $utils.shallow(byLoad);
+                    return $utils.shallow(this._byLoad);
                 }
             },
 
@@ -46,15 +46,15 @@
             byTread: function (tread, load) {
                 if (
                     typeof tread === 'number' ||
-                        typeof tread === 'string'
+                    typeof tread === 'string'
                     ) {
                     if (typeof load === 'string') {
-                        return byTread[tread][load];
+                        return this._byTread[tread][load];
                     } else {
-                        return $utils.shallow(byTread[tread]);
+                        return $utils.shallow(this._byTread[tread]);
                     }
                 } else {
-                    return $utils.shallow(byTread);
+                    return $utils.shallow(this._byTread);
                 }
             },
 
@@ -67,13 +67,13 @@
              * @returns {prime#peer}
              */
             byNorm: function (norm) {
-                var targetSum = norm * totalTread,
+                var targetSum = norm * this.totalTread,
                     currentSum = 0,
                     load, peer;
 
-                for (load in byLoad) {
-                    if (byLoad.hasOwnProperty(load)) {
-                        peer = byLoad[load];
+                for (load in this._byLoad) {
+                    if (this._byLoad.hasOwnProperty(load)) {
+                        peer = this._byLoad[load];
                         currentSum += peer.tread;
                         if (currentSum >= targetSum) {
                             return peer;
@@ -89,15 +89,7 @@
              * @returns {prime#peer}
              */
             random: function () {
-                return self.byNorm(Math.random());
-            },
-
-            /**
-             * Retrieves total tread for all associated peers
-             * @type number
-             */
-            totalTread: function () {
-                return totalTread;
+                return this.byNorm(Math.random());
             },
 
             /**
@@ -111,10 +103,10 @@
                     treadBefore, treadAfter;
 
                 // checking whether node is already among peers
-                if (byLoad.hasOwnProperty(load) ||
+                if (this._byLoad.hasOwnProperty(load) ||
                     typeof wear === 'number'
                     ) {
-                    peer = byLoad[load];
+                    peer = this._byLoad[load];
 
                     // increasing tread on connection
                     treadBefore = peer.tread;
@@ -123,7 +115,7 @@
                         .tread;
 
                     // removing old tread from lookup
-                    $utils.unset(byTread, treadBefore, load);
+                    $utils.unset(this._byTread, treadBefore, load);
                 } else {
                     // creating peer
                     peer = $peer.create(node);
@@ -132,22 +124,16 @@
                     treadAfter = peer.tread;
 
                     // adding new peer to lookup
-                    $utils.set(byLoad, load, peer);
+                    $utils.set(this._byLoad, load, peer);
                 }
 
                 // updating tread in lookup
-                $utils.set(byTread, treadAfter, load, peer);
+                $utils.set(this._byTread, treadAfter, load, peer);
 
                 // updating total tread
-                totalTread += treadAfter - treadBefore;
+                this.totalTread += treadAfter - treadBefore;
 
-                return self;
+                return this;
             }
-        };
-
-        return self;
-    };
-}(
-    prime.utils,
-    prime.peer
-));
+        });
+}, prime.utils, prime.peer);
