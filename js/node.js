@@ -67,17 +67,10 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * Strengthens connection weight for a single peer.
              * @param node {prime.Node} Node to add as peer.
              * @param [wear] {number} Edge weight increment.
-             * @param [mirror] {boolean} Whether to apply to opposite direction.
              */
-            strengthen: function (node, wear, mirror) {
-                // adding node as peer
-                this.peers.addNode(node, wear);
-
-                // checking reciprocal peer
-                if (mirror !== false) {
-                    // adding self to node as peer
-                    node.strengthen(this, wear, false);
-                }
+            strengthen: function (node, wear) {
+                this.peers.strengthen(node, wear);
+                node.peers.strengthen(this, wear);
 
                 return this;
             },

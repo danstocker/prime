@@ -111,18 +111,23 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
              * @param node {prime.Node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
-            addNode: function (node, wear) {
-                var load = node.load,
+            strengthen: function (node, wear) {
+                var
+                    /** @type string */
+                    load = node.load,
+
+                    /** @type prime.Peer */
                     peer,
+
+                    /** @type number */
                     treadBefore, treadAfter;
 
                 // checking whether node is already among peers
-                if (this._byLoad.hasOwnProperty(load) ||
-                    typeof wear === 'number'
-                    ) {
+                if (this._byLoad.hasOwnProperty(load)) {
+                    // obtaining peer
                     peer = this._byLoad[load];
 
-                    // increasing tread on connection
+                    // increasing tread on existing connection
                     treadBefore = peer.tread;
                     treadAfter = peer
                         .wear(wear)
@@ -132,8 +137,9 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                     $utils.unset(this._byTread, treadBefore, load);
                 } else {
                     // creating peer
-                    peer = $peer.create(node);
+                    peer = $peer.create(node, wear);
 
+                    // setting tread on new connection
                     treadBefore = 0;
                     treadAfter = peer.tread;
 

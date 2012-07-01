@@ -31,7 +31,7 @@
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
         prime.Peers.addMock({
-            addNode: function (node, wear) {
+            strengthen: function (node, wear) {
                 switch (i) {
                 case 0:
                     equal(node.load, 'bar', "Node added");
