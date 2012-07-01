@@ -102,7 +102,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
              * Retrieves a random peer, weighted by tread.
              * @returns {prime.Peer}
              */
-            randomPeer: function () {
+            random: function () {
                 return this.byNorm(Math.random());
             },
 

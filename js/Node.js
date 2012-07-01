@@ -42,7 +42,34 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             /**
+             * Retrieves random node from lookup.
+             * TODO: Reduce O(n) complexity.
+             * @static
+             * @returns {prime.Node}
+             */
+            random: function () {
+                var LOOKUP = self.LOOKUP,
+                    loads = Object.keys(LOOKUP);
+
+                return LOOKUP[loads[Math.floor(Math.random() * loads.length)]];
+            },
+
+            /**
+             * Adds node to lookup when it's not already there.
+             */
+            register: function () {
+                var load = this.load,
+                    LOOKUP = self.LOOKUP;
+                if (!LOOKUP.hasOwnProperty(load)) {
+                    LOOKUP[load] = this;
+                }
+
+                return this;
+            },
+
+            /**
              * Retrieves a peer object for a given node.
+             * When node is not a peer, returns undefined.
              * @param node {prime.Node}
              * @return {prime.Peer}
              */
@@ -55,7 +82,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = this.peers.randomPeer().node;
+                var next = this.peers.random().node;
                 if (Math.random() < self.REACH) {
                     return next.hop();
                 } else {
@@ -105,19 +132,16 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 prime.node = function (load) {
     // shortcuts and local variable
     var Node = prime.Node,
-        LOOKUP = Node.LOOKUP,
-        node;
+        LOOKUP = Node.LOOKUP;
 
-    if (LOOKUP.hasOwnProperty(load)) {
+    if (arguments.length === 0) {
+        // no load given, returning a random node
+        return Node.random();
+    } else if (LOOKUP.hasOwnProperty(load)) {
         // node exists in lookup, fetching
         return LOOKUP[load];
     } else {
         // new load, creating node
-        node = Node.create(load);
-
-        // adding node to lookup
-        LOOKUP[load] = node;
-
-        return node;
+        return Node.create(load).register();
     }
 };

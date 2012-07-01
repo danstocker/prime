@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (node) {
+(function (Node) {
     module("Node");
 
     function cleanup() {
@@ -13,10 +13,11 @@
     }
 
     test("Creation", function () {
-        var hello = node('hello');
+        cleanup();
 
-        equal(hello.load, 'hello', "Creation increases lastId");
-        equal(node('hello'), hello, "Attempting to re-create node yields same node");
+        var hello = Node.create('hello');
+
+        equal(hello.load, 'hello', "Load of created node");
     });
 
     test("Strengthening", function () {
@@ -24,8 +25,8 @@
 
         expect(5);
 
-        var foo = node('foo'),
-            bar = node('bar'),
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
             i;
 
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
@@ -56,9 +57,9 @@
 
         expect(4);
 
-        var foo = node('foo'),
-            bar = node('bar'),
-            car = node('car');
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
+            car = Node.create('car');
 
         prime.Node.addMock({
             strengthen: function (node) {
@@ -77,6 +78,45 @@
 
         prime.Node.removeMocks();
     });
+
+    test("Random", function () {
+        cleanup();
+
+        var foo = Node.create('foo').register(),
+            bar = Node.create('bar').register(),
+            car = Node.create('car').register();
+
+        ok(prime.Node.random().load in prime.Node.LOOKUP, "Randomly selected node is in lookup");
+    });
+
+    test("Shorthand", function () {
+        cleanup();
+
+        expect(3);
+
+        // testing addition
+        prime.Node.addMock({
+            create: function (load) {
+                equal(load, 'hello', "Node created");
+                return this;
+            },
+            register: function () {
+                ok(true, "Node registered");
+                return this;
+            }
+        });
+        prime.node('hello');
+        prime.Node.removeMocks();
+
+        // testing random
+        prime.Node.addMock({
+            random: function () {
+                ok(true, "Random node being taken");
+            }
+        });
+        prime.node();
+        prime.Node.removeMocks();
+    });
 }(
-    prime.node
+    prime.Node
 ));
