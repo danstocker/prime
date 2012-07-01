@@ -5,7 +5,7 @@
     test("Creation", function () {
         var hello = $('hello');
 
-        equal(hello.load(), 'hello', "Creation increases lastId");
+        equal(hello.load, 'hello', "Creation increases lastId");
         equal($('hello'), hello, "Attempting to re-create node yields same node");
 
         raises(function () {
@@ -25,15 +25,15 @@
         );
 
         $('foo')
-            .peers($('car'));
+            .addPeers($('car'));
 
         deepEqual(
-            $utils.keys($('foo').peers().byLoad()),
+            $utils.keys($('foo').peers.byLoad()),
             ['car'],
             "Peer addition confirmed (1/2)"
         );
         deepEqual(
-            $utils.keys($('car').peers().byLoad()),
+            $utils.keys($('car').peers.byLoad()),
             ['foo'],
             "Peer addition confirmed (2/2)"
         );

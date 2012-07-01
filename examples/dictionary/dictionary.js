@@ -13,17 +13,17 @@ var dictionary = dictionary || {};
 
         // establishing connections
         $('table')
-            .peers($('cup')
-                .peers($('small'))
-                .peers($('white')))
-            .peers($('cloth'))
-            .peers($('food')
-                .peers($('warm'))
-                .peers($('taste')));
+            .addPeers($('cup')
+                .addPeers($('small'))
+                .addPeers($('white')))
+            .addPeers($('cloth'))
+            .addPeers($('food')
+                .addPeers($('warm'))
+                .addPeers($('taste')));
 
         // traversing connections, gathering statistics
         for (i = 0; i < 1000; i++) {
-            load = $('table').hop().load();
+            load = $('table').hop().load;
             result[load] = (result[load] || 0) + 1;
         }
 

@@ -27,7 +27,7 @@ troop.promise(prime, 'peer', function () {
              * @type string
              */
             load: function () {
-                return this.node.load();
+                return this.node.load;
             },
 
             /**

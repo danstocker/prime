@@ -7,9 +7,9 @@
 troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
     /**
      * @class Represents a collection of peers.
-     * @requires prime#utils
-     * @requires prime#peer
-     * @requires prime#node
+     * @requires prime.utils
+     * @requires prime.peer
+     * @requires prime.node
      */
     return troop.base.extend()
         .addMethod({
@@ -40,7 +40,7 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
              * Retrieves shallow copy of by-tread buffer.
              * @param [tread] {number|string} Tread to look up.
              * @param [load] {string} Load to look up.
-             * @returns {prime#node|object} A node object or lookup depending
+             * @returns {prime.node|object} A node object or lookup depending
              * on the presence of parameters.
              */
             byTread: function (tread, load) {
@@ -64,7 +64,7 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
              * all available peers based on their tread.
              * TODO: reduce computational complexity from O(n)
              * @param norm {number} Normalized sum. 0 <= norm <= 1.
-             * @returns {prime#peer}
+             * @returns {prime.peer}
              */
             byNorm: function (norm) {
                 var targetSum = norm * this.totalTread,
@@ -86,7 +86,7 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
 
             /**
              * Retrieves a random peer, weighted by tread.
-             * @returns {prime#peer}
+             * @returns {prime.peer}
              */
             random: function () {
                 return this.byNorm(Math.random());
@@ -94,11 +94,11 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
 
             /**
              * Adds node to peers collection
-             * @param node {prime#node} Node object or load.
+             * @param node {prime.node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             add: function (node, wear) {
-                var load = node.load(),
+                var load = node.load,
                     peer,
                     treadBefore, treadAfter;
 

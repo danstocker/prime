@@ -12,7 +12,7 @@
 
         peer = $peer.create(blah);
         equal(peer.load(), 'blah', "Peer created from string");
-        equal(peer.node.load(), 'blah', "String-created peer has new node object");
+        equal(peer.node.load, 'blah', "String-created peer has new node object");
     });
 
     test("Tread", function () {
