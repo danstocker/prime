@@ -7,12 +7,10 @@
  */
 /*global prime, troop */
 troop.promise(prime, 'utils', function () {
-    prime.utils = {};
-
     /**
      * @namespace Holds various utility functions.
      */
-    return troop.base.extend()
+    return prime.utils = troop.base.extend()
         .addMethod({
             /**
              * Tests whether an object is empty.
