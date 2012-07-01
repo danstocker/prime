@@ -11,6 +11,9 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
      */
     return prime.Peers = troop.base.extend()
         .addMethod({
+            //////////////////////////////
+            // OOP
+
             /**
              * Initializes peer collection.
              * @constructs
@@ -36,6 +39,9 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                  */
                 this.totalTread = 0;
             },
+
+            //////////////////////////////
+            // Lookup
 
             /**
              * Retrieves shallow copy of by-load buffer.
@@ -97,6 +103,9 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
 
                 return undefined;
             },
+
+            //////////////////////////////
+            // Graph methods
 
             /**
              * Retrieves a random peer, weighted by tread.

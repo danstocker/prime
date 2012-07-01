@@ -11,6 +11,9 @@ troop.promise(prime, 'Peer', function () {
      */
     return prime.Peer = troop.base.extend()
         .addMethod({
+            //////////////////////////////
+            // OOP
+
             /**
              * Initializes a new peer.
              * @param node {prime.Node} Peer node.
@@ -29,6 +32,9 @@ troop.promise(prime, 'Peer', function () {
                  */
                 this.tread = tread || 1;
             },
+
+            //////////////////////////////
+            // Graph methods
 
             /**
              * Changes connection tread.

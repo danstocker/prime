@@ -14,14 +14,20 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
         .addConstant({
             /**
              * System-wide registry of nodes
+             * @static
              */
             LOOKUP: {},
 
             /**
              * Probability of sub-sequential hops
+             * @static
+             * @type {number}
              */
             REACH: 0.5
         }).addMethod({
+            //////////////////////////////
+            // OOP
+
             /**
              * Initializes node.
              * @constructs
@@ -41,6 +47,9 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                 this.peers = $peers.create();
             },
 
+            //////////////////////////////
+            // Static methods
+
             /**
              * Retrieves random node from lookup.
              * TODO: Reduce O(n) complexity.
@@ -54,6 +63,9 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                 return LOOKUP[loads[Math.floor(Math.random() * loads.length)]];
             },
 
+            //////////////////////////////
+            // Utils
+
             /**
              * Adds node to lookup when it's not already there.
              */
@@ -66,6 +78,9 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
                 return this;
             },
+
+            //////////////////////////////
+            // Graph methods
 
             /**
              * Retrieves a peer object for a given node.
