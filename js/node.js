@@ -2,8 +2,6 @@
  * Conceptual Node
  *
  * Nodes are the central building blocks of the Association Engine.
- *
- * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
 troop.promise(prime, 'Node', function (ns, className, $peers) {

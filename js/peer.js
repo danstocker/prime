@@ -2,8 +2,6 @@
  * Peer
  *
  * Describes connection between two nodes.
- *
- * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
 troop.promise(prime, 'Peer', function () {

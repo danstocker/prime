@@ -1,7 +1,5 @@
 /**
  * Peer Collection
- *
- * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
 troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {

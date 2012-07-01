@@ -2,8 +2,6 @@
  * Utilities
  *
  * Various general utility functions used by the Association Engine.
- *
- * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
 troop.promise(prime, 'utils', function () {

@@ -1,1 +1,1 @@
-// copyright (c) 2012 by Dan Stocker, @danielstocker, under http://en.wikipedia.org/wiki/MIT_License
+/* Copyright (c) 2012 Dan Stocker, http://www.opensource.org/licenses/MIT */
