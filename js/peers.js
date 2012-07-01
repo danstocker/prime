@@ -107,7 +107,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
             },
 
             /**
-             * Adds node to peers collection
+             * Strengthens a peer in the collection, adds peer if necessary.
              * @param node {prime.Node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
