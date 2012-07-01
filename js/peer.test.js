@@ -8,10 +8,10 @@
             peer = $peer.create(hello);
 
         equal(peer.node, hello, "Method '.node'");
-        equal(peer.load(), 'hello', "Method '.load'");
+        equal(peer.node.load, 'hello', "Method '.load'");
 
         peer = $peer.create(blah);
-        equal(peer.load(), 'blah', "Peer created from string");
+        equal(peer.node.load, 'blah', "Peer created from string");
         equal(peer.node.load, 'blah', "String-created peer has new node object");
     });
 
@@ -30,6 +30,6 @@
         equal(peer.tread, 7, "Adding custom wear");
     });
 }(
-    prime.peer,
+    prime.Peer,
     prime.node
 ));

@@ -6,17 +6,14 @@
  * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
-troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
-    prime.Node = {};
-
+troop.promise(prime, 'Node', function (ns, className, $peers) {
     /**
      * Conceptual node. Atomic element in an association engine.
      * @class Represents a graph node.
-     * @requires prime.utils
      * @requires prime.peers
      * @param load {string} Node load.
      */
-    var Node = troop.base.extend()
+    var self = prime.Node = troop.base.extend()
         .addConstant({
             /**
              * System-wide registry of nodes
@@ -30,22 +27,23 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
         }).addMethod({
             /**
              * Initializes node.
+             * @constructs
              * @param load {string} Node load.
              */
             init: function (load) {
                 if (typeof load !== 'string') {
-                    throw "prime.node: Invalid load (" + load + ")";
+                    throw "prime.Node: Invalid load (" + load + ")";
                 }
 
                 /**
                  * String wrapped inside node.
-                 * @type string
+                 * @type {string}
                  */
                 this.load = load;
 
                 /**
                  * Collection of nodes connected to current node
-                 * @type prime.peers
+                 * @type {prime.peers}
                  */
                 this.peers = $peers.create();
             },
@@ -55,12 +53,12 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
              * @returns {string[]} All node loads.
              */
             lookupKeys: function () {
-                return Object.keys(Node.LOOKUP);
+                return Object.keys(self.LOOKUP);
             },
 
             /**
              * Checks whether the node has a specified peer.
-             * @param node {prime.node}
+             * @param node {prime.Node}
              */
             hasPeer: function (node) {
                 return typeof this.peers.byLoad(node.load) === 'object';
@@ -68,11 +66,11 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
 
             /**
              * Hops to a peer node randomly, weighted by their tread.
-             * @returns {prime.node}
+             * @returns {prime.Node}
              */
             hop: function () {
                 var next = this.peers.random().node;
-                if (Math.random() < Node.REACH) {
+                if (Math.random() < self.REACH) {
                     return next.hop();
                 } else {
                     return next;
@@ -81,7 +79,7 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
 
             /**
              * Adds peer node(s) to node.
-             * @param [node] {prime.node[]|prime.node} One or more node object.
+             * @param [node] {prime.Node[]|prime.Node} One or more node object.
              */
             addPeers: function (node) {
                 var nodes, i;
@@ -106,13 +104,13 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
             }
         });
 
-    return Node;
-}, prime.utils, prime.peers);
+    return self;
+}, prime.peers);
 
 /**
- * Returns a node. Creates one if necessary.
- * @static
- * @return {prime.node}
+ * Accesses node. Creates it if necessary.
+ * @param load {string} Node load.
+ * @return {prime.Node}
  */
 prime.node = function (load) {
     var Node = prime.Node,

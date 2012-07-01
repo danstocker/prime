@@ -6,28 +6,29 @@
  * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
-troop.promise(prime, 'peer', function () {
+troop.promise(prime, 'Peer', function () {
     /**
      * @class Represents connection to another node.
-     * @requires prime.node
+     * @requires prime.Node
      */
-    return troop.base.extend()
+    return prime.Peer = troop.base.extend()
         .addMethod({
             /**
-             * Creates a new peer.
-             * @param node {prime.node}
+             * Initializes a new peer.
+             * @param node {prime.Node} Peer node.
              */
             init: function (node) {
+                /**
+                 * Peer node,
+                 * @type {prime.Node}
+                 */
                 this.node = node;
-                this.tread = 1; // connection tread (weight)
-            },
 
-            /**
-             * Retrieves peer node's load
-             * @type string
-             */
-            load: function () {
-                return this.node.load;
+                /**
+                 * Weariness (weight) of connection to peer node.
+                 * @type {Number}
+                 */
+                this.tread = 1;
             },
 
             /**

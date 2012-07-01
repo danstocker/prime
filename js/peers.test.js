@@ -53,10 +53,10 @@
             .add($node('world'));
 
         equal(peers.totalTread, 3, "All peers contributed to total tread");
-        equal(peers.byNorm(0).load(), 'hello', "First peer accessed by norm");
-        equal(peers.byNorm(0.4).load(), 'there', "Second peer accessed by norm");
-        equal(peers.byNorm(0.8).load(), 'world', "Third peer accessed by norm");
-        equal(peers.byNorm(1).load(), 'world', "Third peer accessed by norm (upper extreme)");
+        equal(peers.byNorm(0).node.load, 'hello', "First peer accessed by norm");
+        equal(peers.byNorm(0.4).node.load, 'there', "Second peer accessed by norm");
+        equal(peers.byNorm(0.8).node.load, 'world', "Third peer accessed by norm");
+        equal(peers.byNorm(1).node.load, 'world', "Third peer accessed by norm (upper extreme)");
 
         // statistical test
         stats = {
@@ -65,7 +65,7 @@
             world: 0
         };
         for (i = 0; i < 30; i++) {
-            stats[peers.byNorm((i + 1) / 30).load()]++;
+            stats[peers.byNorm((i + 1) / 30).node.load]++;
         }
 
         ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
@@ -73,6 +73,6 @@
 }(
     prime.peers,
     prime.utils,
-    prime.peer,
+    prime.Peer,
     prime.node
 ));
