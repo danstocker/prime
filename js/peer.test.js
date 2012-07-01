@@ -31,5 +31,5 @@
     });
 }(
     prime.peer,
-    mocks.node
+    prime.node
 ));

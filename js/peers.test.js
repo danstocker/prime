@@ -74,5 +74,5 @@
     prime.peers,
     prime.utils,
     prime.peer,
-    mocks.node
+    prime.node
 ));

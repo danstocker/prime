@@ -9,8 +9,6 @@
 troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
     prime.Node = {};
 
-    var Node;
-
     /**
      * Conceptual node. Atomic element in an association engine.
      * @class Represents a graph node.
@@ -18,16 +16,31 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
      * @requires prime.peers
      * @param load {string} Node load.
      */
-    return Node = troop.base.extend()
+    var Node = troop.base.extend()
         .addConstant({
-            LOOKUP: {}, // system wide registry of nodes
-            REACH: 0.5 // probability of sub-sequential hops
+            /**
+             * System-wide registry of nodes
+             */
+            LOOKUP: {},
+
+            /**
+             * Probability of sub-sequential hops
+             */
+            REACH: 0.5
         }).addMethod({
+            /**
+             * Initializes node.
+             * @param load {string} Node load.
+             */
             init: function (load) {
                 if (typeof load !== 'string') {
                     throw "prime.node: Invalid load (" + load + ")";
                 }
 
+                /**
+                 * String wrapped inside node.
+                 * @type string
+                 */
                 this.load = load;
 
                 /**
@@ -42,7 +55,7 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
              * @returns {string[]} All node loads.
              */
             lookupKeys: function () {
-                return $utils.keys(Node.LOOKUP);
+                return Object.keys(Node.LOOKUP);
             },
 
             /**
@@ -92,6 +105,8 @@ troop.promise(prime, 'Node', function (ns, className, $utils, $peers) {
                 return this;
             }
         });
+
+    return Node;
 }, prime.utils, prime.peers);
 
 /**
