@@ -6,7 +6,7 @@
         var hello = $node('hello'),
             peers = $peers.create();
 
-        peers.add(hello);
+        peers.addNode(hello);
         equal(peers.byLoad().hello.node, hello, "Node added to by-load buffer");
         equal(peers.byLoad('hello').node, hello, ".byLoad may take load parameter");
         equal(peers.byLoad().hello.tread, 1, "Newly added node's tread is 1 (default)");
@@ -24,19 +24,19 @@
 
         equal(peers.totalTread, 0, "Total tread initially zero");
 
-        peers.add(hello);
+        peers.addNode(hello);
         deepEqual(Object.keys(peers.byTread()), ['1'], "Node added once");
         equal(peers.totalTread, 1, "Total tread equals to tread of only element");
 
-        peers.add(hello);
+        peers.addNode(hello);
         deepEqual(Object.keys(peers.byTread()), ['2'], "Tread lookup follows changes in tread");
         equal(peers.totalTread, 2, "Total tread follows tread change of only element");
 
-        peers.add($node('world'));
+        peers.addNode($node('world'));
         deepEqual(Object.keys(peers.byTread()).sort(), ['1', '2'], "Tread lookup follows node addition");
         equal(peers.totalTread, 3, "Total tread follows node addition");
 
-        peers.add(hello, 3);
+        peers.addNode(hello, 3);
         equal(peers.totalTread, 6, "Tread of one node increased by custom wear");
     });
 
@@ -48,9 +48,9 @@
 
         // adding peers each with a tread of 1
         peers
-            .add($node('hello'))
-            .add($node('there'))
-            .add($node('world'));
+            .addNode($node('hello'))
+            .addNode($node('there'))
+            .addNode($node('world'));
 
         equal(peers.totalTread, 3, "All peers contributed to total tread");
         equal(peers.byNorm(0).node.load, 'hello', "First peer accessed by norm");
@@ -71,7 +71,7 @@
         ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
     });
 }(
-    prime.peers,
+    prime.Peers,
     prime.utils,
     prime.Peer,
     prime.node

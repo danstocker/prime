@@ -4,23 +4,39 @@
  * (c) 2012 by Dan Stocker
  */
 /*global prime, troop */
-troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
+troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
      * @requires prime.Peer
      * @requires prime.Node
      */
-    return troop.base.extend()
+    return prime.Peers = troop.base.extend()
         .addMethod({
             /**
-             * Creates a collection of peers.
+             * Initializes peer collection.
+             * @constructs
              */
             init: function () {
-                // peer buffers
-                this._byLoad = {}; // peers indexed by load
-                this._byTread = {}; // peers indexed by tread, then load
-                this.totalTread = 0; // sum of the tread of all peers
+                /**
+                 * Peers indexed by load.
+                 * @type {Object}
+                 * @private
+                 */
+                this._byLoad = {};
+
+                /**
+                 * Peers indexed by tread, then load.
+                 * @type {Object}
+                 * @private
+                 */
+                this._byTread = {};
+
+                /**
+                 * Sum of the tread of all peers.
+                 * @type {Number}
+                 */
+                this.totalTread = 0;
             },
 
             /**
@@ -88,7 +104,7 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
              * Retrieves a random peer, weighted by tread.
              * @returns {prime.Peer}
              */
-            random: function () {
+            randomPeer: function () {
                 return this.byNorm(Math.random());
             },
 
@@ -97,7 +113,7 @@ troop.promise(prime, 'peers', function (ns, className, $utils, $peer) {
              * @param node {prime.Node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
-            add: function (node, wear) {
+            addNode: function (node, wear) {
                 var load = node.load,
                     peer,
                     treadBefore, treadAfter;

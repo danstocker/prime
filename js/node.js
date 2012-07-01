@@ -10,7 +10,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
     /**
      * Conceptual node. Atomic element in an association engine.
      * @class Represents a graph node.
-     * @requires prime.peers
+     * @requires prime.Peers
      * @param load {string} Node load.
      */
     var self = prime.Node = troop.base.extend()
@@ -43,7 +43,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
                 /**
                  * Collection of nodes connected to current node
-                 * @type {prime.peers}
+                 * @type {prime.Peers}
                  */
                 this.peers = $peers.create();
             },
@@ -69,7 +69,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = this.peers.random().node;
+                var next = this.peers.randomPeer().node;
                 if (Math.random() < self.REACH) {
                     return next.hop();
                 } else {
@@ -91,7 +91,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                     }
                 } else {
                     // adding node as peer
-                    this.peers.add(node);
+                    this.peers.addNode(node);
 
                     // checking reciprocal peer
                     if (!node.hasPeer(this)) {
@@ -105,7 +105,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
         });
 
     return self;
-}, prime.peers);
+}, prime.Peers);
 
 /**
  * Accesses node. Creates it if necessary.
