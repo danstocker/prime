@@ -6,10 +6,9 @@
 /*global prime, troop */
 troop.promise(prime, 'Node', function (ns, className, $peers) {
     /**
-     * Conceptual node. Atomic element in an association engine.
+     * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
      * @requires prime.Peers
-     * @param load {string} Node load.
      */
     var self = prime.Node = troop.base.extend()
         .addConstant({
@@ -29,10 +28,6 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * @param load {string} Node load.
              */
             init: function (load) {
-                if (typeof load !== 'string') {
-                    throw new TypeError("Argument 'load' in method .init not {string}");
-                }
-
                 /**
                  * String wrapped inside node.
                  * @type {string}
@@ -47,25 +42,16 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             /**
-             * Checks whether the node has a specified peer.
-             * @param node {prime.Node|string}
-             * @return {boolean}
+             * Retrieves a peer object for a given node.
+             * @param node {prime.Node}
+             * @return {prime.Peer}
              */
-            hasPeer: function (node) {
-                var load;
-                if (prime.Node.isPrototypeOf(node)) {
-                    load = node.load;
-                } else if (typeof node === 'string') {
-                    load = node;
-                } else {
-                    throw new TypeError("Argument 'node' in method .hasPeer not {string} or {Node}");
-                }
-                // checking whether node is peer
-                return prime.Peer.isPrototypeOf(this.peers.byLoad(load));
+            peer: function (node) {
+                return this.peers.byLoad(node.load);
             },
 
             /**
-             * Hops to a peer node randomly, weighted by their tread.
+             * Hops to a peer node randomly, weighted by tread.
              * @returns {prime.Node}
              */
             hop: function () {
@@ -78,25 +64,26 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             /**
-             * Adds single peer node.
+             * Strengthens connection weight for a single peer.
              * @param node {prime.Node} Node to add as peer.
              * @param [wear] {number} Edge weight increment.
+             * @param [mirror] {boolean} Whether to apply to opposite direction.
              */
-            strengthen: function (node, wear) {
+            strengthen: function (node, wear, mirror) {
                 // adding node as peer
                 this.peers.addNode(node, wear);
 
                 // checking reciprocal peer
-                if (!node.hasPeer(this)) {
+                if (mirror !== false) {
                     // adding self to node as peer
-                    node.strengthen(this, wear);
+                    node.strengthen(this, wear, false);
                 }
 
                 return this;
             },
 
             /**
-             * Adds multiple peer nodes.
+             * Connects multiple peer nodes.
              * @param nodes {prime.Node[]} Array of nodes.
              */
             connect: function (nodes) {

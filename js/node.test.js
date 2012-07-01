@@ -2,49 +2,63 @@
 (function (node) {
     module("Node");
 
+    function cleanup() {
+        var LOOKUP = prime.Node.LOOKUP,
+            key;
+        for (key in LOOKUP) {
+            if (LOOKUP.hasOwnProperty(key)) {
+                delete LOOKUP[key];
+            }
+        }
+    }
+
     test("Creation", function () {
         var hello = node('hello');
 
         equal(hello.load, 'hello', "Creation increases lastId");
         equal(node('hello'), hello, "Attempting to re-create node yields same node");
-
-        raises(function () {
-            node();
-        }, "Non-string node raises error");
     });
 
-    test("Peers", function () {
-        expect(8);
+    test("Strengthening", function () {
+        cleanup();
 
-        node('foo');
-        node('car');
+        expect(5);
 
-        equal(
-            node('foo').hasPeer(node('car')),
-            false,
-            "Node 'car' doesn't have peer 'foo'"
-        );
+        var foo = node('foo'),
+            bar = node('bar'),
+            i;
 
-        node('foo')
-            .strengthen(node('car'));
+        equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
-        deepEqual(
-            Object.keys(node('foo').peers.byLoad()),
-            ['car'],
-            "Peer added to node"
-        );
-        deepEqual(
-            Object.keys(node('car').peers.byLoad()),
-            ['foo'],
-            "Node added to peer"
-        );
+        prime.Peers.addMock({
+            addNode: function (node, wear) {
+                switch (i) {
+                case 0:
+                    equal(node.load, 'bar', "Node added");
+                    break;
+                case 1:
+                    equal(node.load, 'foo', "Node added");
+                    break;
+                }
+                equal(wear, 5, "Wear amount");
+                i++;
+            }
+        });
 
-        equal(
-            node('car')
-                .hasPeer(node('foo')),
-            true,
-            "Node 'car' now has peer 'foo'"
-        );
+        i = 0;
+        foo.strengthen(bar, 5);
+
+        prime.Peers.removeMocks();
+    });
+
+    test("Connecting", function () {
+        cleanup();
+
+        expect(4);
+
+        var foo = node('foo'),
+            bar = node('bar'),
+            car = node('car');
 
         prime.Node.addMock({
             strengthen: function (node) {
@@ -53,12 +67,13 @@
         });
 
         // adding as array
-        node('foo')
-            .connect([node('bar'), node('car')]);
+        foo.connect([
+            bar,
+            car
+        ]);
 
         // adding as argument list
-        node('foo')
-            .connect(node('bar'), node('car'));
+        foo.connect(bar, car);
 
         prime.Node.removeMocks();
     });
