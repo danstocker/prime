@@ -94,6 +94,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
             /**
              * Hops to a peer node randomly, weighted by tread.
+             * TODO: For when node has no peers, return completely random node.
              * @returns {prime.Node}
              */
             hop: function () {
