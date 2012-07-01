@@ -5,12 +5,6 @@
     test("Objects", function () {
         equal($utils.isEmpty({}), true, "Empty object");
         equal($utils.isEmpty({foo: 'bar'}), false, "Non-empty object");
-
-        deepEqual(
-            $utils.keys({foo: "bar", hey: "ho"}),
-            ['foo', 'hey'],
-            "Obtaining keys of object"
-        );
     });
 
     test("Modifications", function () {

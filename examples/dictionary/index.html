@@ -23,7 +23,7 @@
                     .width(500)
                     .css('position', 'relative'),
                 statistics = dictionary.statistics(),
-                words = prime.utils.keys(statistics).sort(),
+                words = Object.keys(statistics).sort(),
                 i, word;
 
             // adding bars

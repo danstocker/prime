@@ -1,51 +1,50 @@
 /*global prime, module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($, $utils) {
+(function (node) {
     module("Node");
 
     test("Creation", function () {
-        var hello = $('hello');
+        var hello = node('hello');
 
         equal(hello.load, 'hello', "Creation increases lastId");
-        equal($('hello'), hello, "Attempting to re-create node yields same node");
+        equal(node('hello'), hello, "Attempting to re-create node yields same node");
 
         raises(function () {
-            $();
+            node();
         }, "Non-string node raises error");
     });
 
     test("Peers", function () {
-        $('foo');
-        $('car');
+        node('foo');
+        node('car');
 
         equal(
-            $('car')
-                .hasPeer($('foo')),
+            node('car')
+                .hasPeer(node('foo')),
             false,
             "Node 'car' doesn't have peer 'foo'"
         );
 
-        $('foo')
-            .addPeers($('car'));
+        node('foo')
+            .addPeers(node('car'));
 
         deepEqual(
-            $utils.keys($('foo').peers.byLoad()),
+            Object.keys(node('foo').peers.byLoad()),
             ['car'],
             "Peer addition confirmed (1/2)"
         );
         deepEqual(
-            $utils.keys($('car').peers.byLoad()),
+            Object.keys(node('car').peers.byLoad()),
             ['foo'],
             "Peer addition confirmed (2/2)"
         );
 
         equal(
-            $('car')
-                .hasPeer($('foo')),
+            node('car')
+                .hasPeer(node('foo')),
             true,
             "Node 'car' now has peer 'foo'"
         );
     });
 }(
-    prime.node,
-    prime.utils
+    prime.node
 ));

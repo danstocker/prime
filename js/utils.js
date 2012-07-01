@@ -7,6 +7,8 @@
  */
 /*global prime, troop */
 troop.promise(prime, 'utils', function () {
+    prime.utils = {};
+
     /**
      * @namespace Holds various utility functions.
      */
@@ -25,22 +27,6 @@ troop.promise(prime, 'utils', function () {
                     }
                 }
                 return true;
-            },
-
-            /**
-             * Obtains key of an object.
-             * @param object {object}
-             * @returns {string[]} Object key names.
-             */
-            keys: function (object) {
-                var result = [],
-                    key;
-                for (key in object) {
-                    if (object.hasOwnProperty(key)) {
-                        result.push(key);
-                    }
-                }
-                return result;
             },
 
             /**
