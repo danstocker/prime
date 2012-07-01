@@ -28,9 +28,9 @@ done
 cat \
 js/prime.js \
 js/utils.js \
-js/peer.js \
-js/peers.js \
-js/node.js \
+js/Peer.js \
+js/Peers.js \
+js/Node.js \
 > "build/$NAME.js"
 
 if type yui-compressor >/dev/null 2>&1
