@@ -6,7 +6,7 @@
         var hello = $node('hello'),
             peers = $peers.create();
 
-        peers.strengthen(hello, 1);
+        peers.tread(hello, 1);
         equal(peers.byLoad.hello.node, hello, "Node added to by-load buffer");
         equal(peers.byLoad.hello.tread, 1, "Newly added node's tread is 1 (default)");
 
@@ -20,19 +20,19 @@
 
         equal(peers.totalTread, 0, "Total tread initially zero");
 
-        peers.strengthen(hello);
+        peers.tread(hello);
         deepEqual(Object.keys(peers.byTread), ['1'], "Node added once");
         equal(peers.totalTread, 1, "Total tread equals to tread of only element");
 
-        peers.strengthen(hello);
+        peers.tread(hello);
         deepEqual(Object.keys(peers.byTread), ['2'], "Tread lookup follows changes in tread");
         equal(peers.totalTread, 2, "Total tread follows tread change of only element");
 
-        peers.strengthen($node('world'));
+        peers.tread($node('world'));
         deepEqual(Object.keys(peers.byTread).sort(), ['1', '2'], "Tread lookup follows node addition");
         equal(peers.totalTread, 3, "Total tread follows node addition");
 
-        peers.strengthen(hello, 3);
+        peers.tread(hello, 3);
         equal(peers.totalTread, 6, "Tread of one node increased by custom wear");
     });
 
@@ -44,9 +44,9 @@
 
         // adding peers each with a tread of 1
         peers
-            .strengthen($node('hello'))
-            .strengthen($node('there'))
-            .strengthen($node('world'));
+            .tread($node('hello'))
+            .tread($node('there'))
+            .tread($node('world'));
 
         equal(peers.totalTread, 3, "All peers contributed to total tread");
         equal(peers.byNorm(0).node.load, 'hello', "First peer accessed by norm");

@@ -12,12 +12,12 @@ var dictionary = dictionary || {};
         }
 
         // establishing connections
-        node('table').connect(
-            node('cup').connect(
+        node('table').to(
+            node('cup').to(
                 node('small'),
                 node('white')),
             node('cloth'),
-            node('food').connect(
+            node('food').to(
                 node('warm'),
                 node('taste')
             )

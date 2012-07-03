@@ -9,8 +9,10 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
      * @requires prime.Peer
      * @requires prime.Node
      */
-    return prime.Peers = troop.base.extend()
-        .addMethod({
+    var self = prime.Peers = troop.base.extend()
+        .addConstant({
+            defaultTread: 1
+        }).addMethod({
             //////////////////////////////
             // OOP
 
@@ -86,38 +88,20 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
              * @param node {prime.Node} Node object or load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
-            strengthen: function (node, wear) {
-                var
-                    /** @type string */
-                    load = node.load,
-
-                    /** @type prime.Peer */
-                    peer,
-
-                    /** @type number */
-                    treadBefore, treadAfter;
-
-                // checking whether node is already among peers
-                if (this.byLoad.hasOwnProperty(load)) {
-                    // obtaining peer
-                    peer = this.byLoad[load];
-
-                    // increasing tread on existing connection
-                    treadBefore = peer.tread;
+            tread: function (node, wear) {
+                var load = node.load,
+                    hasPeer = this.byLoad.hasOwnProperty(load),
+                    peer = hasPeer ? this.byLoad[load] : $peer.create(node),
+                    treadBefore = peer.tread,
                     treadAfter = peer
-                        .wear(wear)
+                        .wear(wear || self.defaultTread)
                         .tread;
 
+                // checking whether node is already among peers
+                if (hasPeer) {
                     // removing old tread from lookup
                     $utils.unset(this.byTread, treadBefore, load);
                 } else {
-                    // creating peer
-                    peer = $peer.create(node, wear);
-
-                    // setting tread on new connection
-                    treadBefore = 0;
-                    treadAfter = peer.tread;
-
                     // adding new peer to lookup
                     $utils.set(this.byLoad, load, peer);
                 }
@@ -131,4 +115,6 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                 return this;
             }
         });
+
+    return self;
 }, prime.utils, prime.Peer);

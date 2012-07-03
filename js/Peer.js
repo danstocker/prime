@@ -30,7 +30,7 @@ troop.promise(prime, 'Peer', function () {
                  * Weariness (weight) of connection to peer node.
                  * @type {Number}
                  */
-                this.tread = tread || 1;
+                this.tread = tread || 0;
             },
 
             //////////////////////////////

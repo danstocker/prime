@@ -16,14 +16,14 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * System-wide registry of nodes
              * @static
              */
-            LOOKUP: {},
+            registry: {},
 
             /**
              * Probability of sub-sequential hops
              * @static
              * @type {number}
              */
-            REACH: 0.5
+            reach: 0.5
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -48,22 +48,6 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
             },
 
             //////////////////////////////
-            // Static methods
-
-            /**
-             * Retrieves random node from lookup.
-             * TODO: Reduce O(n) complexity.
-             * @static
-             * @returns {prime.Node}
-             */
-            random: function () {
-                var LOOKUP = self.LOOKUP,
-                    loads = Object.keys(LOOKUP);
-
-                return LOOKUP[loads[Math.floor(Math.random() * loads.length)]];
-            },
-
-            //////////////////////////////
             // Utils
 
             /**
@@ -71,9 +55,9 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              */
             register: function () {
                 var load = this.load,
-                    LOOKUP = self.LOOKUP;
-                if (!LOOKUP.hasOwnProperty(load)) {
-                    LOOKUP[load] = this;
+                    registry = self.registry;
+                if (!registry.hasOwnProperty(load)) {
+                    registry[load] = this;
                 }
 
                 return this;
@@ -99,7 +83,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              */
             hop: function () {
                 var next = this.peers.random().node;
-                if (Math.random() < self.REACH) {
+                if (Math.random() < self.reach) {
                     return next.hop();
                 } else {
                     return next;
@@ -108,29 +92,21 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
             /**
              * Strengthens connection weight for a single peer.
-             * @param node {prime.Node} Node to add as peer.
-             * @param [wear] {number} Edge weight increment.
              */
-            strengthen: function (node, wear) {
-                this.peers.strengthen(node, wear);
-                node.peers.strengthen(this, wear);
+            to: function () {
+                var last = arguments.length - 1,
+                    node, wear,
+                    i;
 
-                return this;
-            },
+                if (typeof arguments[last] === 'number') {
+                    wear = arguments[last];
+                    last--;
+                }
 
-            /**
-             * Connects multiple peer nodes.
-             * @param nodes {prime.Node[]} Array of nodes.
-             */
-            connect: function (nodes) {
-                var tmp = nodes instanceof Array ?
-                    nodes :
-                    arguments;
-
-                // adding peer for each
-                var i;
-                for (i = 0; i < tmp.length; i++) {
-                    this.strengthen(tmp[i]);
+                for (i = 0; i <= last; i++) {
+                    node = arguments[i];
+                    this.peers.tread(node, wear);
+                    node.peers.tread(this, wear);
                 }
 
                 return this;
@@ -148,16 +124,14 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 prime.node = function (load) {
     // shortcuts and local variable
     var Node = prime.Node,
-        LOOKUP = Node.LOOKUP;
+        registry = Node.registry;
 
-    if (arguments.length === 0) {
-        // no load given, returning a random node
-        return Node.random();
-    } else if (LOOKUP.hasOwnProperty(load)) {
+    if (registry.hasOwnProperty(load)) {
         // node exists in lookup, fetching
-        return LOOKUP[load];
+        return registry[load];
     } else {
         // new load, creating node
-        return Node.create(load).register();
+        return Node.create(load)
+            .register();
     }
 };

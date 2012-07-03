@@ -3,11 +3,11 @@
     module("Node");
 
     function cleanup() {
-        var LOOKUP = prime.Node.LOOKUP,
+        var registry = prime.Node.registry,
             key;
-        for (key in LOOKUP) {
-            if (LOOKUP.hasOwnProperty(key)) {
-                delete LOOKUP[key];
+        for (key in registry) {
+            if (registry.hasOwnProperty(key)) {
+                delete registry[key];
             }
         }
     }
@@ -32,7 +32,7 @@
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
         prime.Peers.addMock({
-            strengthen: function (node, wear) {
+            tread: function (node, wear) {
                 switch (i) {
                 case 0:
                     equal(node.load, 'bar', "Node added");
@@ -47,7 +47,7 @@
         });
 
         i = 0;
-        foo.strengthen(bar, 5);
+        foo.to(bar, 5);
 
         prime.Peers.removeMocks();
     });
@@ -55,44 +55,31 @@
     test("Connecting", function () {
         cleanup();
 
-        expect(4);
+        expect(8);
 
         var foo = Node.create('foo'),
             bar = Node.create('bar'),
             car = Node.create('car');
 
-        prime.Node.addMock({
-            strengthen: function (node) {
-                ok(node.load in {car: 1, bar: 1}, "Peer added");
+        prime.Peers.addMock({
+            tread: function (node, wear) {
+                // TODO: test is crude, should be refined
+                ok(node.load in {foo: 1, car: 1, bar: 1}, "Peer added");
+                equal(typeof wear, 'undefined', "Peer wear");
             }
         });
 
-        // adding as array
-        foo.connect([
-            bar,
-            car
-        ]);
-
         // adding as argument list
-        foo.connect(bar, car);
+        // 2x2 calls Peer.tread for each node listed
+        foo.to(bar, car);
 
         prime.Node.removeMocks();
-    });
-
-    test("Random", function () {
-        cleanup();
-
-        var foo = Node.create('foo').register(),
-            bar = Node.create('bar').register(),
-            car = Node.create('car').register();
-
-        ok(prime.Node.random().load in prime.Node.LOOKUP, "Randomly selected node is in lookup");
     });
 
     test("Shorthand", function () {
         cleanup();
 
-        expect(3);
+        expect(2);
 
         // testing addition
         prime.Node.addMock({
@@ -106,15 +93,6 @@
             }
         });
         prime.node('hello');
-        prime.Node.removeMocks();
-
-        // testing random
-        prime.Node.addMock({
-            random: function () {
-                ok(true, "Random node being taken");
-            }
-        });
-        prime.node();
         prime.Node.removeMocks();
     });
 }(
