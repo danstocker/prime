@@ -89,7 +89,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * @return {prime.Peer}
              */
             peer: function (node) {
-                return this.peers.byLoad(node.load);
+                return this.peers.byLoad[node.load];
             },
 
             /**

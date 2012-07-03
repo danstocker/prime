@@ -24,14 +24,14 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                  * @type {Object}
                  * @private
                  */
-                this._byLoad = {};
+                this.byLoad = {};
 
                 /**
                  * Peers indexed by tread, then load.
                  * @type {Object}
                  * @private
                  */
-                this._byTread = {};
+                this.byTread = {};
 
                 /**
                  * Sum of the tread of all peers.
@@ -44,41 +44,6 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
             // Lookup
 
             /**
-             * Retrieves shallow copy of by-load buffer.
-             * @param [load] {string} Load to look up.
-             * @returns {prime.Node}
-             */
-            byLoad: function (load) {
-                if (typeof load === 'string') {
-                    return this._byLoad[load];
-                } else {
-                    return $utils.shallow(this._byLoad);
-                }
-            },
-
-            /**
-             * Retrieves shallow copy of by-tread buffer.
-             * @param [tread] {number|string} Tread to look up.
-             * @param [load] {string} Load to look up.
-             * @returns {prime.Node|object} A node object or lookup depending
-             * on the presence of parameters.
-             */
-            byTread: function (tread, load) {
-                if (
-                    typeof tread === 'number' ||
-                    typeof tread === 'string'
-                    ) {
-                    if (typeof load === 'string') {
-                        return this._byTread[tread][load];
-                    } else {
-                        return $utils.shallow(this._byTread[tread]);
-                    }
-                } else {
-                    return $utils.shallow(this._byTread);
-                }
-            },
-
-            /**
              * Retrieves single peer matching the given normalized cumulative
              * tread (NCT). NCT, between 0 and 1, pin-points a peer among
              * all available peers based on their tread.
@@ -89,11 +54,12 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
             byNorm: function (norm) {
                 var targetSum = norm * this.totalTread,
                     currentSum = 0,
+                    byLoad = this.byLoad,
                     load, peer;
 
-                for (load in this._byLoad) {
-                    if (this._byLoad.hasOwnProperty(load)) {
-                        peer = this._byLoad[load];
+                for (load in byLoad) {
+                    if (byLoad.hasOwnProperty(load)) {
+                        peer = byLoad[load];
                         currentSum += peer.tread;
                         if (currentSum >= targetSum) {
                             return peer;
@@ -132,9 +98,9 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                     treadBefore, treadAfter;
 
                 // checking whether node is already among peers
-                if (this._byLoad.hasOwnProperty(load)) {
+                if (this.byLoad.hasOwnProperty(load)) {
                     // obtaining peer
-                    peer = this._byLoad[load];
+                    peer = this.byLoad[load];
 
                     // increasing tread on existing connection
                     treadBefore = peer.tread;
@@ -143,7 +109,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                         .tread;
 
                     // removing old tread from lookup
-                    $utils.unset(this._byTread, treadBefore, load);
+                    $utils.unset(this.byTread, treadBefore, load);
                 } else {
                     // creating peer
                     peer = $peer.create(node, wear);
@@ -153,11 +119,11 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                     treadAfter = peer.tread;
 
                     // adding new peer to lookup
-                    $utils.set(this._byLoad, load, peer);
+                    $utils.set(this.byLoad, load, peer);
                 }
 
                 // updating tread in lookup
-                $utils.set(this._byTread, treadAfter, load, peer);
+                $utils.set(this.byTread, treadAfter, load, peer);
 
                 // updating total tread
                 this.totalTread += treadAfter - treadBefore;

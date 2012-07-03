@@ -7,15 +7,11 @@
             peers = $peers.create();
 
         peers.strengthen(hello, 1);
-        equal(peers.byLoad().hello.node, hello, "Node added to by-load buffer");
-        equal(peers.byLoad('hello').node, hello, ".byLoad may take load parameter");
-        equal(peers.byLoad().hello.tread, 1, "Newly added node's tread is 1 (default)");
+        equal(peers.byLoad.hello.node, hello, "Node added to by-load buffer");
+        equal(peers.byLoad.hello.tread, 1, "Newly added node's tread is 1 (default)");
 
-        deepEqual(Object.keys(peers.byTread()), ['1'], "Tread value added to by-tread lookup");
-        equal(peers.byTread()[1].hello.node, hello, "Node added to by-tread buffer");
-        equal(peers.byTread(1).hello.node, hello, "Same but with tread passed as param (number)");
-        equal(peers.byTread('1').hello.node, hello, "Same but with tread passed as param (string)");
-        equal(peers.byTread(1, 'hello').node, hello, "Same but with tread and load passed as params");
+        deepEqual(Object.keys(peers.byTread), ['1'], "Tread value added to by-tread lookup");
+        equal(peers.byTread[1].hello.node, hello, "Node added to by-tread buffer");
     });
 
     test("Modification", function () {
@@ -25,15 +21,15 @@
         equal(peers.totalTread, 0, "Total tread initially zero");
 
         peers.strengthen(hello);
-        deepEqual(Object.keys(peers.byTread()), ['1'], "Node added once");
+        deepEqual(Object.keys(peers.byTread), ['1'], "Node added once");
         equal(peers.totalTread, 1, "Total tread equals to tread of only element");
 
         peers.strengthen(hello);
-        deepEqual(Object.keys(peers.byTread()), ['2'], "Tread lookup follows changes in tread");
+        deepEqual(Object.keys(peers.byTread), ['2'], "Tread lookup follows changes in tread");
         equal(peers.totalTread, 2, "Total tread follows tread change of only element");
 
         peers.strengthen($node('world'));
-        deepEqual(Object.keys(peers.byTread()).sort(), ['1', '2'], "Tread lookup follows node addition");
+        deepEqual(Object.keys(peers.byTread).sort(), ['1', '2'], "Tread lookup follows node addition");
         equal(peers.totalTread, 3, "Total tread follows node addition");
 
         peers.strengthen(hello, 3);
