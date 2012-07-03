@@ -17,12 +17,12 @@ Usage
 
 ```javascript
 var node = prime.node;
-node('table').connect(
-    node('cup').connect(
+node('table').to(
+    node('cup').to(
         node('small'),
         node('white')),
     node('cloth'),
-    node('food').connect(
+    node('food').to(
         node('warm'),
         node('taste')
     )
@@ -33,12 +33,12 @@ node('table').connect(
 
 ```javascript
 // adds 3 to edge weight between 'table' and 'cup'
-node('table').strengthen(node('cup'), 3);
+node('table').to(node('cup'), 3);
 ```
 
 ### Hopping
 
-Hopping is a series of jumps between connected nodes, depending on edge weights and subsequent hop probability.
+Hopping is a series of jumps between connected nodes, depending on edge weights and subsequent jump probability.
 
 ```javascript
 var found = node('table').hop().load; // one of all connected nodes
