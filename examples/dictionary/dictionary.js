@@ -2,14 +2,8 @@
 var dictionary = dictionary || {};
 (function (node) {
     dictionary.statistics = function () {
-        var data = dictionary.data,
-            result = {},
+        var result = {},
             i, load;
-
-        // filling nodes
-        for (i = 0; i < data.length; i++) {
-            node(data[i]);
-        }
 
         // establishing connections
         node('table').to(
