@@ -8,7 +8,7 @@ troop.promise(prime, 'utils', function () {
     /**
      * @namespace Holds various utility functions.
      */
-    return prime.utils = troop.base.extend()
+    var self = prime.utils = troop.base.extend()
         .addMethod({
             /**
              * Tests whether an object is empty.
@@ -91,6 +91,31 @@ troop.promise(prime, 'utils', function () {
                     }
                 }
                 return result;
+            },
+
+            /**
+             * Creates almost-deep copy of object.
+             * Only enumerable own properties are copied, with names not listed in `excluded`.
+             * @param object {object} Object to copy.
+             * @param excluded {object} Lookup of excluded property names.
+             */
+            scrape: function (object, excluded) {
+                excluded = excluded || {};
+                var result = {},
+                    key, property;
+                for (key in object) {
+                    if (object.hasOwnProperty(key) &&
+                        !excluded.hasOwnProperty(key)
+                        ) {
+                        property = object[key];
+                        result[key] = typeof property === 'object' ?
+                            self.scrape(property, excluded) :
+                            property;
+                    }
+                }
+                return result;
             }
         });
+
+    return self;
 });
