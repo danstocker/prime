@@ -10,6 +10,12 @@ Requires
 
 - [Troop 0.1.3](https://github.com/production-minds/troop)
 
+Examples
+--------
+
+- [Learning app](http://jsfiddle.net/danstocker/H8vLd/): learns associations between words or short expressions.
+- [Hop distribution](http://jsfiddle.net/danstocker/K63h8/): displays distribution of hop probability depending on node distance.
+
 Usage
 -----
 
