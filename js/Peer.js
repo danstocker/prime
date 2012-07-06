@@ -45,6 +45,15 @@ troop.promise(prime, 'Peer', function () {
                 this.tread += value || 1;
 
                 return this;
+            },
+
+            //////////////////////////////
+            // JSON
+
+            toJSON: function () {
+                return {
+                    tread: this.tread
+                };
             }
         });
 });

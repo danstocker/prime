@@ -31,6 +31,14 @@
         peer.wear(5);
         equal(peer.tread, 6, "Adding custom wear");
     });
+
+    test("JSON", function () {
+        var hello = $node('hello'),
+            peer = $peer.create(hello);
+
+        deepEqual(Object.keys(peer.toJSON()), ['tread'], "Keys included in JSON representation");
+        equal(JSON.stringify(peer), '{"tread":0}', "JSON representation of peer");
+    });
 }(
     prime.Peer,
     prime.node
