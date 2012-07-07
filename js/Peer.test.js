@@ -36,8 +36,8 @@
         var hello = $node('hello'),
             peer = $peer.create(hello);
 
-        deepEqual(Object.keys(peer.toJSON()), ['tread'], "Keys included in JSON representation");
-        equal(JSON.stringify(peer), '{"tread":0}', "JSON representation of peer");
+        deepEqual(Object.keys(peer.toJSON()), ['node','tread'], "Keys included in JSON representation");
+        equal(JSON.stringify(peer), '{"node":{"load":"hello"},"tread":0}', "JSON representation of peer");
     });
 }(
     prime.Peer,

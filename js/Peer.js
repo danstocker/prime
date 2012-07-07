@@ -52,6 +52,9 @@ troop.promise(prime, 'Peer', function () {
 
             toJSON: function () {
                 return {
+                    node: {
+                        load: this.node.load
+                    },
                     tread: this.tread
                 };
             }
