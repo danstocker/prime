@@ -96,7 +96,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = this.peers.random().node;
+                var next = self.registry[this.peers.random().load];
                 if (Math.random() < self.reach) {
                     return next.hop();
                 } else {
@@ -119,8 +119,8 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
 
                 for (i = 0; i <= last; i++) {
                     node = arguments[i];
-                    this.peers.tread(node, wear);
-                    node.peers.tread(this, wear);
+                    this.peers.tread(node.load, wear);
+                    node.peers.tread(this.load, wear);
                 }
 
                 return this;

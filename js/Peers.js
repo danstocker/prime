@@ -81,7 +81,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
              * @throws {Error} When peer already exists.
              */
             add: function (peer) {
-                var load = peer.node.load,
+                var load = peer.load,
                     tread = peer.tread,
                     byLoad = this.byLoad,
                     byTread = this.byTread;
@@ -107,20 +107,19 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
 
             /**
              * Strengthens a peer in the collection, adds peer if necessary.
-             * @param node {prime.Node} Node object or load.
+             * @param load {string} Node load.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
-            tread: function (node, wear) {
+            tread: function (load, wear) {
                 wear = wear || self.defaultTread;
 
-                var load = node.load,
-                    byLoad = this.byLoad,
+                var byLoad = this.byLoad,
                     byTread = this.byTread,
                     peer, treadBefore, treadAfter;
 
                 if (!byLoad.hasOwnProperty(load)) {
                     // adding new peer
-                    this.add($Peer.create(node, wear));
+                    this.add($Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
                     peer = byLoad[load];

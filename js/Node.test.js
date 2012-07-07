@@ -23,13 +23,13 @@
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
         $Peers.addMock({
-            tread: function (node, wear) {
+            tread: function (load, wear) {
                 switch (i) {
                 case 0:
-                    equal(node.load, 'bar', "Node added");
+                    equal(load, 'bar', "Node added");
                     break;
                 case 1:
-                    equal(node.load, 'foo', "Node added");
+                    equal(load, 'foo', "Node added");
                     break;
                 }
                 equal(wear, 5, "Wear amount");
@@ -53,9 +53,9 @@
             car = $Node.create('car');
 
         $Peers.addMock({
-            tread: function (node, wear) {
+            tread: function (load, wear) {
                 // TODO: test is crude, should be refined
-                ok(node.load in {foo: 1, car: 1, bar: 1}, "Peer added");
+                ok(load in {foo: 1, car: 1, bar: 1}, "Peer added");
                 equal(typeof wear, 'undefined', "Peer wear");
             }
         });

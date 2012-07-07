@@ -16,15 +16,15 @@ troop.promise(prime, 'Peer', function () {
 
             /**
              * Initializes a new peer.
-             * @param node {prime.Node} Peer node.
+             * @param load {string} Peer node load.
              * @param [tread] {number} Initial peer tread.
              */
-            init: function (node, tread) {
+            init: function (load, tread) {
                 /**
                  * Peer node,
-                 * @type {prime.Node}
+                 * @type {string}
                  */
-                this.node = node;
+                this.load = load;
 
                 /**
                  * Weariness (weight) of connection to peer node.
@@ -50,26 +50,17 @@ troop.promise(prime, 'Peer', function () {
             //////////////////////////////
             // JSON
 
-            toJSON: function () {
-                return {
-                    node: {
-                        load: this.node.load
-                    },
-                    tread: this.tread
-                };
-            },
-
             /**
              * Reconstructs Peer object from JSON data.
              * @static
              * @param json {object} De-serialized JSON.
-             * @param json.node.load {string}
+             * @param json.load {string}
              * @param json.tread {number|string}
              * @return {prime.Peer}
              */
             fromJSON: function (json) {
                 return self.create(
-                    prime.node(json.node.load),
+                    json.load,
                     json.tread
                 );
             }
