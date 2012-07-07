@@ -113,6 +113,15 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                 this.totalTread += treadAfter - treadBefore;
 
                 return this;
+            },
+
+            //////////////////////////////
+            // JSON
+
+            toJSON: function () {
+                return {
+                    byLoad: this.byLoad
+                };
             }
         });
 

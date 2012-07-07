@@ -66,6 +66,22 @@
 
         ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
     });
+
+    test("JSON", function () {
+        var peers = $peers.create();
+
+        peers
+            .tread($node('hello'), 5)
+            .tread($node('foo'), 4);
+
+        deepEqual(Object.keys(peers.toJSON()), ['byLoad'], "Peers properties sent to JSON");
+
+        equal(
+            JSON.stringify(peers),
+            '{"byLoad":{"hello":' + JSON.stringify(peers.byLoad.hello) + ',"foo":' + JSON.stringify(peers.byLoad.foo) + '}}',
+            "Full peers JSON"
+        );
+    });
 }(
     prime.Peers,
     prime.utils,
