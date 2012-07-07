@@ -142,6 +142,29 @@
 
         $Node.removeMocks();
     });
+
+    test("Serialization integration", function () {
+        $Node.reset();
+
+        $node('food').to(
+            $node('fruit').to(
+                $node('apple'),
+                $node('pear')),
+            $node('turkey'));
+        $node('animal').to(
+            $node('bird').to(
+                $node('turkey')),
+            $node('feline').to(
+                $node('cat'),
+                $node('lion')));
+
+        var original = $Node.registry,
+            json = JSON.stringify($Node.registry),
+            rebuilt = prime.fromJSON(JSON.parse(json));
+
+        notEqual(rebuilt, original, "Rebuilt registry is different object");
+        deepEqual(rebuilt, original, "Rebuilt is identical to original");
+    });
 }(
     prime.Node,
     prime.Peers,

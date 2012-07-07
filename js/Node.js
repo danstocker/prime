@@ -11,7 +11,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
      * @requires prime.Peers
      */
     var self = prime.Node = troop.base.extend()
-        .addConstant({
+        .addPublic({
             /**
              * System-wide registry of nodes
              * @static
@@ -57,6 +57,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
             register: function () {
                 var load = this.load,
                     registry = self.registry;
+
                 if (!registry.hasOwnProperty(load)) {
                     registry[load] = this;
                 }
@@ -66,15 +67,10 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
 
             /**
              * Resets datastore by emptying the registry.
+             * @static
              */
             reset: function () {
-                var registry = this.registry,
-                    load;
-                for (load in registry) {
-                    if (registry.hasOwnProperty(load)) {
-                        delete registry[load];
-                    }
-                }
+                this.registry = {};
             },
 
             //////////////////////////////
@@ -97,6 +93,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              */
             hop: function () {
                 var next = self.registry[this.peers.random().load];
+
                 if (Math.random() < self.reach) {
                     return next.hop();
                 } else {
