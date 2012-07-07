@@ -67,36 +67,6 @@
         deepEqual(src, dst, "Shallow copy has identical contents");
         equal(src.hello, dst.hello, "Shallow copy property references match");
     });
-
-    test("Scraping", function () {
-        var myProto = {
-                inherited: "bar"
-            },
-            myObject = Object.create(myProto, {
-                excluded: {
-                    value: null,
-                    enumerable: true
-                },
-                enumerable: {
-                    value: {
-                        foo: "bar",
-                        excluded: "excluded"
-                    },
-                    enumerable: true
-                },
-                nonEnumerable: {
-                    value: "bar",
-                    enumerable: false
-                }
-            }),
-            myScraped = $utils.scrape(myObject, {excluded: true});
-
-        equal(myScraped.hasOwnProperty("excluded"), false, "Excluded own property no copied");
-        equal(myScraped.hasOwnProperty("nonEnumerable"), false, "Non-enumerable own property not copied");
-        equal(typeof myScraped.enumerable, 'object', "Type of copied enumerable own property");
-        equal(myScraped.enumerable.foo, "bar", "Enumerable property copied");
-        equal(myScraped.enumerable.hasOwnProperty("excluded"), false, "Enumerable, excluded property (deeper level) not copied");
-    });
 }(
     prime.utils
 ));
