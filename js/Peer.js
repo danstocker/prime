@@ -9,7 +9,7 @@ troop.promise(prime, 'Peer', function () {
      * @class Represents connection to another node.
      * @requires prime.Node
      */
-    return prime.Peer = troop.base.extend()
+    var self = prime.Peer = troop.base.extend()
         .addMethod({
             //////////////////////////////
             // OOP
@@ -57,6 +57,23 @@ troop.promise(prime, 'Peer', function () {
                     },
                     tread: this.tread
                 };
+            },
+
+            /**
+             * Reconstructs Peer object from JSON data.
+             * @static
+             * @param json {object} De-serialized JSON.
+             * @param json.node.load {string}
+             * @param json.tread {number|string}
+             * @return {prime.Peer}
+             */
+            fromJSON: function (json) {
+                return self.create(
+                    prime.node(json.node.load),
+                    json.tread
+                );
             }
         });
+
+    return self;
 });
