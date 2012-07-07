@@ -110,6 +110,20 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                 }
 
                 return this;
+            },
+
+            //////////////////////////////
+            // JSON
+
+            /**
+             * Reconstructs Node object from JSON data.
+             * @param json {object} De-serialized JSON.
+             * @return {prime.Node}
+             */
+            fromJSON: function (json) {
+                var node = self.create(json.load);
+                $peers.fromJSON(json.peers);
+                return node;
             }
         });
 

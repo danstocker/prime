@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Node) {
+(function ($Node, $Peers) {
     module("Node");
 
     function cleanup() {
@@ -15,7 +15,7 @@
     test("Creation", function () {
         cleanup();
 
-        var hello = Node.create('hello');
+        var hello = $Node.create('hello');
 
         equal(hello.load, 'hello', "Load of created node");
     });
@@ -25,13 +25,13 @@
 
         expect(5);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
+        var foo = $Node.create('foo'),
+            bar = $Node.create('bar'),
             i;
 
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
-        prime.Peers.addMock({
+        $Peers.addMock({
             tread: function (node, wear) {
                 switch (i) {
                 case 0:
@@ -49,7 +49,7 @@
         i = 0;
         foo.to(bar, 5);
 
-        prime.Peers.removeMocks();
+        $Peers.removeMocks();
     });
 
     test("Connecting", function () {
@@ -57,11 +57,11 @@
 
         expect(8);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
-            car = Node.create('car');
+        var foo = $Node.create('foo'),
+            bar = $Node.create('bar'),
+            car = $Node.create('car');
 
-        prime.Peers.addMock({
+        $Peers.addMock({
             tread: function (node, wear) {
                 // TODO: test is crude, should be refined
                 ok(node.load in {foo: 1, car: 1, bar: 1}, "Peer added");
@@ -95,6 +95,33 @@
         prime.node('hello');
         prime.Node.removeMocks();
     });
+
+    test("JSON", function () {
+        var nodeJSON = {
+                load: "test",
+                peers: "peersTest"
+            },
+            node = $Node.create(nodeJSON.load);
+
+        expect(3);
+
+        $Peers.addMock({
+            fromJSON: function (peersJSON) {
+                ok(true, "Peers being built from JSON");
+                equal(peersJSON, nodeJSON.peers, "JSON data for peers");
+                return $Peers.create();
+            }
+        });
+
+        deepEqual(
+            $Node.fromJSON(nodeJSON),
+            node,
+            "Node re-initialized from JSON"
+        );
+
+        $Peers.removeMocks();
+    });
 }(
-    prime.Node
+    prime.Node,
+    prime.Peers
 ));
