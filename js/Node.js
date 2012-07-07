@@ -64,6 +64,19 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
                 return this;
             },
 
+            /**
+             * Resets datastore by emptying the registry.
+             */
+            reset: function () {
+                var registry = this.registry,
+                    load;
+                for (load in registry) {
+                    if (registry.hasOwnProperty(load)) {
+                        delete registry[load];
+                    }
+                }
+            },
+
             //////////////////////////////
             // Graph methods
 
@@ -155,4 +168,25 @@ prime.node = function (load) {
         return Node.create(load)
             .register();
     }
+};
+
+/**
+ * Reconstructs node collection from JSON.
+ * @param json {object} De-serialized JSON.
+ */
+prime.fromJSON = function (json) {
+    var Node = prime.Node,
+        load;
+
+    // emptying registry
+    Node.reset();
+
+    // re-building registry based on json data
+    for (load in json) {
+        if (json.hasOwnProperty(load)) {
+            Node.fromJSON(json[load]).register();
+        }
+    }
+
+    return Node.registry;
 };

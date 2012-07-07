@@ -1,19 +1,10 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Node, $Peers) {
+(function ($Node, $Peers, $node) {
     module("Node");
 
-    function cleanup() {
-        var registry = prime.Node.registry,
-            key;
-        for (key in registry) {
-            if (registry.hasOwnProperty(key)) {
-                delete registry[key];
-            }
-        }
-    }
 
     test("Creation", function () {
-        cleanup();
+        $Node.reset();
 
         var hello = $Node.create('hello');
 
@@ -21,7 +12,7 @@
     });
 
     test("Strengthening", function () {
-        cleanup();
+        $Node.reset();
 
         expect(5);
 
@@ -53,7 +44,7 @@
     });
 
     test("Connecting", function () {
-        cleanup();
+        $Node.reset();
 
         expect(8);
 
@@ -73,16 +64,16 @@
         // 2x2 calls Peer.tread for each node listed
         foo.to(bar, car);
 
-        prime.Node.removeMocks();
+        $Node.removeMocks();
     });
 
     test("Shorthand", function () {
-        cleanup();
+        $Node.reset();
 
         expect(2);
 
         // testing addition
-        prime.Node.addMock({
+        $Node.addMock({
             create: function (load) {
                 equal(load, 'hello', "Node created");
                 return this;
@@ -92,8 +83,8 @@
                 return this;
             }
         });
-        prime.node('hello');
-        prime.Node.removeMocks();
+        $node('hello');
+        $Node.removeMocks();
     });
 
     test("fromJSON", function () {
@@ -121,7 +112,38 @@
 
         $Peers.removeMocks();
     });
+
+    module("prime");
+
+    test("fromJSON", function () {
+        expect(3);
+
+        $Node.addMock({
+            fromJSON: function (json) {
+                ok(true, "Node reconstructed from JSON");
+                return $Node.create(json.load);
+            }
+        });
+
+        prime.fromJSON({
+            hello: {
+                load: 'hello',
+                peers: {}
+            },
+            foo: {
+                load: 'foo',
+                peers: {}
+            },
+            bar: {
+                load: 'bar',
+                peers: {}
+            }
+        });
+
+        $Node.removeMocks();
+    });
 }(
     prime.Node,
-    prime.Peers
+    prime.Peers,
+    prime.node
 ));
