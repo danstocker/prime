@@ -1,8 +1,8 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Graph, $Node, $node) {
+(function ($Graph, $Node) {
     module("Graph");
 
-    test("Shorthand", function () {
+    test("Node accessor", function () {
         $Graph.reset();
 
         expect(2);
@@ -22,7 +22,7 @@
             }
         });
 
-        $node('hello');
+        $Graph.node('hello');
 
         $Node.removeMocks();
         $Graph.removeMocks();
@@ -58,18 +58,20 @@
 
     test("Serialization integration", function () {
         $Graph.reset();
+        
+        var node = $Graph.node;
 
-        $node('food').to(
-            $node('fruit').to(
-                $node('apple'),
-                $node('pear')),
-            $node('turkey'));
-        $node('animal').to(
-            $node('bird').to(
-                $node('turkey')),
-            $node('feline').to(
-                $node('cat'),
-                $node('lion')));
+        node('food').to(
+            node('fruit').to(
+                node('apple'),
+                node('pear')),
+            node('turkey'));
+        node('animal').to(
+            node('bird').to(
+                node('turkey')),
+            node('feline').to(
+                node('cat'),
+                node('lion')));
 
         var original = $Graph.registry,
             json = JSON.stringify(original),
@@ -80,6 +82,5 @@
     });
 }(
     prime.Graph,
-    prime.Node,
-    prime.node
+    prime.Node
 ));
