@@ -31,6 +31,7 @@ js/utils.js \
 js/Peer.js \
 js/Peers.js \
 js/Node.js \
+js/Graph.js \
 > "build/$NAME.js"
 
 if type yui-compressor >/dev/null 2>&1

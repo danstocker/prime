@@ -1,10 +1,10 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Node, $Peers, $node) {
+(function ($Node, $Peers, $Graph) {
     module("Node");
 
 
     test("Creation", function () {
-        $Node.reset();
+        $Graph.reset();
 
         var hello = $Node.create('hello');
 
@@ -12,7 +12,7 @@
     });
 
     test("Strengthening", function () {
-        $Node.reset();
+        $Graph.reset();
 
         expect(5);
 
@@ -44,7 +44,7 @@
     });
 
     test("Connecting", function () {
-        $Node.reset();
+        $Graph.reset();
 
         expect(8);
 
@@ -64,26 +64,6 @@
         // 2x2 calls Peer.tread for each node listed
         foo.to(bar, car);
 
-        $Node.removeMocks();
-    });
-
-    test("Shorthand", function () {
-        $Node.reset();
-
-        expect(2);
-
-        // testing addition
-        $Node.addMock({
-            create: function (load) {
-                equal(load, 'hello', "Node created");
-                return this;
-            },
-            register: function () {
-                ok(true, "Node registered");
-                return this;
-            }
-        });
-        $node('hello');
         $Node.removeMocks();
     });
 
@@ -112,61 +92,8 @@
 
         $Peers.removeMocks();
     });
-
-    module("prime");
-
-    test("fromJSON", function () {
-        expect(3);
-
-        $Node.addMock({
-            fromJSON: function (json) {
-                ok(true, "Node reconstructed from JSON");
-                return $Node.create(json.load);
-            }
-        });
-
-        prime.fromJSON({
-            hello: {
-                load: 'hello',
-                peers: {}
-            },
-            foo: {
-                load: 'foo',
-                peers: {}
-            },
-            bar: {
-                load: 'bar',
-                peers: {}
-            }
-        });
-
-        $Node.removeMocks();
-    });
-
-    test("Serialization integration", function () {
-        $Node.reset();
-
-        $node('food').to(
-            $node('fruit').to(
-                $node('apple'),
-                $node('pear')),
-            $node('turkey'));
-        $node('animal').to(
-            $node('bird').to(
-                $node('turkey')),
-            $node('feline').to(
-                $node('cat'),
-                $node('lion')));
-
-        var original = $Node.registry,
-            json = JSON.stringify($Node.registry),
-            rebuilt = prime.fromJSON(JSON.parse(json));
-
-        notEqual(rebuilt, original, "Rebuilt registry is different object");
-        deepEqual(rebuilt, original, "Rebuilt is identical to original");
-    });
 }(
     prime.Node,
     prime.Peers,
-    prime.node
+    prime.Graph
 ));

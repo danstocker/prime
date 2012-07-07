@@ -13,12 +13,6 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
     var self = prime.Node = troop.base.extend()
         .addPublic({
             /**
-             * System-wide registry of nodes
-             * @static
-             */
-            registry: {},
-
-            /**
              * Probability of sub-sequential hops
              * @static
              * @type {number}
@@ -49,31 +43,6 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
             },
 
             //////////////////////////////
-            // Utils
-
-            /**
-             * Adds node to lookup when it's not already there.
-             */
-            register: function () {
-                var load = this.load,
-                    registry = self.registry;
-
-                if (!registry.hasOwnProperty(load)) {
-                    registry[load] = this;
-                }
-
-                return this;
-            },
-
-            /**
-             * Resets datastore by emptying the registry.
-             * @static
-             */
-            reset: function () {
-                this.registry = {};
-            },
-
-            //////////////////////////////
             // Graph methods
 
             /**
@@ -91,7 +60,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = self.registry[this.peers.random().load];
+                var next = prime.Graph.registry[this.peers.random().load];
 
                 if (Math.random() < self.reach) {
                     next = next.hop();
@@ -145,44 +114,3 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
 
     return self;
 }, prime.Peers);
-
-/**
- * Accesses node. Creates it if necessary.
- * @param load {string} Node load.
- * @return {prime.Node}
- */
-prime.node = function (load) {
-    // shortcuts and local variable
-    var Node = prime.Node,
-        registry = Node.registry;
-
-    if (registry.hasOwnProperty(load)) {
-        // node exists in lookup, fetching
-        return registry[load];
-    } else {
-        // new load, creating node
-        return Node.create(load)
-            .register();
-    }
-};
-
-/**
- * Reconstructs node collection from JSON.
- * @param json {object} De-serialized JSON.
- */
-prime.fromJSON = function (json) {
-    var Node = prime.Node,
-        load;
-
-    // emptying registry
-    Node.reset();
-
-    // re-building registry based on json data
-    for (load in json) {
-        if (json.hasOwnProperty(load)) {
-            Node.fromJSON(json[load]).register();
-        }
-    }
-
-    return Node.registry;
-};
