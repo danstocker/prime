@@ -1,22 +1,30 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($peers, $utils, $peer, $node) {
+(function ($Peers, $utils, $Peer, $node) {
     module("Peers");
 
     test("Addition", function () {
-        var hello = $node('hello'),
-            peers = $peers.create();
+        var node = $node('hello'),
+            peers, peer;
 
-        peers.tread(hello, 1);
-        equal(peers.byLoad.hello.node, hello, "Node added to by-load buffer");
+        peer = $Peer.create(node, 2);
+        peers = $Peers.create()
+            .add(peer);
+        equal(peers.byLoad.hello, peer, "Peer added to byLoad lookup");
+        equal(peers.byTread['2'].hello, peer, "Peer added to byTread lookup");
+        equal(peers.totalTread, 2, "Total tread increased by peer");
+
+        peers = $Peers.create()
+            .tread(node, 1);
+        equal(peers.byLoad.hello.node, node, "Node added to by-load buffer");
         equal(peers.byLoad.hello.tread, 1, "Newly added node's tread is 1 (default)");
 
         deepEqual(Object.keys(peers.byTread), ['1'], "Tread value added to by-tread lookup");
-        equal(peers.byTread[1].hello.node, hello, "Node added to by-tread buffer");
+        equal(peers.byTread[1].hello.node, node, "Node added to by-tread buffer");
     });
 
     test("Modification", function () {
         var hello = $node('hello'),
-            peers = $peers.create();
+            peers = $Peers.create();
 
         equal(peers.totalTread, 0, "Total tread initially zero");
 
@@ -37,8 +45,7 @@
     });
 
     test("Selection", function () {
-        var
-            peers = $peers.create(),
+        var peers = $Peers.create(),
             stats,
             i;
 
@@ -67,8 +74,8 @@
         ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
     });
 
-    test("JSON", function () {
-        var peers = $peers.create();
+    test("toJSON", function () {
+        var peers = $Peers.create();
 
         peers
             .tread($node('hello'), 5)
@@ -81,6 +88,43 @@
             '{"byLoad":{"hello":' + JSON.stringify(peers.byLoad.hello) + ',"foo":' + JSON.stringify(peers.byLoad.foo) + '}}',
             "Full peers JSON"
         );
+    });
+
+    test("fromJSON", function () {
+        var peersJSON = {
+                byLoad: {
+                    hello: {
+                        tread: 5,
+                        node: {
+                            load: 'hello'
+                        }
+                    },
+                    foo: {
+                        tread: 4,
+                        node: {
+                            load: 'foo'
+                        }
+                    }
+                }
+            },
+            peers = $Peers.create()
+                .add($Peer.create($node('hello'), 5))
+                .add($Peer.create($node('foo'), 4));
+
+        $Peer.addMock({
+            fromJSON: function (json) {
+                ok(true, "Peer being built from JSON");
+                return $Peer.create($node(json.node.load), json.tread);
+            }
+        });
+
+        deepEqual(
+            $Peers.fromJSON(peersJSON),
+            peers,
+            "Peers re-initialized from JSON"
+        );
+
+        $Peer.removeMocks();
     });
 }(
     prime.Peers,

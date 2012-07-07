@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
+troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
@@ -76,6 +76,28 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
             // Graph methods
 
             /**
+             * Adds new peer to tread.
+             * @param peer {prime.Peer} New peer.
+             * @throws {Error} When peer already exists.
+             */
+            add: function (peer) {
+                var load = peer.node.load,
+                    tread = peer.tread,
+                    byLoad = this.byLoad,
+                    byTread = this.byTread;
+
+                if (!byLoad.hasOwnProperty(load)) {
+                    $utils.set(byLoad, load, peer);
+                    $utils.set(byTread, tread, load, peer);
+                    this.totalTread += tread;
+                } else {
+                    throw Error("Peer already exists.");
+                }
+
+                return this;
+            },
+
+            /**
              * Retrieves a random peer, weighted by tread.
              * @returns {prime.Peer}
              */
@@ -89,28 +111,29 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             tread: function (node, wear) {
+                wear = wear || self.defaultTread;
+
                 var load = node.load,
-                    hasPeer = this.byLoad.hasOwnProperty(load),
-                    peer = hasPeer ? this.byLoad[load] : $peer.create(node),
-                    treadBefore = peer.tread,
+                    byLoad = this.byLoad,
+                    byTread = this.byTread,
+                    peer, treadBefore, treadAfter;
+
+                if (!byLoad.hasOwnProperty(load)) {
+                    // adding new peer
+                    this.add($Peer.create(node, wear));
+                } else {
+                    // increasing tread on existing peer
+                    peer = byLoad[load];
+                    treadBefore = peer.tread;
                     treadAfter = peer
-                        .wear(wear || self.defaultTread)
+                        .wear(wear)
                         .tread;
 
-                // checking whether node is already among peers
-                if (hasPeer) {
-                    // removing old tread from lookup
-                    $utils.unset(this.byTread, treadBefore, load);
-                } else {
-                    // adding new peer to lookup
-                    $utils.set(this.byLoad, load, peer);
+                    // updating tread lookup
+                    $utils.unset(byTread, treadBefore, load);
+                    $utils.set(byTread, treadAfter, load, peer);
+                    this.totalTread += treadAfter - treadBefore;
                 }
-
-                // updating tread in lookup
-                $utils.set(this.byTread, treadAfter, load, peer);
-
-                // updating total tread
-                this.totalTread += treadAfter - treadBefore;
 
                 return this;
             },
@@ -122,6 +145,27 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $peer) {
                 return {
                     byLoad: this.byLoad
                 };
+            },
+
+            /**
+             * Reconstructs Peers object from JSON data.
+             * @static
+             * @param json {object} De-serialized JSON.
+             * @return {prime.Peers}
+             */
+            fromJSON: function (json) {
+                var peers = self.create(),
+                    byLoad = json.byLoad,
+                    load;
+
+                // initializing individual peers from JSON
+                for (load in byLoad) {
+                    if (byLoad.hasOwnProperty(load)) {
+                        peers.add($Peer.fromJSON(byLoad[load]));
+                    }
+                }
+
+                return peers;
             }
         });
 
