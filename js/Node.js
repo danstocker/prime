@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, troop */
-troop.promise(prime, 'Node', function (ns, className, $peers) {
+troop.promise(prime, 'Node', function (ns, className, $Peers) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
@@ -32,8 +32,9 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
              * Initializes node.
              * @constructs
              * @param load {string} Node load.
+             * @param [peers] {prime.Peers} Initial node peers.
              */
-            init: function (load) {
+            init: function (load, peers) {
                 /**
                  * String wrapped inside node.
                  * @type {string}
@@ -44,7 +45,7 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
                  * Collection of nodes connected to current node
                  * @type {prime.Peers}
                  */
-                this.peers = $peers.create();
+                this.peers = peers || $Peers.create();
             },
 
             //////////////////////////////
@@ -117,13 +118,17 @@ troop.promise(prime, 'Node', function (ns, className, $peers) {
 
             /**
              * Reconstructs Node object from JSON data.
+             * @static
              * @param json {object} De-serialized JSON.
              * @return {prime.Node}
              */
             fromJSON: function (json) {
-                var node = self.create(json.load);
-                $peers.fromJSON(json.peers);
-                return node;
+                return self.create(
+                    json.load,
+
+                    // initializing peers form JSON
+                    $Peers.fromJSON(json.peers)
+                );
             }
         });
 
