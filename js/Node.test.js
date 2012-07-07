@@ -96,10 +96,10 @@
         prime.Node.removeMocks();
     });
 
-    test("JSON", function () {
+    test("fromJSON", function () {
         var nodeJSON = {
                 load: "test",
-                peers: "peersTest"
+                peers: {}
             },
             node = $Node.create(nodeJSON.load);
 
@@ -108,7 +108,7 @@
         $Peers.addMock({
             fromJSON: function (peersJSON) {
                 ok(true, "Peers being built from JSON");
-                equal(peersJSON, nodeJSON.peers, "JSON data for peers");
+                deepEqual(peersJSON, {}, "JSON data for peers");
                 return $Peers.create();
             }
         });

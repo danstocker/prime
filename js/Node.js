@@ -120,6 +120,8 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * Reconstructs Node object from JSON data.
              * @static
              * @param json {object} De-serialized JSON.
+             * @param json.load {string}
+             * @param json.peers {object}
              * @return {prime.Node}
              */
             fromJSON: function (json) {
