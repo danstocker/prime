@@ -28,15 +28,24 @@
         equal(peer.tread, 6, "Adding custom wear");
     });
 
+    test("toJSON", function () {
+        var peer = $Peer.create('hello', 5);
+
+        equal(
+            JSON.stringify(peer),
+            '{"tread":5}',
+            "Full peer JSON"
+        );
+    });
+
     test("fromJSON", function () {
         var peerJSON = {
-                load: 'hello',
                 tread: 2
             },
             peer = $Peer.create('hello', 2);
 
         deepEqual(
-            $Peer.fromJSON(peerJSON),
+            $Peer.fromJSON('hello', peerJSON),
             peer,
             "Peer re-initialized from JSON"
         );

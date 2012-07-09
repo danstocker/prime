@@ -81,26 +81,22 @@
             .tread('hello', 5)
             .tread('foo', 4);
 
-        deepEqual(Object.keys(peers.toJSON()), ['byLoad'], "Peers properties sent to JSON");
+        deepEqual(Object.keys(peers.toJSON()), ['hello', 'foo'], "Peers properties sent to JSON");
 
         equal(
             JSON.stringify(peers),
-            '{"byLoad":{"hello":' + JSON.stringify(peers.byLoad.hello) + ',"foo":' + JSON.stringify(peers.byLoad.foo) + '}}',
+            '{"hello":' + JSON.stringify(peers.byLoad.hello) + ',"foo":' + JSON.stringify(peers.byLoad.foo) + '}',
             "Full peers JSON"
         );
     });
 
     test("fromJSON", function () {
         var peersJSON = {
-                byLoad: {
-                    hello: {
-                        tread: 5,
-                        load: 'hello'
-                    },
-                    foo: {
-                        tread: 4,
-                        load: 'foo'
-                    }
+                hello: {
+                    tread: 5
+                },
+                foo: {
+                    tread: 4
                 }
             },
             peers = $Peers.create()
@@ -108,9 +104,9 @@
                 .add($Peer.create('foo', 4));
 
         $Peer.addMock({
-            fromJSON: function (json) {
+            fromJSON: function (load, json) {
                 ok(true, "Peer being built from JSON");
-                return $Peer.create(json.load, json.tread);
+                return $Peer.create(load, json.tread);
             }
         });
 

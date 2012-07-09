@@ -141,27 +141,23 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
             // JSON
 
             toJSON: function () {
-                return {
-                    byLoad: this.byLoad
-                };
+                return this.byLoad;
             },
 
             /**
              * Reconstructs Peers object from JSON data.
              * @static
              * @param json {object} De-serialized JSON.
-             * @param json.byLoad {object}
              * @return {prime.Peers}
              */
             fromJSON: function (json) {
                 var peers = self.create(),
-                    byLoad = json.byLoad,
                     load;
 
                 // initializing individual peers from JSON
-                for (load in byLoad) {
-                    if (byLoad.hasOwnProperty(load)) {
-                        peers.add($Peer.fromJSON(byLoad[load]));
+                for (load in json) {
+                    if (json.hasOwnProperty(load)) {
+                        peers.add($Peer.fromJSON(load, json[load]));
                     }
                 }
 
