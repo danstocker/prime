@@ -11,9 +11,17 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
      * @requires prime.Peers
      */
     var self = prime.Node = troop.base.extend()
-        .addPublic({
+        .addConstant({
             /**
-             * Probability of sub-sequential hops
+             * Reference to graph.
+             * @static
+             * @type {prime.Graph}
+             */
+            graph: prime.Graph
+        }).addPublic({
+            /**
+             * Probability of sub-sequential hops.
+             * Must be 0 < reach < 1.
              * @static
              * @type {number}
              */
@@ -60,7 +68,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = prime.Graph.registry[this.peers.random().load];
+                var next = self.graph.registry[this.peers.random().load];
 
                 if (Math.random() < self.reach) {
                     next = next.hop();
