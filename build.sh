@@ -30,8 +30,8 @@ js/prime.js \
 js/utils.js \
 js/Peer.js \
 js/Peers.js \
-js/Node.js \
 js/Graph.js \
+js/Node.js \
 > "build/$NAME.js"
 
 if type yui-compressor >/dev/null 2>&1
