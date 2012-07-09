@@ -144,5 +144,25 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
             }
         });
 
+    troop.properties.addMethod.call(prime, {
+        /**
+         * Retrieves a node from the graph or creates a new one.
+         * @param load {string} Node load.
+         * @return {prime.Node}
+         */
+        node: function (load) {
+            // shortcuts and local variable
+            var nodes = self.graph.nodes;
+
+            if (nodes.hasOwnProperty(load)) {
+                // node exists in lookup, fetching
+                return nodes[load];
+            } else {
+                // new load, creating node
+                return self.create(load);
+            }
+        }
+    });
+
     return self;
 }, prime.Peers);

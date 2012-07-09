@@ -12,25 +12,6 @@ troop.promise(prime, 'Graph', function () {
             nodes: {}
         }).addMethod({
             /**
-             * Retrieves a node from the graph or creates a new one.
-             * @param load {string} Node load.
-             * @return {prime.Node}
-             */
-            node: function (load) {
-                // shortcuts and local variable
-                var Node = prime.Node,
-                    nodes = self.nodes;
-
-                if (nodes.hasOwnProperty(load)) {
-                    // node exists in lookup, fetching
-                    return nodes[load];
-                } else {
-                    // new load, creating node
-                    return Node.create(load);
-                }
-            },
-
-            /**
              * Resets datastore by emptying the registry.
              * @static
              */
@@ -62,10 +43,6 @@ troop.promise(prime, 'Graph', function () {
                 return self.nodes;
             }
         });
-
-    troop.properties.addMethod.call(prime, {
-        node: self.node
-    });
 
     return self;
 });

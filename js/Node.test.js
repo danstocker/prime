@@ -10,6 +10,24 @@
         equal(hello.load, 'hello', "Load of created node");
     });
 
+    test("Node accessor", function () {
+        $Node.graph.reset();
+
+        expect(1);
+
+        // testing addition
+        $Node.addMock({
+            create: function (load) {
+                equal(load, 'hello', "Node created");
+                return this;
+            }
+        });
+
+        $node('hello');
+
+        $Node.removeMocks();
+    });
+
     test("Strengthening", function () {
         $Node.graph.reset();
 

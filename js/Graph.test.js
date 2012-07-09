@@ -1,24 +1,6 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Graph, $Node) {
+(function ($Graph, $Node, $node) {
     module("Graph");
-
-    test("Node accessor", function () {
-        $Graph.reset();
-
-        expect(1);
-
-        // testing addition
-        $Node.addMock({
-            create: function (load) {
-                equal(load, 'hello', "Node created");
-                return this;
-            }
-        });
-
-        $Graph.node('hello');
-
-        $Node.removeMocks();
-    });
 
     test("fromJSON", function () {
         expect(3);
@@ -51,19 +33,17 @@
     test("Serialization integration", function () {
         $Graph.reset();
         
-        var node = $Graph.node;
-
-        node('food').to(
-            node('fruit').to(
-                node('apple'),
-                node('pear')),
-            node('turkey'));
-        node('animal').to(
-            node('bird').to(
-                node('turkey')),
-            node('feline').to(
-                node('cat'),
-                node('lion')));
+        $node('food').to(
+            $node('fruit').to(
+                $node('apple'),
+                $node('pear')),
+            $node('turkey'));
+        $node('animal').to(
+            $node('bird').to(
+                $node('turkey')),
+            $node('feline').to(
+                $node('cat'),
+                $node('lion')));
 
         var original = $Graph.nodes,
             json = JSON.stringify(original),
@@ -74,5 +54,6 @@
     });
 }(
     prime.Graph,
-    prime.Node
+    prime.Node,
+    prime.node
 ));
