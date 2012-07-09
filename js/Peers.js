@@ -11,7 +11,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
      */
     var self = prime.Peers = troop.base.extend()
         .addConstant({
-            defaultTread: 1
+            defaultWear: 1
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -111,7 +111,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             tread: function (load, wear) {
-                wear = wear || self.defaultTread;
+                wear = wear || self.defaultWear;
 
                 var byLoad = this.byLoad,
                     byTread = this.byTread,
