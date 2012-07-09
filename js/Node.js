@@ -25,7 +25,14 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * @static
              * @type {number}
              */
-            reach: 0.5
+            reach: 0.5,
+
+            /**
+             * Event handler for node changes.
+             * @function
+             * @param data {object} Key-value pairs of changed nodes.
+             */
+            handler: null
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -81,7 +88,8 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * Strengthens connection weight for a single peer.
              */
             to: function () {
-                var last = arguments.length - 1,
+                var delta = {},
+                    last = arguments.length - 1,
                     node, wear,
                     i;
 
@@ -92,8 +100,21 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
 
                 for (i = 0; i <= last; i++) {
                     node = arguments[i];
+
+                    // updating peer tread in both directions
                     this.peers.tread(node.load, wear);
                     node.peers.tread(this.load, wear);
+
+                    // storing changed peer in delta
+                    delta[node.load] = node;
+                }
+
+                // storing changed node in delta
+                delta[this.load] = this;
+
+                // calling change handler
+                if (typeof self.handler === 'function') {
+                    self.handler(delta);
                 }
 
                 return this;

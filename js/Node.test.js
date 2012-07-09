@@ -1,10 +1,9 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Node, $Peers, $Graph) {
+(function ($Node, $Peers, $node) {
     module("Node");
 
-
     test("Creation", function () {
-        $Graph.reset();
+        $Node.graph.reset();
 
         var hello = $Node.create('hello');
 
@@ -12,7 +11,7 @@
     });
 
     test("Strengthening", function () {
-        $Graph.reset();
+        $Node.graph.reset();
 
         expect(5);
 
@@ -44,7 +43,7 @@
     });
 
     test("Connecting", function () {
-        $Graph.reset();
+        $Node.graph.reset();
 
         expect(8);
 
@@ -64,7 +63,52 @@
         // 2x2 calls Peer.tread for each node listed
         foo.to(bar, car);
 
-        $Node.removeMocks();
+        $Peers.removeMocks();
+    });
+
+    test("Change handler", function () {
+        $Node.graph.reset();
+
+        expect(2);
+
+        var foo = $Node.create('foo'),
+            bar = $Node.create('bar'),
+            car = $Node.create('car');
+
+        $Node.handler = function (data) {
+            deepEqual(
+                data,
+                {
+                    foo: $node('foo'),
+                    bar: $node('bar'),
+                    car: $node('car')
+                },
+                "Change handler called with 3 nodes"
+            );
+        };
+
+        $node('foo').to(
+            $node('bar'),
+            $node('car')
+        );
+
+        $Node.handler = function (data) {
+            deepEqual(
+                data,
+                {
+                    bar: $node('bar'),
+                    car: $node('car')
+                },
+                "Change handler called with 2 nodes"
+            );
+        };
+
+        $node('car').to(
+            $node('bar'),
+            4
+        );
+
+        $Node.handler = null;
     });
 
     test("fromJSON", function () {
@@ -95,5 +139,5 @@
 }(
     prime.Node,
     prime.Peers,
-    prime.Graph
+    prime.node
 ));

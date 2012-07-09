@@ -2,7 +2,7 @@
  * Association Engine Graph
  */
 /*global prime, troop */
-troop.promise(prime, 'Graph', function (ns, className, $Node) {
+troop.promise(prime, 'Graph', function () {
     var self = prime.Graph = troop.base.extend()
         .addPublic({
             /**
@@ -60,7 +60,8 @@ troop.promise(prime, 'Graph', function (ns, className, $Node) {
              * @param json {object} De-serialized JSON.
              */
             fromJSON: function (json) {
-                var load;
+                var Node = prime.Node,
+                    load;
 
                 // emptying registry
                 self.reset();
@@ -68,7 +69,7 @@ troop.promise(prime, 'Graph', function (ns, className, $Node) {
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        self.register($Node.fromJSON(json[load]));
+                        self.register(Node.fromJSON(json[load]));
                     }
                 }
 
@@ -81,4 +82,4 @@ troop.promise(prime, 'Graph', function (ns, className, $Node) {
     });
 
     return self;
-}, prime.Node);
+});
