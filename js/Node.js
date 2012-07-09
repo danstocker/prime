@@ -55,6 +55,9 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
                  * @type {prime.Peers}
                  */
                 this.peers = peers || $Peers.create();
+
+                // register in graph
+                self.graph.nodes[load] = this;
             },
 
             //////////////////////////////
@@ -75,7 +78,7 @@ troop.promise(prime, 'Node', function (ns, className, $Peers) {
              * @returns {prime.Node}
              */
             hop: function () {
-                var next = self.graph.registry[this.peers.random().load];
+                var next = self.graph.nodes[this.peers.random().load];
 
                 if (Math.random() < self.reach) {
                     next = next.hop();

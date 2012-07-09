@@ -5,7 +5,7 @@
     test("Node accessor", function () {
         $Graph.reset();
 
-        expect(2);
+        expect(1);
 
         // testing addition
         $Node.addMock({
@@ -15,17 +15,9 @@
             }
         });
 
-        $Graph.addMock({
-            register: function () {
-                ok(true, "Node registered");
-                return this;
-            }
-        });
-
         $Graph.node('hello');
 
         $Node.removeMocks();
-        $Graph.removeMocks();
     });
 
     test("fromJSON", function () {
@@ -73,7 +65,7 @@
                 node('cat'),
                 node('lion')));
 
-        var original = $Graph.registry,
+        var original = $Graph.nodes,
             json = JSON.stringify(original),
             rebuilt = $Graph.fromJSON(JSON.parse(json));
 

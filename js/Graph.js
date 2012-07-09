@@ -9,7 +9,7 @@ troop.promise(prime, 'Graph', function () {
              * System-wide registry of nodes
              * @static
              */
-            registry: {}
+            nodes: {}
         }).addMethod({
             /**
              * Retrieves a node from the graph or creates a new one.
@@ -19,29 +19,15 @@ troop.promise(prime, 'Graph', function () {
             node: function (load) {
                 // shortcuts and local variable
                 var Node = prime.Node,
-                    registry = self.registry;
+                    nodes = self.nodes;
 
-                if (registry.hasOwnProperty(load)) {
+                if (nodes.hasOwnProperty(load)) {
                     // node exists in lookup, fetching
-                    return registry[load];
+                    return nodes[load];
                 } else {
                     // new load, creating node
-                    return self.register(Node.create(load));
+                    return Node.create(load);
                 }
-            },
-
-            /**
-             * Adds node to lookup when it's not already there.
-             */
-            register: function (node) {
-                var load = node.load,
-                    registry = self.registry;
-
-                if (!registry.hasOwnProperty(load)) {
-                    registry[load] = node;
-                }
-
-                return node;
             },
 
             /**
@@ -49,7 +35,7 @@ troop.promise(prime, 'Graph', function () {
              * @static
              */
             reset: function () {
-                this.registry = {};
+                this.nodes = {};
             },
 
             //////////////////////////////
@@ -69,11 +55,11 @@ troop.promise(prime, 'Graph', function () {
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        self.register(Node.fromJSON(json[load]));
+                        Node.fromJSON(json[load]);
                     }
                 }
 
-                return self.registry;
+                return self.nodes;
             }
         });
 
