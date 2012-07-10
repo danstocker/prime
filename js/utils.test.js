@@ -59,14 +59,6 @@
         $utils.unset(tmp, 'hello', 'little');
         deepEqual(tmp, {}, "Object completely emptied");
     });
-
-    test("Copying", function () {
-        var src = {hello: 'dolly'},
-            dst = $utils.shallow(src);
-        notEqual(src, dst, "Shallow copy is a different object");
-        deepEqual(src, dst, "Shallow copy has identical contents");
-        equal(src.hello, dst.hello, "Shallow copy property references match");
-    });
 }(
     prime.utils
 ));

@@ -75,22 +75,6 @@ troop.promise(prime, 'utils', function () {
                 }
 
                 return this.isEmpty(object);
-            },
-
-            /**
-             * Creates shallow copy of object.
-             * @param object {object} Object to be copied.
-             * @returns {object} Object copy.
-             */
-            shallow: function (object) {
-                var result = {},
-                    key;
-                for (key in object) {
-                    if (object.hasOwnProperty(key)) {
-                        result[key] = object[key];
-                    }
-                }
-                return result;
             }
         });
 });
