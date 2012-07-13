@@ -26,6 +26,21 @@ troop.promise(prime, 'utils', function () {
             },
 
             /**
+             * Retrieves the first available key in the object.
+             * @param object {object}
+             * @return {string}
+             */
+            firstProperty: function (object) {
+                var key;
+                for (key in object) {
+                    if (object.hasOwnProperty(key)) {
+                        return key;
+                    }
+                }
+                return undefined;
+            },
+
+            /**
              * Sets a value on the path specified by argument list.
              * Last param is the value.
              * @param object {object} Root object.
