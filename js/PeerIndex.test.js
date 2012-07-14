@@ -33,17 +33,28 @@
 
         lookup.foo = peerIndex.add(5);
         lookup.bar = peerIndex.add(1);
+        lookup.hello = peerIndex.add(2);
 
         deepEqual(peerIndex._empties, {}, "Registry of empties before removal");
 
         peerIndex.remove(lookup.foo);
 
-        deepEqual(peerIndex._weights, [5, 1], "Weights index unchanged after removal");
-        deepEqual(peerIndex._totals, [5, 6], "Totals index unchanged after removal");
+        deepEqual(peerIndex._weights, [5, 1, 2], "Weights index unchanged after removal");
+        deepEqual(peerIndex._totals, [5, 6, 8], "Totals index unchanged after removal");
         deepEqual(
             peerIndex._empties,
             {
                 5: {0: true}
+            },
+            "Registry of empties after removal"
+        );
+
+        peerIndex.remove(lookup.hello);
+        deepEqual(
+            peerIndex._empties,
+            {
+                5: {0: true},
+                2: {2: true}
             },
             "Registry of empties after removal"
         );
