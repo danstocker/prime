@@ -10,71 +10,59 @@
         equal(index._bsearch(6), 4, "Position of 6 (exact hit)");
         equal(index._bsearch(0), 0, "Position of 1 (low extreme)");
         equal(index._bsearch(9), 5, "Position of 9 (high extreme)");
+        equal(index._bsearch(10), 5, "Position of 10 (out of bounds)");
     });
 
     test("Addition", function () {
-        var index = $Index.create(),
-            tmp;
+        var index = $Index.create();
 
-        equal(index.lastTotal(), 0, "Last total is initially zero");
+        equal(index.nextTotal, 0, "Next total is initially zero");
+        equal(index.slotCount, 0, "Slot count is initially zero");
 
-        tmp = index.add(5);
-        equal(tmp, 1, "Index position");
-        deepEqual(index._weights, [0, 5], "Weights after adding 5");
-        deepEqual(index._totals, [0, 5], "Totals after adding 5");
-        equal(index.lastTotal(), 5, "Last total after adding 5");
-
-        tmp = index.add(1);
-        equal(tmp, 2, "Index position");
-        deepEqual(index._weights, [0, 5, 1], "Weights after adding 1");
-        deepEqual(index._totals, [0, 5, 6], "Totals after adding 1");
-        equal(index.lastTotal(), 6, "Last total after adding 1");
+        index.add('foo', 5);
+        deepEqual(index._weights, [5], "Weights after addition");
+        deepEqual(index._totals, [0], "Totals after addition");
+        deepEqual(index._loads, ['foo'], "Loads after addition");
+        deepEqual(index._lookup, {foo: 0}, "Lookup after addition");
+        equal(index.nextTotal, 5, "Next total after addition");
     });
 
     test("Removal", function () {
-        var index = $Index.create(),
-            lookup = {};
+        var index = $Index.create();
 
-        lookup.foo = index.add(5);
-        lookup.bar = index.add(1);
-        lookup.hello = index.add(2);
+        index
+            .add('foo', 5)
+            .add('bar', 1)
+            .add('hello', 2);
 
-        deepEqual(index._empties, {}, "Registry of empties before removal");
+        deepEqual(index._slots, {}, "Empty slots before removal");
+        equal(index.slotCount, 0, "Empty count before removal");
 
-        index.remove(lookup.foo);
+        index.remove('foo');
 
-        deepEqual(index._weights, [0, 5, 1, 2], "Weights index unchanged after removal");
-        deepEqual(index._totals, [0, 5, 6, 8], "Totals index unchanged after removal");
+        deepEqual(index._weights, [5, 1, 2], "Weights index unchanged after removal");
+        deepEqual(index._totals, [0, 5, 6], "Totals index unchanged after removal");
+        deepEqual(index._loads, [undefined, 'bar', 'hello'], "Loads after removal");
+        deepEqual(index._lookup, {bar: 1, hello: 2}, "Lookup after removal");
         deepEqual(
-            index._empties,
+            index._slots,
             {
-                5: {1: true}
+                5: {0: true}
             },
             "Registry of empties after removal"
         );
-        equal(index.emptyCount, 1, "Empty count after removal");
-
-        index.remove(lookup.hello);
-        deepEqual(
-            index._empties,
-            {
-                5: {1: true},
-                2: {3: true}
-            },
-            "Registry of empties after removal"
-        );
-        equal(index.emptyCount, 2, "Empty count after removal");
+        equal(index.slotCount, 1, "Empty count after removal");
     });
 
     test("Querying", function () {
         var index = $Index.create();
-        index.add(5);
-        index.add(1);
-        index.add(2);
+        index.add('foo', 5);
+        index.add('bar', 1);
+        index.add('hello', 2);
 
-        equal(index.get(4), 0, "Position of 4 (inexact)");
-        equal(index.get(6), 2, "Position of 6 (exact)");
-        equal(index.get(8), 3, "Position of 8 (upper extreme, exact)");
+        equal(index.get(4), 'foo', "Load at 4 (inexact)");
+        equal(index.get(6), 'hello', "Load at 6 (exact)");
+        equal(index.get(8), 'hello', "Load at 8 (upper extreme, exact)");
     });
 }(
     prime.PeerIndex,

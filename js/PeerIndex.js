@@ -1,8 +1,7 @@
 /**
  * Weight Index
  *
- * Index of weighted slots. Each slot in the index carries a weight,
- * serving as a basis for random retrieval.
+ * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global prime, troop */
 troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
@@ -18,7 +17,7 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
                  * @type {number[]}
                  * @private
                  */
-                this._weights = [0];
+                this._weights = [];
 
                 /**
                  * Sorted index of total weights.
@@ -26,15 +25,35 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
                  * @type {number[]}
                  * @private
                  */
-                this._totals = [0];
+                this._totals = [];
+
+                /**
+                 * Next total weight. Equals to cumulative weight of all entries.
+                 * @type {Number}
+                 */
+                this.nextTotal = 0;
+
+                /**
+                 * List of loads.
+                 * @type {string[]}
+                 * @private
+                 */
+                this._loads = [];
+
+                /**
+                 * Associates loads with their positions in the index.
+                 * @type {Object}
+                 * @private
+                 */
+                this._lookup = {};
 
                 /**
                  * Lookup for empty index spots indexed by weight first, then by position in _peers.
                  * @type {Object}
                  * @private
                  */
-                this._empties = {};
-                this.emptyCount = 0;
+                this._slots = {};
+                this.slotCount = 0;
             }
         }).addPrivateMethod({
             /**
@@ -71,78 +90,78 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
             }
         }).addMethod({
             /**
-             * Retrieves highest total weight from index.
-             * @return {number}
-             */
-            lastTotal: function () {
-                var totals = this._totals;
-                return totals[totals.length - 1] || 0;
-            },
-
-            /**
              * Adds index entry.
+             * @param load {string} Entry load.
              * @param weight {number} Entry weight.
              * @return {number} Position of (new) entry in the index.
              */
-            add: function (weight) {
-                var empties = this._empties,
-                    totals = this._totals,
-                    total, // next total weight value in _totals
+            add: function (load, weight) {
+                var slots = this._slots,
                     pos; // position of the new entry (in _weights and _totals)
 
-                if (empties.hasOwnProperty(weight)) {
+                if (slots.hasOwnProperty(weight)) {
                     // there is an available empty slot
-                    pos = $utils.firstProperty(empties[weight]);
+                    pos = $utils.firstProperty(slots[weight]);
 
-                    // removing position from empty slots
-                    delete empties[weight][pos];
-                    if ($utils.isEmpty(empties[weight])) {
+                    // filling slot
+                    this._loads[pos] = load;
+                    this._lookup[load] = pos;
+
+                    // removing position from slots
+                    delete slots[weight][pos];
+                    if ($utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
-                        delete empties[weight];
-                        this.emptyCount--;
+                        delete slots[weight];
+                        this.slotCount--;
                     }
                 } else {
                     // no empty spot available
-                    total = this.lastTotal() + weight;
-                    pos = totals.length;
-
                     // adding new entry to index
-                    totals.push(total);
+                    this._lookup[load] = this._loads.length;
+                    this._loads.push(load);
+                    this._totals.push(this.nextTotal);
                     this._weights.push(weight);
+                    this.nextTotal += weight;
                 }
 
-                return pos;
+                return this;
             },
 
             /**
              * Removes entry from index by marking its position as empty.
-             * @param pos {number} Position of entry to remove.
+             * @param load {string} Load of entry to be removed.
              */
-            remove: function (pos) {
-                var empties = this._empties,
+            remove: function (load) {
+                var pos = this._lookup[load],
+                    slots = this._slots,
                     weight = this._weights[pos];
 
-                if (!empties.hasOwnProperty(weight)) {
-                    empties[weight] = {};
-                }
+                // removing from loads
+                delete this._loads[this._lookup[load]];
+                delete this._lookup[load];
 
-                empties[weight][pos] = true;
-                this.emptyCount++;
+                // adding position to slots
+                if (!slots.hasOwnProperty(weight)) {
+                    slots[weight] = {};
+                }
+                slots[weight][pos] = true;
+                this.slotCount++;
             },
 
             /**
              * Retrieves a slot based on its total weight.
              * @param total {number} Number between zero and this.lastTotal
+             * @return {string} Load of requested entry.
              */
             get: function (total) {
-                return this._bsearch(total);
+                return this._loads[this._bsearch(total)];
             },
 
             /**
              * Retrieves a random slot based on total weights.
              */
             random: function () {
-                var total = Math.random() * this.lastTotal();
+                var total = Math.random() * this.nextTotal;
                 return this._bsearch(total);
             }
         });
