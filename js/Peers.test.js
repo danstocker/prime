@@ -1,77 +1,56 @@
-/*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($Peers, $utils, $Peer) {
+/*global prime, mocks, module, test, expect, ok, equal, notEqual, deepEqual, raises */
+(function ($Peers, $utils, $Peer, $Index) {
     module("Peers");
 
     test("Addition", function () {
         var load = 'hello',
             peers, peer;
 
+        expect(7); // 2x2 from mocks
+
+        $Index.addMock({
+            add: function (load, weight) {
+                equal(load, 'hello', "Peer load");
+                equal(weight, 2, "Peer tread");
+            }
+        });
+
         peer = $Peer.create(load, 2);
         peers = $Peers.create()
             .add(peer);
-        equal(peers.byLoad.hello, peer, "Peer added to by-load buffer");
-        equal(peers.byTread['2'].hello, peer, "Peer added to by-tread buffer");
-        equal(peers.totalTread, 2, "Total tread increased by peer");
+        equal(peers.lookup.hello, peer, "Peer added to by-load buffer");
 
         peers = $Peers.create()
-            .tread(load, 1);
-        equal(peers.byLoad.hello.load, load, "Node added to by-load buffer");
-        equal(peers.byLoad.hello.tread, 1, "Newly added node's tread is 1 (default)");
+            .tread(load, 2);
+        equal(peers.lookup.hello.load, load, "Node added to by-load buffer");
+        equal(peers.lookup.hello.tread, 2, "Newly added node's tread is 1 (default)");
 
-        deepEqual(Object.keys(peers.byTread), ['1'], "Tread value added to by-tread lookup");
-        equal(peers.byTread[1].hello.load, load, "Node added to by-tread buffer");
+        $Index.removeMocks();
     });
 
     test("Modification", function () {
-        var load = 'load',
-            peers = $Peers.create();
-
-        equal(peers.totalTread, 0, "Total tread initially zero");
-
-        peers.tread(load);
-        deepEqual(Object.keys(peers.byTread), ['1'], "Node added once");
-        equal(peers.totalTread, 1, "Total tread equals to tread of only element");
-
-        peers.tread(load);
-        deepEqual(Object.keys(peers.byTread), ['2'], "Tread lookup follows changes in tread");
-        equal(peers.totalTread, 2, "Total tread follows tread change of only element");
-
-        peers.tread('world');
-        deepEqual(Object.keys(peers.byTread).sort(), ['1', '2'], "Tread lookup follows node addition");
-        equal(peers.totalTread, 3, "Total tread follows node addition");
-
-        peers.tread(load, 3);
-        equal(peers.totalTread, 6, "Tread of one node increased by custom wear");
-    });
-
-    test("Selection", function () {
         var peers = $Peers.create(),
-            stats,
-            i;
+            i = 0;
 
-        // adding peers each with a tread of 1
+        expect(5); // 2x .add(), 1x .remove()
+
+        $Index.addMock({
+            remove: function (load) {
+                equal(load, 'load', "Removing load from index");
+                return this;
+            },
+            add: function (load, weight) {
+                equal(load, 'load', "Adding load to index");
+                equal(weight, [1, 3][i++], "Peer weight");
+                return this;
+            }
+        });
+
         peers
-            .tread('hello')
-            .tread('there')
-            .tread('world');
+            .tread('load', 1)
+            .tread('load', 2);
 
-        equal(peers.totalTread, 3, "All peers contributed to total tread");
-        equal(peers.byNorm(0).load, 'hello', "First peer accessed by norm");
-        equal(peers.byNorm(0.4).load, 'there', "Second peer accessed by norm");
-        equal(peers.byNorm(0.8).load, 'world', "Third peer accessed by norm");
-        equal(peers.byNorm(1).load, 'world', "Third peer accessed by norm (upper extreme)");
-
-        // statistical test
-        stats = {
-            hello: 0,
-            there: 0,
-            world: 0
-        };
-        for (i = 0; i < 30; i++) {
-            stats[peers.byNorm((i + 1) / 30).load]++;
-        }
-
-        ok(stats.hello === stats.there && stats.hello === stats.world, "Statistical test passed");
+        $Index.removeMocks();
     });
 
     test("toJSON", function () {
@@ -85,7 +64,7 @@
 
         equal(
             JSON.stringify(peers),
-            '{"hello":' + JSON.stringify(peers.byLoad.hello) + ',"foo":' + JSON.stringify(peers.byLoad.foo) + '}',
+            '{"hello":' + JSON.stringify(peers.lookup.hello) + ',"foo":' + JSON.stringify(peers.lookup.foo) + '}',
             "Full peers JSON"
         );
     });
@@ -121,5 +100,6 @@
 }(
     prime.Peers,
     prime.utils,
-    prime.Peer
+    prime.Peer,
+    prime.Index
 ));

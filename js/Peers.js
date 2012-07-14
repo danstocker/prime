@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
+troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
@@ -11,6 +11,10 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
      */
     var self = prime.Peers = troop.base.extend()
         .addConstant({
+            /**
+             * Default value to be added to peer tread, when none is specified.
+             * @type {number}
+             */
             defaultWear: 1
         }).addMethod({
             //////////////////////////////
@@ -22,54 +26,18 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
              */
             init: function () {
                 /**
-                 * Peers indexed by load.
+                 * Peer objects indexed by load.
                  * @type {Object}
                  * @private
                  */
-                this.byLoad = {};
+                this.lookup = {};
 
                 /**
-                 * Peers indexed by tread, then load.
-                 * @type {Object}
+                 * Weighted index of peer information.
+                 * @type {prime.Index}
                  * @private
                  */
-                this.byTread = {};
-
-                /**
-                 * Sum of the tread of all peers.
-                 * @type {Number}
-                 */
-                this.totalTread = 0;
-            },
-
-            //////////////////////////////
-            // Lookup
-
-            /**
-             * Retrieves single peer matching the given normalized cumulative
-             * tread (NCT). NCT, between 0 and 1, pin-points a peer among
-             * all available peers based on their tread.
-             * TODO: reduce computational complexity from O(n)
-             * @param norm {number} Normalized sum. 0 <= norm <= 1.
-             * @returns {prime.Peer}
-             */
-            byNorm: function (norm) {
-                var targetSum = norm * this.totalTread,
-                    currentSum = 0,
-                    byLoad = this.byLoad,
-                    load, peer;
-
-                for (load in byLoad) {
-                    if (byLoad.hasOwnProperty(load)) {
-                        peer = byLoad[load];
-                        currentSum += peer.tread;
-                        if (currentSum >= targetSum) {
-                            return peer;
-                        }
-                    }
-                }
-
-                return undefined;
+                this._index = $Index.create();
             },
 
             //////////////////////////////
@@ -81,15 +49,12 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
              * @throws {Error} When peer already exists.
              */
             add: function (peer) {
-                var load = peer.load,
-                    tread = peer.tread,
-                    byLoad = this.byLoad,
-                    byTread = this.byTread;
+                if (!this.lookup.hasOwnProperty(peer.load)) {
+                    // adding peer to peer registry
+                    this.lookup[peer.load] = peer;
 
-                if (!byLoad.hasOwnProperty(load)) {
-                    $utils.set(byLoad, load, peer);
-                    $utils.set(byTread, tread, load, peer);
-                    this.totalTread += tread;
+                    // adding peer details to index
+                    this._index.add(peer.load, peer.tread);
                 } else {
                     throw Error("Peer already exists.");
                 }
@@ -102,7 +67,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
              * @returns {prime.Peer}
              */
             random: function () {
-                return this.byNorm(Math.random());
+                return this._index.random();
             },
 
             /**
@@ -113,25 +78,20 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
             tread: function (load, wear) {
                 wear = wear || self.defaultWear;
 
-                var byLoad = this.byLoad,
-                    byTread = this.byTread,
-                    peer, treadBefore, treadAfter;
+                var lookup = this.lookup,
+                    peer;
 
-                if (!byLoad.hasOwnProperty(load)) {
+                if (!lookup.hasOwnProperty(load)) {
                     // adding new peer
                     this.add($Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
-                    peer = byLoad[load];
-                    treadBefore = peer.tread;
-                    treadAfter = peer
-                        .wear(wear)
-                        .tread;
+                    peer = lookup[load]
+                        .wear(wear);
 
-                    // updating tread lookup
-                    $utils.unset(byTread, treadBefore, load);
-                    $utils.set(byTread, treadAfter, load, peer);
-                    this.totalTread += treadAfter - treadBefore;
+                    this._index
+                        .remove(load)
+                        .add(load, peer.tread);
                 }
 
                 return this;
@@ -141,7 +101,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
             // JSON
 
             toJSON: function () {
-                return this.byLoad;
+                return this.lookup;
             },
 
             /**
@@ -166,4 +126,4 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer) {
         });
 
     return self;
-}, prime.utils, prime.Peer);
+}, prime.utils, prime.Peer, prime.Index);
