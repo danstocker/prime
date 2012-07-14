@@ -1,11 +1,11 @@
 Prime
 =====
 
-**Association Engine**
+*Prime* is a JavaScript graph database designed for one kind of queries: *random*.
 
-Prime is a concept graph with string nodes and weighted edges. Associations emerge in the graph by hopping between nodes randomly, guided by connection weights to immediate neighbors (peers), and general probability of subsequent jumps.
+Prime connects string nodes by weighted edges, and offers means to hop from one node to another randomly, guided by the weight distribution of edges, and also a general probability of subsequent jumps.
 
-In this graph, from *fruit* a hop would most likely yield *food*, then *apple*, then *pear*, then one of the rest at probabilty decreasing with distance.
+In the graph below, a hop from *fruit* would most likely lead to *food*, then *apple*, then *pear*, then the rest at probability decreasing with distance.
 
 ![Concept Graph](http://dl.dropbox.com/u/9258903/sampleConceptGraph.png)
 
@@ -49,7 +49,7 @@ node('food').to(node('fruit'), 3);
 
 ### Hopping
 
-Hopping is a series of jumps between connected nodes, depending on edge weights and subsequent jump probability.
+Hopping is a series of semi-random jumps between connected nodes.
 
 ```javascript
 var found = node('food').hop().load; // one of all connected nodes
