@@ -28,9 +28,7 @@
     });
 
     test("Removal", function () {
-        var index = $Index.create();
-
-        index
+        var index = $Index.create()
             .add('foo', 5)
             .add('bar', 1)
             .add('hello', 2);
@@ -54,17 +52,46 @@
         equal(index.slotCount, 1, "Empty count after removal");
     });
 
+    test("Re-addition", function () {
+        var index = $Index.create()
+            .add('foo', 5) // 0
+            .add('bar', 1) // 1
+            .add('hello', 2) // 2
+            .remove('bar');
+
+        deepEqual(index._loads, ['foo', undefined, 'hello'], "Loads before re-addition");
+        deepEqual(index._lookup, {'foo': 0, 'hello': 2}, "Lookup before re-addition");
+        deepEqual(index._slots, {1: {1: true}}, "Empty slots before re-addition");
+        equal(index.slotCount, 1, "Slot count before re-addition");
+
+        index.add('world', 1);
+
+        deepEqual(index._loads, ['foo', 'world', 'hello'], "Loads after re-addition");
+        deepEqual(index._lookup, {'foo': 0, 'hello': 2, 'world': 1}, "Lookup after re-addition");
+        deepEqual(index._slots, {}, "Empty slots after re-addition");
+        equal(index.slotCount, 0, "Slot count after re-addition");
+    });
+
     test("Querying", function () {
-        var index = $Index.create();
-        index.add('foo', 5);
-        index.add('bar', 1);
-        index.add('hello', 2);
+        var index = $Index.create()
+            .add('foo', 5)
+            .add('bar', 1)
+            .add('hello', 2);
 
         equal(index.get(4), 'foo', "Load at 4 (inexact)");
         equal(index.get(6), 'hello', "Load at 6 (exact)");
         equal(index.get(8), 'hello', "Load at 8 (upper extreme, exact)");
     });
+
+    test("Random query", function () {
+        var index = $Index.create()
+            .add('foo', 5)
+            .add('bar', 1)
+            .add('hello', 2)
+            .remove('bar');
+
+        ok(index.random() in {'foo': true, 'hello': true}, "Random query yields one of remaining entries");
+    });
 }(
-    prime.Index,
-    prime.Peer
+    prime.Index
 ));

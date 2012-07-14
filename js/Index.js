@@ -106,7 +106,7 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
 
                     // filling slot
                     this._loads[pos] = load;
-                    this._lookup[load] = pos;
+                    this._lookup[load] = parseInt(pos, 10);
 
                     // removing position from slots
                     delete slots[weight][pos];
@@ -147,10 +147,12 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
                 }
                 slots[weight][pos] = true;
                 this.slotCount++;
+
+                return this;
             },
 
             /**
-             * Retrieves a slot based on its total weight.
+             * Retrieves an entry based on total weight.
              * @param total {number} Number between zero and this.lastTotal
              * @return {string} Load of requested entry.
              */
@@ -159,11 +161,20 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
             },
 
             /**
-             * Retrieves a random slot based on total weights.
+             * Retrieves a random slot based on total weight.
+             * @return {string} Random entry load.
              */
             random: function () {
-                var total = Math.random() * this.nextTotal;
-                return this._bsearch(total);
+                var total = Math.random() * this.nextTotal,
+                    load = this._loads[this._bsearch.call(this._totals, total)];
+
+                if (typeof load === 'undefined') {
+                    // empty slot was hit, trying again
+                    return this.random();
+                } else {
+                    // valid entry was hit
+                    return load;
+                }
             }
         });
 
