@@ -58,23 +58,24 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
         }).addPrivateMethod({
             /**
              * Performs binary search in the index.
+             * @this {number[]} Array to perform search on.
              * @param value {number} Value searched.
              * @param [start] {number} Start index of search range. Default: 0.
-             * @param [end] {number} Ending index of search range. Default: _index.length - 1.
+             * @param [end] {number} Ending index of search range. Default: this.length - 1.
              * @private
+             * @static
              */
             _bsearch: function (value, start, end) {
                 start = start || 0;
-                end = end || this._totals.length - 1;
+                end = end || this.length - 1;
 
-                var index = this._totals,
-                    pos = Math.floor((start + end) / 2),
-                    hit = index[pos];
+                var pos = Math.floor((start + end) / 2),
+                    hit = this[pos];
 
                 if (hit === value) {
                     // perfect hit
                     return pos;
-                } else if (index[end] === value) {
+                } else if (this[end] <= value) {
                     // end of range hit
                     return end;
                 } else if (end - start === 1) {
@@ -82,10 +83,10 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
                     return start;
                 } else if (hit > value) {
                     // narrowing range to lower half
-                    return this._bsearch(value, start, pos);
+                    return self._bsearch.call(this, value, start, pos);
                 } else if (hit < value) {
                     // narrowing range to upper half
-                    return this._bsearch(value, pos, end);
+                    return self._bsearch.call(this, value, pos, end);
                 }
             }
         }).addMethod({
@@ -154,7 +155,7 @@ troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
              * @return {string} Load of requested entry.
              */
             get: function (total) {
-                return this._loads[this._bsearch(total)];
+                return this._loads[this._bsearch.call(this._totals, total)];
             },
 
             /**
