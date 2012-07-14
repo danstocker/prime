@@ -67,7 +67,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
              * @returns {prime.Peer}
              */
             random: function () {
-                return this._index.random();
+                return this.lookup[this._index.random()];
             },
 
             /**
