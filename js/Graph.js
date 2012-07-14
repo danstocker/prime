@@ -19,6 +19,19 @@ troop.promise(prime, 'Graph', function () {
                 this.nodes = {};
             },
 
+            /**
+             * Rebuilds weighted indexes for all nodes.
+             */
+            rebuildIndexes: function () {
+                var nodes = this.nodes,
+                    load;
+                for (load in nodes) {
+                    if (nodes.hasOwnProperty(load)) {
+                        nodes[load].peers.rebuildIndex();
+                    }
+                }
+            },
+
             //////////////////////////////
             // JSON
 

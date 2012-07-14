@@ -71,6 +71,14 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
             },
 
             /**
+             * Rebuilds weighted index.
+             */
+            rebuildIndex: function () {
+                this._index.rebuild();
+                return this;
+            },
+
+            /**
              * Strengthens a peer in the collection, adds peer if necessary.
              * @param load {string} Node load.
              * @param [wear] {number} Peer wear (incremental connection weight).

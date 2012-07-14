@@ -64,6 +64,21 @@
         ok(next.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");
     });
 
+    test("Miscellaneous", function () {
+        expect(1);
+
+        $Index.addMock({
+            rebuild: function () {
+                ok(true, "Weighted index rebuilt");
+            }
+        });
+
+        $Peers.create()
+            .rebuildIndex();
+
+        $Index.removeMocks();
+    });
+
     test("toJSON", function () {
         var peers = $Peers.create();
 

@@ -1,6 +1,28 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Graph, $Node, $node) {
+(function ($Graph, $Node, $node, $Peers) {
     module("Graph");
+
+    test("Index", function () {
+        expect(4);
+
+        $Graph.reset();
+
+        $node('foo').to(
+            $node('bar'),
+            $node('hello'),
+            $node('world')
+        );
+
+        $Peers.addMock({
+            rebuildIndex: function () {
+                ok(true, "Rebuilding index for node");
+            }
+        });
+
+        $Graph.rebuildIndexes();
+
+        $Peers.removeMocks();
+    });
 
     test("fromJSON", function () {
         expect(3);
@@ -55,5 +77,6 @@
 }(
     prime.Graph,
     prime.Node,
-    prime.node
+    prime.node,
+        prime.Peers
 ));

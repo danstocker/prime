@@ -72,6 +72,24 @@
         equal(index.slotCount, 0, "Slot count after re-addition");
     });
 
+    test("Rebuilding", function () {
+        var index = $Index.create()
+            .add('foo', 5) // 0
+            .add('bar', 1) // 1
+            .add('hello', 2) // 2
+            .remove('bar');
+
+        index.rebuild();
+
+        deepEqual(index._loads, ['foo', 'hello'], "Loads after rebuild");
+        deepEqual(index._lookup, {foo: 0, hello: 1}, "Lookup after rebuild");
+        deepEqual(index._weights, [5, 2], "Weights after rebuild");
+        deepEqual(index._totals, [0, 5], "Totals after rebuild");
+        equal(index.nextTotal, 7, "Next total after rebuild");
+        deepEqual(index._slots, {}, "Slots emptied after rebuild");
+        equal(index.slotCount, 0, "Slot count after rebuild");
+    });
+
     test("Querying", function () {
         var index = $Index.create()
             .add('foo', 5)

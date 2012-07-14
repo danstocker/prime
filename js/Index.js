@@ -152,6 +152,35 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
             },
 
             /**
+             * Rebuilds index, gets rid of unused entries.
+             */
+            rebuild: function () {
+                if (this.slotCount === 0) {
+                    // there are no empty slots, compaction in unnecessary
+                    return this;
+                }
+
+                // backing up buffers
+                var loads = this._loads,
+                    weights = this._weights,
+                    i, load, weight;
+
+                // re-setting buffers
+                this.init();
+
+                // re-adding entries one by one
+                for (i = 0; i < loads.length; i++) {
+                    load = loads[i];
+                    weight = weights[i];
+                    if (typeof load !== 'undefined') {
+                        this.add(load, weight);
+                    }
+                }
+
+                return this;
+            },
+
+            /**
              * Retrieves an entry based on total weight.
              * @param total {number} Number between zero and this.lastTotal
              * @return {string} Load of requested entry.
