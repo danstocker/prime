@@ -65,6 +65,6 @@
         equal(index.get(8), 'hello', "Load at 8 (upper extreme, exact)");
     });
 }(
-    prime.PeerIndex,
+    prime.Index,
     prime.Peer
 ));

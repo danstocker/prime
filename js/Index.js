@@ -4,12 +4,12 @@
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global prime, troop */
-troop.promise(prime, 'PeerIndex', function (ns, className, $utils) {
+troop.promise(prime, 'Index', function (ns, className, $utils) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
      */
-    var self = prime.PeerIndex = troop.base.extend()
+    var self = prime.Index = troop.base.extend()
         .addMethod({
             init: function () {
                 /**
