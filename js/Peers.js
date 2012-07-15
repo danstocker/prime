@@ -108,10 +108,6 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
             //////////////////////////////
             // JSON
 
-            toJSON: function () {
-                return this.lookup;
-            },
-
             /**
              * Reconstructs Peers object from JSON data.
              * @static

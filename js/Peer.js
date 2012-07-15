@@ -51,23 +51,20 @@ troop.promise(prime, 'Peer', function () {
             // JSON
 
             toJSON: function () {
-                return {
-                    tread: this.tread
-                };
+                return this.tread;
             },
 
             /**
              * Reconstructs Peer object from JSON data.
              * @static
              * @param load {string} Peer node's load.
-             * @param json {object} De-serialized JSON.
-             * @param json.tread {number|string}
+             * @param tread {number|string} De-serialized JSON.
              * @return {prime.Peer}
              */
-            fromJSON: function (load, json) {
+            fromJSON: function (load, tread) {
                 return self.create(
                     load,
-                    json.tread
+                    tread
                 );
             }
         });

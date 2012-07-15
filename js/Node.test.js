@@ -129,12 +129,27 @@
         $Node.handler = null;
     });
 
+    test("toJSON", function () {
+        $Node.graph.reset();
+
+        var node = $node('bar')
+            .to($node('hello'), 5)
+            .to($node('foo'), 4);
+
+        deepEqual(Object.keys(node.toJSON()), ['hello', 'foo'], "Node peer loads sent to JSON");
+
+        equal(
+            JSON.stringify(node),
+            '{"hello":' + JSON.stringify(node.peers.lookup.hello) + ',"foo":' + JSON.stringify(node.peers.lookup.foo) + '}',
+            "Full node JSON"
+        );
+    });
+
     test("fromJSON", function () {
         var nodeJSON = {
-                load: "test",
-                peers: {}
             },
-            node = $Node.create(nodeJSON.load);
+            load = 'test',
+            node = $Node.create(load);
 
         expect(3);
 
@@ -147,7 +162,7 @@
         });
 
         deepEqual(
-            $Node.fromJSON(nodeJSON),
+            $Node.fromJSON(load, nodeJSON),
             node,
             "Node re-initialized from JSON"
         );

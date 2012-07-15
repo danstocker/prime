@@ -54,7 +54,7 @@
 
     test("Serialization integration", function () {
         $Graph.reset();
-        
+
         $node('food').to(
             $node('fruit').to(
                 $node('apple'),
@@ -67,16 +67,16 @@
                 $node('cat'),
                 $node('lion')));
 
-        var original = $Graph.nodes,
-            json = JSON.stringify(original),
-            rebuilt = $Graph.fromJSON(JSON.parse(json));
+        var original =  $Graph.nodes,
+            json = JSON.stringify($Graph),
+            rebuilt = $Graph.fromJSON(JSON.parse(json)).nodes;
 
         notEqual(rebuilt, original, "Rebuilt registry is different object");
-        deepEqual(rebuilt, original, "Rebuilt is identical to original");
+        deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");
     });
 }(
     prime.Graph,
     prime.Node,
     prime.node,
-        prime.Peers
+    prime.Peers
 ));

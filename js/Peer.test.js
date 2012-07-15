@@ -33,15 +33,13 @@
 
         equal(
             JSON.stringify(peer),
-            '{"tread":5}',
+            '5',
             "Full peer JSON"
         );
     });
 
     test("fromJSON", function () {
-        var peerJSON = {
-                tread: 2
-            },
+        var peerJSON = 2,
             peer = $Peer.create('hello', 2);
 
         deepEqual(

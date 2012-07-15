@@ -126,6 +126,10 @@ troop.promise(prime, 'Node', function (ns, className, $Peers, $Graph) {
             //////////////////////////////
             // JSON
 
+            toJSON: function () {
+                return this.peers.lookup;
+            },
+
             /**
              * Reconstructs Node object from JSON data.
              * @static
@@ -134,12 +138,12 @@ troop.promise(prime, 'Node', function (ns, className, $Peers, $Graph) {
              * @param json.peers {object}
              * @return {prime.Node}
              */
-            fromJSON: function (json) {
+            fromJSON: function (load, json) {
                 return self.create(
-                    json.load,
+                    load,
 
                     // initializing peers form JSON
-                    $Peers.fromJSON(json.peers)
+                    $Peers.fromJSON(json)
                 );
             }
         });

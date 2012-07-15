@@ -16,14 +16,14 @@ troop.promise(prime, 'Graph', function () {
              * @static
              */
             reset: function () {
-                this.nodes = {};
+                self.nodes = {};
             },
 
             /**
              * Rebuilds weighted indexes for all nodes.
              */
             rebuildIndexes: function () {
-                var nodes = this.nodes,
+                var nodes = self.nodes,
                     load;
                 for (load in nodes) {
                     if (nodes.hasOwnProperty(load)) {
@@ -34,6 +34,10 @@ troop.promise(prime, 'Graph', function () {
 
             //////////////////////////////
             // JSON
+
+            toJSON: function () {
+                return this.nodes;
+            },
 
             /**
              * Reconstructs node collection from JSON.
@@ -49,11 +53,11 @@ troop.promise(prime, 'Graph', function () {
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        Node.fromJSON(json[load]);
+                        Node.fromJSON(load, json[load]);
                     }
                 }
 
-                return self.nodes;
+                return self;
             }
         });
 
