@@ -1,20 +1,20 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($Index) {
+(function (Index) {
     module("Index");
 
     test("Bsearch", function () {
         var totals = [0, 1, 3, 5, 6, 9];
 
-        equal($Index._bsearch.call(totals, 4), 2, "Position of 4 (nearest hit)");
-        equal($Index._bsearch.call(totals, 6), 4, "Position of 6 (exact hit)");
-        equal($Index._bsearch.call(totals, 0), 0, "Position of 1 (low extreme)");
-        equal($Index._bsearch.call(totals, 9), 5, "Position of 9 (high extreme)");
-        equal($Index._bsearch.call(totals, -4), 0, "Position of -4 (out of bounds -)");
-        equal($Index._bsearch.call(totals, 100), 5, "Position of 100 (out of bounds +)");
+        equal(Index._bsearch.call(totals, 4), 2, "Position of 4 (nearest hit)");
+        equal(Index._bsearch.call(totals, 6), 4, "Position of 6 (exact hit)");
+        equal(Index._bsearch.call(totals, 0), 0, "Position of 1 (low extreme)");
+        equal(Index._bsearch.call(totals, 9), 5, "Position of 9 (high extreme)");
+        equal(Index._bsearch.call(totals, -4), 0, "Position of -4 (out of bounds -)");
+        equal(Index._bsearch.call(totals, 100), 5, "Position of 100 (out of bounds +)");
     });
 
     test("Addition", function () {
-        var index = $Index.create();
+        var index = Index.create();
 
         equal(index.nextTotal, 0, "Next total is initially zero");
         equal(index.slotCount, 0, "Slot count is initially zero");
@@ -28,7 +28,7 @@
     });
 
     test("Removal", function () {
-        var index = $Index.create()
+        var index = Index.create()
             .add('foo', 5)
             .add('bar', 1)
             .add('hello', 2);
@@ -53,7 +53,7 @@
     });
 
     test("Re-addition", function () {
-        var index = $Index.create()
+        var index = Index.create()
             .add('foo', 5) // 0
             .add('bar', 1) // 1
             .add('hello', 2) // 2
@@ -82,7 +82,7 @@
     });
 
     test("Rebuilding", function () {
-        var index = $Index.create()
+        var index = Index.create()
             .add('foo', 5) // 0
             .add('bar', 1) // 1
             .add('hello', 2) // 2
@@ -100,7 +100,7 @@
     });
 
     test("Querying", function () {
-        var index = $Index.create()
+        var index = Index.create()
             .add('foo', 5)
             .add('bar', 1)
             .add('hello', 2);
@@ -111,7 +111,7 @@
     });
 
     test("Random query", function () {
-        var index = $Index.create()
+        var index = Index.create()
             .add('foo', 5)
             .add('bar', 1)
             .add('hello', 2)

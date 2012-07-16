@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
+troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
@@ -37,7 +37,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
                  * @type {prime.Index}
                  * @private
                  */
-                this._index = $Index.create();
+                this._index = Index.create();
             },
 
             //////////////////////////////
@@ -91,7 +91,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
 
                 if (!lookup.hasOwnProperty(load)) {
                     // adding new peer
-                    this.add($Peer.create(load, wear));
+                    this.add(Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
                     peer = lookup[load]
@@ -121,7 +121,7 @@ troop.promise(prime, 'Peers', function (ns, className, $utils, $Peer, $Index) {
                 // initializing individual peers from JSON
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        peers.add($Peer.fromJSON(load, json[load]));
+                        peers.add(Peer.fromJSON(load, json[load]));
                     }
                 }
 

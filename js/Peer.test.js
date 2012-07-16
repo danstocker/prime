@@ -1,21 +1,21 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function ($Peer) {
+(function (Peer) {
     module("Peer");
 
     test("Creation", function () {
         var peer;
 
-        peer = $Peer.create('hello');
+        peer = Peer.create('hello');
         equal(peer.load, 'hello', "Peer load");
         equal(peer.tread, 0, "Default peer tread");
 
-        peer = $Peer.create('blah', 5);
+        peer = Peer.create('blah', 5);
         equal(peer.load, 'blah', "Peer load");
         equal(peer.tread, 5, "Custom peer tread");
     });
 
     test("Tread", function () {
-        var peer = $Peer.create('hello'),
+        var peer = Peer.create('hello'),
             tmp;
 
         equal(peer.tread, 0, "Initial tread 1");
@@ -29,7 +29,7 @@
     });
 
     test("toJSON", function () {
-        var peer = $Peer.create('hello', 5);
+        var peer = Peer.create('hello', 5);
 
         equal(
             JSON.stringify(peer),
@@ -40,10 +40,10 @@
 
     test("fromJSON", function () {
         var peerJSON = 2,
-            peer = $Peer.create('hello', 2);
+            peer = Peer.create('hello', 2);
 
         deepEqual(
-            $Peer.fromJSON('hello', peerJSON),
+            Peer.fromJSON('hello', peerJSON),
             peer,
             "Peer re-initialized from JSON"
         );

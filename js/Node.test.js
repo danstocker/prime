@@ -1,45 +1,45 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Node, $Peers, $node) {
+(function (Node, Peers, $) {
     module("Node");
 
     test("Creation", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
-        var hello = $Node.create('hello');
+        var hello = Node.create('hello');
 
         equal(hello.load, 'hello', "Load of created node");
     });
 
     test("Node accessor", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
         expect(1);
 
         // testing addition
-        $Node.addMock({
+        Node.addMock({
             create: function (load) {
                 equal(load, 'hello', "Node created");
                 return this;
             }
         });
 
-        $node('hello');
+        $('hello');
 
-        $Node.removeMocks();
+        Node.removeMocks();
     });
 
     test("Strengthening", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
         expect(5);
 
-        var foo = $Node.create('foo'),
-            bar = $Node.create('bar'),
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
             i;
 
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
 
-        $Peers.addMock({
+        Peers.addMock({
             tread: function (load, wear) {
                 switch (i) {
                 case 0:
@@ -57,19 +57,19 @@
         i = 0;
         foo.to(bar, 5);
 
-        $Peers.removeMocks();
+        Peers.removeMocks();
     });
 
     test("Connecting", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
         expect(8);
 
-        var foo = $Node.create('foo'),
-            bar = $Node.create('bar'),
-            car = $Node.create('car');
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
+            car = Node.create('car');
 
-        $Peers.addMock({
+        Peers.addMock({
             tread: function (load, wear) {
                 // TODO: test is crude, should be refined
                 ok(load in {foo: 1, car: 1, bar: 1}, "Peer added");
@@ -81,60 +81,60 @@
         // 2x2 calls Peer.tread for each node listed
         foo.to(bar, car);
 
-        $Peers.removeMocks();
+        Peers.removeMocks();
     });
 
     test("Change handler", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
         expect(2);
 
-        var foo = $Node.create('foo'),
-            bar = $Node.create('bar'),
-            car = $Node.create('car');
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
+            car = Node.create('car');
 
-        $Node.handler = function (data) {
+        Node.handler = function (data) {
             deepEqual(
                 data,
                 {
-                    foo: $node('foo'),
-                    bar: $node('bar'),
-                    car: $node('car')
+                    foo: $('foo'),
+                    bar: $('bar'),
+                    car: $('car')
                 },
                 "Change handler called with 3 nodes"
             );
         };
 
-        $node('foo').to(
-            $node('bar'),
-            $node('car')
+        $('foo').to(
+            $('bar'),
+            $('car')
         );
 
-        $Node.handler = function (data) {
+        Node.handler = function (data) {
             deepEqual(
                 data,
                 {
-                    bar: $node('bar'),
-                    car: $node('car')
+                    bar: $('bar'),
+                    car: $('car')
                 },
                 "Change handler called with 2 nodes"
             );
         };
 
-        $node('car').to(
-            $node('bar'),
+        $('car').to(
+            $('bar'),
             4
         );
 
-        $Node.handler = null;
+        Node.handler = null;
     });
 
     test("toJSON", function () {
-        $Node.graph.reset();
+        Node.graph.reset();
 
-        var node = $node('bar')
-            .to($node('hello'), 5)
-            .to($node('foo'), 4);
+        var node = $('bar')
+            .to($('hello'), 5)
+            .to($('foo'), 4);
 
         deepEqual(Object.keys(node.toJSON()), ['hello', 'foo'], "Node peer loads sent to JSON");
 
@@ -149,25 +149,25 @@
         var nodeJSON = {
             },
             load = 'test',
-            node = $Node.create(load);
+            node = Node.create(load);
 
         expect(3);
 
-        $Peers.addMock({
+        Peers.addMock({
             fromJSON: function (peersJSON) {
                 ok(true, "Peers being built from JSON");
                 deepEqual(peersJSON, {}, "JSON data for peers");
-                return $Peers.create();
+                return Peers.create();
             }
         });
 
         deepEqual(
-            $Node.fromJSON(load, nodeJSON),
+            Node.fromJSON(load, nodeJSON),
             node,
             "Node re-initialized from JSON"
         );
 
-        $Peers.removeMocks();
+        Peers.removeMocks();
     });
 }(
     prime.Node,

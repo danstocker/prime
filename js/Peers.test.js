@@ -1,5 +1,5 @@
 /*global prime, mocks, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Peers, $utils, $Peer, $Index) {
+(function (Peers, utils, Peer, Index) {
     module("Peers");
 
     test("Addition", function () {
@@ -8,33 +8,33 @@
 
         expect(7); // 2x2 from mocks
 
-        $Index.addMock({
+        Index.addMock({
             add: function (load, weight) {
                 equal(load, 'hello', "Peer load");
                 equal(weight, 2, "Peer tread");
             }
         });
 
-        peer = $Peer.create(load, 2);
-        peers = $Peers.create()
+        peer = Peer.create(load, 2);
+        peers = Peers.create()
             .add(peer);
         equal(peers.lookup.hello, peer, "Peer added to by-load buffer");
 
-        peers = $Peers.create()
+        peers = Peers.create()
             .tread(load, 2);
         equal(peers.lookup.hello.load, load, "Node added to by-load buffer");
         equal(peers.lookup.hello.tread, 2, "Newly added node's tread is 1 (default)");
 
-        $Index.removeMocks();
+        Index.removeMocks();
     });
 
     test("Modification", function () {
-        var peers = $Peers.create(),
+        var peers = Peers.create(),
             i = 0;
 
         expect(5); // 2x .add(), 1x .remove()
 
-        $Index.addMock({
+        Index.addMock({
             remove: function (load) {
                 equal(load, 'load', "Removing load from index");
                 return this;
@@ -50,33 +50,33 @@
             .tread('load', 1)
             .tread('load', 2);
 
-        $Index.removeMocks();
+        Index.removeMocks();
     });
 
     test("Querying", function () {
-        var peers = $Peers.create()
-                .add($Peer.create('foo', 1))
-                .add($Peer.create('bar', 1))
-                .add($Peer.create('hello', 1)),
+        var peers = Peers.create()
+                .add(Peer.create('foo', 1))
+                .add(Peer.create('bar', 1))
+                .add(Peer.create('hello', 1)),
             next = peers.random();
 
-        equal($Peer.isPrototypeOf(next), true, "Random returns Peer object");
+        equal(Peer.isPrototypeOf(next), true, "Random returns Peer object");
         ok(next.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");
     });
 
     test("Miscellaneous", function () {
         expect(1);
 
-        $Index.addMock({
+        Index.addMock({
             rebuild: function () {
                 ok(true, "Weighted index rebuilt");
             }
         });
 
-        $Peers.create()
+        Peers.create()
             .rebuildIndex();
 
-        $Index.removeMocks();
+        Index.removeMocks();
     });
 
     test("fromJSON", function () {
@@ -88,24 +88,24 @@
                     tread: 4
                 }
             },
-            peers = $Peers.create()
-                .add($Peer.create('hello', 5))
-                .add($Peer.create('foo', 4));
+            peers = Peers.create()
+                .add(Peer.create('hello', 5))
+                .add(Peer.create('foo', 4));
 
-        $Peer.addMock({
+        Peer.addMock({
             fromJSON: function (load, json) {
                 ok(true, "Peer being built from JSON");
-                return $Peer.create(load, json.tread);
+                return Peer.create(load, json.tread);
             }
         });
 
         deepEqual(
-            $Peers.fromJSON(peersJSON),
+            Peers.fromJSON(peersJSON),
             peers,
             "Peers re-initialized from JSON"
         );
 
-        $Peer.removeMocks();
+        Peer.removeMocks();
     });
 }(
     prime.Peers,
