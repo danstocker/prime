@@ -13,15 +13,15 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
         .addMethod({
             init: function () {
                 /**
-                 * List of peers in order identical to _index.
+                 * List of peers in order identical to _totals.
                  * @type {number[]}
                  * @private
                  */
                 this._weights = [];
 
                 /**
-                 * Sorted index of total weights.
-                 * Total weight is the cumulative weight of all slots
+                 * Sorted index of total weights of preceding entries.
+                 * Total weight is the cumulative weight of all slots.
                  * @type {number[]}
                  * @private
                  */
@@ -42,17 +42,24 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
 
                 /**
                  * Associates loads with their positions in the index.
+                 * (Both loads and index positions are unique.)
                  * @type {Object}
                  * @private
                  */
                 this._lookup = {};
 
                 /**
-                 * Lookup for empty index spots indexed by weight first, then by position in _peers.
+                 * Lookup for empty index entries first by weight, then by index position.
+                 * Incoming entries first check here for a suitable position.
                  * @type {Object}
                  * @private
                  */
                 this._slots = {};
+
+                /**
+                 * Number of empty slots.
+                 * @type {Number}
+                 */
                 this.slotCount = 0;
             }
         }).addPrivateMethod({
@@ -60,8 +67,8 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
              * Performs binary search in the index.
              * @this {number[]} Array to perform search on.
              * @param value {number} Value searched.
-             * @param [start] {number} Start index of search range. Default: 0.
-             * @param [end] {number} Ending index of search range. Default: this.length - 1.
+             * @param [start] {number} Start position of search range. Default: 0.
+             * @param [end] {number} Ending position of search range. Default: this.length - 1.
              * @private
              * @static
              */
@@ -94,11 +101,10 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
              * Adds index entry.
              * @param load {string} Entry load.
              * @param weight {number} Entry weight.
-             * @return {number} Position of (new) entry in the index.
              */
             add: function (load, weight) {
                 var slots = this._slots,
-                    pos; // position of the new entry (in _weights and _totals)
+                    pos; // position of new entry in the array buffers
 
                 if (slots.hasOwnProperty(weight)) {
                     // there is an available empty slot
@@ -108,12 +114,12 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
                     this._loads[pos] = load;
                     this._lookup[load] = parseInt(pos, 10);
 
-                    // removing position from slots
+                    // removing slot
                     delete slots[weight][pos];
+                    this.slotCount--;
                     if ($utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
-                        this.slotCount--;
                     }
                 } else {
                     // no empty spot available
@@ -129,7 +135,7 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
             },
 
             /**
-             * Removes entry from index by marking its position as empty.
+             * Removes entry from index by adding position to slots.
              * @param load {string} Load of entry to be removed.
              */
             remove: function (load) {
@@ -156,7 +162,7 @@ troop.promise(prime, 'Index', function (ns, className, $utils) {
              */
             rebuild: function () {
                 if (this.slotCount === 0) {
-                    // there are no empty slots, compaction in unnecessary
+                    // there are no empty slots, rebuild is unnecessary
                     return this;
                 }
 
