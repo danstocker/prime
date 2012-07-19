@@ -85,7 +85,7 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                 } else if (this[end] <= value) {
                     // end of range hit
                     return end;
-                } else if (end - start === 1) {
+                } else if (end - start <= 1) {
                     // between two adjacent values
                     return start;
                 } else if (hit > value) {
