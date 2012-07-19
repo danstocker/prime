@@ -6,7 +6,7 @@
         var load = 'hello',
             peers, peer;
 
-        expect(7); // 2x2 from mocks
+        expect(8); // 2x2 from mocks
 
         Index.addMock({
             add: function (load, weight) {
@@ -19,6 +19,7 @@
         peers = Peers.create()
             .add(peer);
         equal(peers.lookup.hello, peer, "Peer added to by-load buffer");
+        equal(peers.count, 1, "Peer count");
 
         peers = Peers.create()
             .tread(load, 2);

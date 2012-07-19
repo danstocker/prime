@@ -33,6 +33,12 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
                 this.lookup = {};
 
                 /**
+                 * Total number of peers in lookup.
+                 * @type {Number}
+                 */
+                this.count = 0;
+
+                /**
                  * Weighted index of peer information.
                  * @type {prime.Index}
                  * @private
@@ -52,6 +58,7 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
                 if (!this.lookup.hasOwnProperty(peer.load)) {
                     // adding peer to peer registry
                     this.lookup[peer.load] = peer;
+                    this.count++;
 
                     // adding peer details to index
                     this._index.add(peer.load, peer.tread);
