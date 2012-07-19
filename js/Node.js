@@ -78,8 +78,18 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
              * @returns {prime.Node}
              */
             hop: function () {
+                if (!this.peers.count) {
+                    // node has no peers, hops to itself
+                    return this;
+                }
+
+                /**
+                 * Taking random peer.
+                 * @see prime.Peers.random
+                 */
                 var next = self.graph.nodes[this.peers.random().load];
 
+                // making another jump at chance
                 if (Math.random() < self.reach) {
                     next = next.hop();
                 }

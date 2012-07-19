@@ -129,6 +129,14 @@
         Node.handler = null;
     });
 
+    test("Hop", function () {
+        Node.graph.reset();
+
+        var node = $('test');
+
+        equal(node.hop(), node, "Unconnected node hops to self");
+    });
+
     test("toJSON", function () {
         Node.graph.reset();
 
