@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Graph, $Node, $node, $Peers) {
+(function ($Graph, $Node, $, $Peers) {
     module("Graph");
 
     test("Index", function () {
@@ -7,10 +7,10 @@
 
         $Graph.reset();
 
-        $node('foo').to(
-            $node('bar'),
-            $node('hello'),
-            $node('world')
+        $('foo').to(
+            $('bar'),
+            $('hello'),
+            $('world')
         );
 
         $Peers.addMock({
@@ -55,17 +55,17 @@
     test("Serialization integration", function () {
         $Graph.reset();
 
-        $node('food').to(
-            $node('fruit').to(
-                $node('apple'),
-                $node('pear')),
-            $node('turkey'));
-        $node('animal').to(
-            $node('bird').to(
-                $node('turkey')),
-            $node('feline').to(
-                $node('cat'),
-                $node('lion')));
+        $('food').to(
+            $('fruit').to(
+                $('apple'),
+                $('pear')),
+            $('turkey'));
+        $('animal').to(
+            $('bird').to(
+                $('turkey')),
+            $('feline').to(
+                $('cat'),
+                $('lion')));
 
         var original =  $Graph.nodes,
             json = JSON.stringify($Graph),
@@ -77,6 +77,6 @@
 }(
     prime.Graph,
     prime.Node,
-    prime.node,
+    prime.$,
     prime.Peers
 ));

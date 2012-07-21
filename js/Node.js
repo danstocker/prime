@@ -44,6 +44,13 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
              * @param [peers] {prime.Peers} Initial node peers.
              */
             init: function (load, peers) {
+                // checking node in registry
+                var nodes = self.graph.nodes;
+                if (nodes.hasOwnProperty(load)) {
+                    // node exists in lookup, fetching
+                    return nodes[load];
+                }
+
                 /**
                  * String wrapped inside node.
                  * @type {string}
@@ -161,23 +168,13 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
     return self;
 }, prime.Peers, prime.Graph);
 
-troop.promise(prime, 'node', function () {
+troop.promise(prime, '$', function () {
     /**
      * Retrieves a node from the graph or creates a new one.
      * @param load {string} Node load.
      * @return {prime.Node}
      */
-    return function (load) {
-        // shortcuts and local variable
-        var Node = prime.Node,
-            nodes = Node.graph.nodes;
-
-        if (nodes.hasOwnProperty(load)) {
-            // node exists in lookup, fetching
-            return nodes[load];
-        } else {
-            // new load, creating node
-            return Node.create(load);
-        }
+    return prime.$ = function (load) {
+        return prime.Node.create(load);
     };
 });

@@ -180,5 +180,5 @@
 }(
     prime.Node,
     prime.Peers,
-    prime.node
+    prime.$
 ));
