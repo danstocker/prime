@@ -26,25 +26,25 @@ Usage
 ### Building the graph
 
 ```javascript
-var node = prime.node;
-node('food').to(
-    node('fruit').to(
-        node('apple'),
-        node('pear')),
-    node('turkey'));
-node('animal').to(
-    node('bird').to(
-        node('turkey')),
-    node('feline').to(
-        node('cat'),
-        node('lion')));
+var $ = prime.$;
+$('food').to(
+    $('fruit').to(
+        $('apple'),
+        $('pear')),
+    $('turkey'));
+$('animal').to(
+    $('bird').to(
+        $('turkey')),
+    $('feline').to(
+        $('cat'),
+        $('lion')));
 ```
 
 ### Modifying the graph
 
 ```javascript
 // adds 3 to edge weight between 'food' and 'fruit'
-node('food').to(node('fruit'), 3);
+$('food').to($('fruit'), 3);
 ```
 
 ### Hopping
@@ -52,5 +52,5 @@ node('food').to(node('fruit'), 3);
 Hopping is a series of semi-random jumps between connected nodes.
 
 ```javascript
-var found = node('food').hop().load; // one of all connected nodes
+var found = $('food').hop().load; // one of all connected nodes
 ```
