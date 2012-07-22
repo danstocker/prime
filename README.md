@@ -12,7 +12,7 @@ In the graph below, a hop from *fruit* would most likely lead to *food*, then *a
 Requires
 --------
 
-- [Troop 0.1.3](https://github.com/production-minds/troop): for OOP
+- [Troop 0.1.4](https://github.com/production-minds/troop): for OOP
 
 Examples
 --------
