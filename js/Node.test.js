@@ -84,51 +84,6 @@
         Peers.removeMocks();
     });
 
-    test("Change handler", function () {
-        Node.graph.reset();
-
-        expect(2);
-
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
-            car = Node.create('car');
-
-        Node.handler = function (data) {
-            deepEqual(
-                data,
-                {
-                    foo: $('foo'),
-                    bar: $('bar'),
-                    car: $('car')
-                },
-                "Change handler called with 3 nodes"
-            );
-        };
-
-        $('foo').to(
-            $('bar'),
-            $('car')
-        );
-
-        Node.handler = function (data) {
-            deepEqual(
-                data,
-                {
-                    bar: $('bar'),
-                    car: $('car')
-                },
-                "Change handler called with 2 nodes"
-            );
-        };
-
-        $('car').to(
-            $('bar'),
-            4
-        );
-
-        Node.handler = null;
-    });
-
     test("Hop", function () {
         Node.graph.reset();
 
