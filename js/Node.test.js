@@ -2,16 +2,45 @@
 (function (Node, Peers, $) {
     module("Node");
 
-    test("Creation", function () {
+    function reset() {
         Node.graph.reset();
+    }
 
-        var hello = Node.create('hello');
+    test("Creation", function () {
+        var hello,
+            node,
+            peers;
 
-        equal(hello.load, 'hello', "Load of created node");
+        expect(5);
+
+        reset();
+        hello = Node.create('hello');
+        equal(hello.load, 'hello', "Single new node");
+
+        node = Node.create('hello');
+        equal(node, hello, "Single existing node");
+
+        reset();
+        peers = Peers.create();
+        node = Node.create('hello', peers);
+        equal(node.peers, peers, "Single node with pre-defined peers");
+
+        Node.addMock({
+            to: function () {
+                ok(true, "Node.to called");
+            }
+        });
+
+        // 2x1 calls to Node.to
+        node = Node.create('hello',
+            Node.create('foo'),
+            Node.create('bar'));
+
+        Node.removeMocks();
     });
 
     test("Node accessor", function () {
-        Node.graph.reset();
+        reset();
 
         expect(1);
 
@@ -29,7 +58,7 @@
     });
 
     test("Strengthening", function () {
-        Node.graph.reset();
+        reset();
 
         expect(5);
 
@@ -61,7 +90,7 @@
     });
 
     test("Connecting", function () {
-        Node.graph.reset();
+        reset();
 
         expect(8);
 
@@ -78,14 +107,16 @@
         });
 
         // adding as argument list
-        // 2x2 calls Peer.tread for each node listed
-        foo.to(bar, car);
+        // 2x2 calls to Peer.tread for each node listed
+        foo
+            .to(bar)
+            .to(car);
 
         Peers.removeMocks();
     });
 
     test("Hop", function () {
-        Node.graph.reset();
+        reset();
 
         var node = $('test');
 
@@ -93,7 +124,7 @@
     });
 
     test("toJSON", function () {
-        Node.graph.reset();
+        reset();
 
         var node = $('bar')
             .to($('hello'), 5)

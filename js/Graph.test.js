@@ -7,7 +7,7 @@
 
         $Graph.reset();
 
-        $('foo').to(
+        $('foo',
             $('bar'),
             $('hello'),
             $('world')
@@ -55,19 +55,19 @@
     test("Serialization integration", function () {
         $Graph.reset();
 
-        $('food').to(
-            $('fruit').to(
+        $('food',
+            $('fruit',
                 $('apple'),
                 $('pear')),
             $('turkey'));
-        $('animal').to(
-            $('bird').to(
+        $('animal',
+            $('bird',
                 $('turkey')),
-            $('feline').to(
+            $('feline',
                 $('cat'),
                 $('lion')));
 
-        var original =  $Graph.nodes,
+        var original = $Graph.nodes,
             json = JSON.stringify($Graph),
             rebuilt = $Graph.fromJSON(JSON.parse(json)).nodes;
 

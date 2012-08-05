@@ -32,32 +32,46 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
 
             /**
              * Initializes node.
+             * Takes a load string, and either a peers object, or a series of nodes.
              * @constructs
              * @param load {string} Node load.
              * @param [peers] {prime.Peers} Initial node peers.
              */
             init: function (load, peers) {
+                var that = this,
+                    nodes,
+                    i, node;
+
                 // checking node in registry
-                var nodes = self.graph.nodes;
+                nodes = self.graph.nodes;
                 if (nodes.hasOwnProperty(load)) {
                     // node exists in lookup, fetching
-                    return nodes[load];
+                    that = nodes[load];
+                } else {
+                    // node is new
+                    that.load = load;
+
+                    // registering in graph
+                    nodes[load] = that;
                 }
 
-                /**
-                 * String wrapped inside node.
-                 * @type {string}
-                 */
-                this.load = load;
+                // adding peers
+                if (Peers.isPrototypeOf(peers)) {
+                    that.peers = peers;
+                } else {
+                    that.peers = Peers.create();
 
-                /**
-                 * Collection of nodes connected to current node
-                 * @type {prime.Peers}
-                 */
-                this.peers = peers || Peers.create();
+                    // adding nodes as peers when supplied
+                    for (i = 0; i < arguments.length; i++) {
+                        node = arguments[i];
+                        if (self.isPrototypeOf(node)) {
+                            that.to(node);
+                        }
+                    }
+                }
 
-                // register in graph
-                self.graph.nodes[load] = this;
+                // must return because
+                return that;
             },
 
             //////////////////////////////
@@ -98,25 +112,17 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
             },
 
             /**
-             * Strengthens connection weight for a series of peer nodes.
+             * Strengthens connection weight between this node and remote node.
+             * @param remote {prime.Node}
+             * @param [forwardWear] {number}
+             * @param [backwardsWear] {number}
              */
-            to: function (/* node1, node2, node3, ... wear */) {
-                var last = arguments.length - 1,
-                    node, wear,
-                    i;
+            to: function (remote, forwardWear, backwardsWear) {
+                backwardsWear = backwardsWear || forwardWear;
 
-                if (typeof arguments[last] === 'number') {
-                    wear = arguments[last];
-                    last--;
-                }
-
-                for (i = 0; i <= last; i++) {
-                    node = arguments[i];
-
-                    // updating peer tread in both directions
-                    this.peers.tread(node.load, wear);
-                    node.peers.tread(this.load, wear);
-                }
+                // updating peer tread in both directions
+                this.peers.tread(remote.load, forwardWear);
+                remote.peers.tread(this.load, backwardsWear);
 
                 return this;
             },
@@ -151,11 +157,11 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
 
 troop.promise(prime, '$', function () {
     /**
-     * Retrieves a node from the graph or creates a new one.
+     * Shortcut to Node.create.
      * @param load {string} Node load.
      * @return {prime.Node}
      */
-    return prime.$ = function (load) {
-        return prime.Node.create(load);
+    return prime.$ = function () {
+        return prime.Node.create.apply(prime.Node, arguments);
     };
 });
