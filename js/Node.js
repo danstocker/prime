@@ -38,7 +38,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
              * @param [peers] {prime.Peers} Initial node peers.
              */
             init: function (load, peers) {
-                var that = this,
+                var that,
                     nodes,
                     i, node;
 
@@ -49,24 +49,31 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
                     that = nodes[load];
                 } else {
                     // node is new
-                    that.load = load;
+                    that = this;
+
+                    /**
+                     * String wrapped inside node.
+                     * @type {string}
+                     */
+                    this.load = load;
+
+                    /**
+                     * Collection of nodes connected to current node
+                     * @type {prime.Peers}
+                     */
+                    this.peers = Peers.isPrototypeOf(peers) ?
+                        peers :
+                        Peers.create();
 
                     // registering in graph
-                    nodes[load] = that;
+                    nodes[load] = this;
                 }
 
-                // adding peers
-                if (Peers.isPrototypeOf(peers)) {
-                    that.peers = peers;
-                } else {
-                    that.peers = Peers.create();
-
-                    // adding nodes as peers when supplied
-                    for (i = 0; i < arguments.length; i++) {
-                        node = arguments[i];
-                        if (self.isPrototypeOf(node)) {
-                            that.to(node);
-                        }
+                // adding nodes as peers when supplied
+                for (i = 1; i < arguments.length; i++) {
+                    node = arguments[i];
+                    if (self.isPrototypeOf(node)) {
+                        that.to(node);
                     }
                 }
 

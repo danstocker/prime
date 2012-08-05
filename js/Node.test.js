@@ -11,7 +11,7 @@
             node,
             peers;
 
-        expect(5);
+        expect(6);
 
         reset();
         hello = Node.create('hello');
@@ -24,6 +24,9 @@
         peers = Peers.create();
         node = Node.create('hello', peers);
         equal(node.peers, peers, "Single node with pre-defined peers");
+
+        node = Node.create('hello', Peers.create());
+        equal(node.peers, peers, "Peers object cannot be overwritten");
 
         Node.addMock({
             to: function () {
