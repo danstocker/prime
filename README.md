@@ -27,15 +27,15 @@ Usage
 
 ```javascript
 var $ = prime.$;
-$('food').to(
-    $('fruit').to(
+$('food',
+    $('fruit',
         $('apple'),
         $('pear')),
     $('turkey'));
-$('animal').to(
-    $('bird').to(
+$('animal',
+    $('bird',
         $('turkey')),
-    $('feline').to(
+    $('feline',
         $('cat'),
         $('lion')));
 ```
