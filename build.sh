@@ -31,8 +31,8 @@ js/utils.js \
 js/Index.js \
 js/Peer.js \
 js/Peers.js \
-js/Graph.js \
 js/Node.js \
+js/Graph.js \
 js/exports.js \
 > "build/$NAME.js"
 

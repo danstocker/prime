@@ -2,28 +2,10 @@
 (function (Graph, Node, $, Peers) {
     module("Graph");
 
-    var graph = $.graph;
-
-    test("Node accessor", function () {
-        expect(1);
-
-        // testing addition
-        Node.addMock({
-            create: function (load) {
-                equal(load, 'hello', "Node created");
-                return this;
-            }
-        });
-
-        $('hello');
-
-        Node.removeMocks();
-    });
-
     test("Index", function () {
         expect(4);
 
-        graph.reset();
+        Graph.reset();
 
         $('foo',
             $('bar'),
@@ -37,7 +19,7 @@
             }
         });
 
-        graph.rebuildIndexes();
+        Graph.rebuildIndexes();
 
         Peers.removeMocks();
     });
@@ -52,7 +34,7 @@
             }
         });
 
-        graph.fromJSON({
+        Graph.fromJSON({
             hello: {
                 load: 'hello',
                 peers: {}
@@ -71,7 +53,7 @@
     });
 
     test("Serialization integration", function () {
-        graph.reset();
+        Graph.reset();
 
         $('food',
             $('fruit',
@@ -85,9 +67,9 @@
                 $('cat'),
                 $('lion')));
 
-        var original = graph.nodes,
-            json = JSON.stringify(graph),
-            rebuilt = graph.fromJSON(JSON.parse(json)).nodes;
+        var original = Node.nodes,
+            json = JSON.stringify(Graph),
+            rebuilt = Graph.fromJSON(JSON.parse(json)).nodes;
 
         notEqual(rebuilt, original, "Rebuilt registry is different object");
         deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");

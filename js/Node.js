@@ -13,6 +13,13 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
     var self = prime.Node = troop.base.extend()
         .addPublic({
             /**
+             * Lookup for all nodes in the system.
+             * @static
+             * @type {object}
+             */
+            nodes: {},
+
+            /**
              * Probability of sub-sequential hops.
              * Must be 0 < reach < 1.
              * @static
@@ -27,21 +34,20 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
              * Initializes node.
              * @constructor
              * @param load {string} Node load.
-             * @param graph {prime.Graph} Host graph.
              * @param [peers] {prime.Peers} Initial node peers.
              */
-            init: function (load, graph, peers) {
+            init: function (load, peers) {
+                var nodes = self.nodes;
+
+                if (nodes.hasOwnProperty(load)) {
+                    return nodes[load];
+                }
+
                 /**
                  * String wrapped inside node.
                  * @type {string}
                  */
                 this.load = load;
-
-                /**
-                 * Reference to graph.
-                 * @type {prime.Graph}
-                 */
-                this.graph = graph;
 
                 /**
                  * Collection of nodes connected to current node
@@ -50,6 +56,31 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
                 this.peers = Peers.isPrototypeOf(peers) ?
                     peers :
                     Peers.create();
+
+                // storing node in registry
+                nodes[load] = this;
+            },
+
+            /**
+             * Accesses a node in the graph. Creates it on demand.
+             * @param load {string} Node load.
+             * @return {prime.Node} A node in the graph.
+             * @see prime.Node.init
+             * @static
+             */
+            $: function (load /*, node1, node2, ...*/) {
+                var node = self.create(load),
+                    i, remoteNode;
+
+                // connecting node to remotes
+                for (i = 1; i < arguments.length; i++) {
+                    remoteNode = arguments[i];
+                    if (self.isPrototypeOf(remoteNode)) {
+                        node.to(remoteNode);
+                    }
+                }
+
+                return node;
             },
 
             //////////////////////////////
@@ -79,7 +110,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
                  * Taking random peer.
                  * @see prime.Peers.random
                  */
-                var next = this.graph.nodes[this.peers.random().load];
+                var next = self.nodes[this.peers.random().load];
 
                 // making another jump at chance
                 if (Math.random() < self.reach) {
@@ -114,19 +145,17 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
 
             /**
              * Reconstructs Node object from JSON data.
-             * @static
              * @param load {string}
-             * @param graph {prime.Graph}
-             * @see prime.Node.init
              * @param json {object} De-serialized JSON.
              * @param json.load {string}
              * @param json.peers {object}
              * @return {prime.Node}
+             * @static
+             * @see prime.Node.init
              */
-            fromJSON: function (load, graph, json) {
+            fromJSON: function (load, json) {
                 return self.create(
                     load,
-                    graph,
 
                     // initializing peers form JSON
                     Peers.fromJSON(json)
@@ -136,3 +165,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
 
     return self;
 }, prime.Peers);
+
+troop.promise(prime, '$', function () {
+    return prime.Node.$;
+});
