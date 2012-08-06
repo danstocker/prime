@@ -25,25 +25,28 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
              * @constructs
              */
             init: function () {
-                /**
-                 * Peer objects indexed by load.
-                 * @type {Object}
-                 * @private
-                 */
-                this.lookup = {};
-
-                /**
-                 * Total number of peers in lookup.
-                 * @type {Number}
-                 */
-                this.count = 0;
-
-                /**
-                 * Weighted index of peer information.
-                 * @type {prime.Index}
-                 * @private
-                 */
-                this._index = Index.create();
+                this
+                    .addConstant({
+                        /**
+                         * Peer objects indexed by load.
+                         * @type {Object}
+                         * @private
+                         */
+                        lookup: {}
+                    }).addPrivateConstant({
+                        /**
+                         * Weighted index of peer information.
+                         * @type {prime.Index}
+                         * @private
+                         */
+                        _index: Index.create()
+                    }).addPublic({
+                        /**
+                         * Total number of peers in lookup.
+                         * @type {Number}
+                         */
+                        count: 0
+                    });
             },
 
             //////////////////////////////

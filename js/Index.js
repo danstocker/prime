@@ -12,55 +12,58 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
     var self = prime.Index = troop.base.extend()
         .addMethod({
             init: function () {
-                /**
-                 * List of peers in order identical to _totals.
-                 * @type {number[]}
-                 * @private
-                 */
-                this._weights = [];
+                this
+                    .addPrivate({
+                        /**
+                         * List of peers in order identical to _totals.
+                         * @type {number[]}
+                         * @private
+                         */
+                        _weights: [],
 
-                /**
-                 * Sorted index of total weights of preceding entries.
-                 * Total weight is the cumulative weight of all slots.
-                 * @type {number[]}
-                 * @private
-                 */
-                this._totals = [];
+                        /**
+                         * Sorted index of total weights of preceding entries.
+                         * Total weight is the cumulative weight of all slots.
+                         * @type {number[]}
+                         * @private
+                         */
+                        _totals: [],
 
-                /**
-                 * Next total weight. Equals to cumulative weight of all entries.
-                 * @type {Number}
-                 */
-                this.nextTotal = 0;
+                        /**
+                         * List of loads.
+                         * @type {string[]}
+                         * @private
+                         */
+                        _loads: [],
 
-                /**
-                 * List of loads.
-                 * @type {string[]}
-                 * @private
-                 */
-                this._loads = [];
+                        /**
+                         * Associates loads with their positions in the index.
+                         * (Both loads and index positions are unique.)
+                         * @type {Object}
+                         * @private
+                         */
+                        _lookup: {},
 
-                /**
-                 * Associates loads with their positions in the index.
-                 * (Both loads and index positions are unique.)
-                 * @type {Object}
-                 * @private
-                 */
-                this._lookup = {};
+                        /**
+                         * Lookup for empty index entries first by weight, then by index position.
+                         * Incoming entries first check here for a suitable position.
+                         * @type {Object}
+                         * @private
+                         */
+                        _slots: {}
+                    }).addPublic({
+                        /**
+                         * Next total weight. Equals to cumulative weight of all entries.
+                         * @type {Number}
+                         */
+                        nextTotal: 0,
 
-                /**
-                 * Lookup for empty index entries first by weight, then by index position.
-                 * Incoming entries first check here for a suitable position.
-                 * @type {Object}
-                 * @private
-                 */
-                this._slots = {};
-
-                /**
-                 * Number of empty slots.
-                 * @type {Number}
-                 */
-                this.slotCount = 0;
+                        /**
+                         * Number of empty slots.
+                         * @type {Number}
+                         */
+                        slotCount: 0
+                    });
             }
         }).addPrivateMethod({
             /**

@@ -20,17 +20,20 @@ troop.promise(prime, 'Peer', function () {
              * @param [tread] {number} Initial peer tread.
              */
             init: function (load, tread) {
-                /**
-                 * Peer node,
-                 * @type {string}
-                 */
-                this.load = load;
-
-                /**
-                 * Weariness (weight) of connection to peer node.
-                 * @type {Number}
-                 */
-                this.tread = tread || 0;
+                this
+                    .addConstant({
+                        /**
+                         * Peer node,
+                         * @type {string}
+                         */
+                        load: load
+                    }).addPublic({
+                        /**
+                         * Weariness (weight) of connection to peer node.
+                         * @type {Number}
+                         */
+                        tread: tread || 0
+                    });
             },
 
             //////////////////////////////

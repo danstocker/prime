@@ -11,14 +11,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
      * @requires prime.Peers
      */
     var self = prime.Node = troop.base.extend()
-        .addPublic({
-            /**
-             * Lookup for all nodes in the system.
-             * @static
-             * @type {object}
-             */
-            nodes: {},
-
+        .addConstant({
             /**
              * Probability of sub-sequential hops.
              * Must be 0 < reach < 1.
@@ -26,6 +19,13 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
              * @type {number}
              */
             reach: 0.5
+        }).addPublic({
+            /**
+             * Lookup for all nodes in the system.
+             * @static
+             * @type {object}
+             */
+            nodes: {}
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -43,19 +43,21 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
                     return nodes[load];
                 }
 
-                /**
-                 * String wrapped inside node.
-                 * @type {string}
-                 */
-                this.load = load;
+                this.addConstant({
+                    /**
+                     * String wrapped inside node.
+                     * @type {string}
+                     */
+                    load: load,
 
-                /**
-                 * Collection of nodes connected to current node
-                 * @type {prime.Peers}
-                 */
-                this.peers = Peers.isPrototypeOf(peers) ?
-                    peers :
-                    Peers.create();
+                    /**
+                     * Collection of nodes connected to current node
+                     * @type {prime.Peers}
+                     */
+                    peers: Peers.isPrototypeOf(peers) ?
+                        peers :
+                        Peers.create()
+                });
 
                 // storing node in registry
                 nodes[load] = this;
