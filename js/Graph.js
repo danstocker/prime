@@ -4,26 +4,30 @@
 /*global prime, troop */
 troop.promise(prime, 'Graph', function () {
     var self = prime.Graph = troop.base.extend()
-        .addPublic({
+        .addMethod({
             /**
-             * System-wide registry of nodes
-             * @static
+             * @constructor
              */
-            nodes: {}
-        }).addMethod({
+            init: function () {
+                /**
+                 * System-wide registry of nodes.
+                 */
+                this.nodes = {};
+            },
+
             /**
              * Resets datastore by emptying the registry.
              * @static
              */
             reset: function () {
-                self.nodes = {};
+                this.nodes = {};
             },
 
             /**
              * Rebuilds weighted indexes for all nodes.
              */
             rebuildIndexes: function () {
-                var nodes = self.nodes,
+                var nodes = this.nodes,
                     load;
                 for (load in nodes) {
                     if (nodes.hasOwnProperty(load)) {
@@ -45,10 +49,11 @@ troop.promise(prime, 'Graph', function () {
              */
             fromJSON: function (json) {
                 var Node = prime.Node,
+                    graph = Node.graph,
                     load;
 
                 // emptying registry
-                self.reset();
+                graph.reset();
 
                 // re-building registry based on json data
                 for (load in json) {
@@ -57,7 +62,7 @@ troop.promise(prime, 'Graph', function () {
                     }
                 }
 
-                return self;
+                return graph;
             }
         });
 

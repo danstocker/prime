@@ -17,7 +17,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
              * @static
              * @type {prime.Graph}
              */
-            graph: Graph
+            graph: Graph.create()
         }).addPublic({
             /**
              * Probability of sub-sequential hops.

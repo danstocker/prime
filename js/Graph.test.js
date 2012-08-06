@@ -1,11 +1,13 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function ($Graph, $Node, $, $Peers) {
+(function (Graph, Node, $, Peers) {
     module("Graph");
+
+    var graph = Node.graph;
 
     test("Index", function () {
         expect(4);
 
-        $Graph.reset();
+        graph.reset();
 
         $('foo',
             $('bar'),
@@ -13,28 +15,28 @@
             $('world')
         );
 
-        $Peers.addMock({
+        Peers.addMock({
             rebuildIndex: function () {
                 ok(true, "Rebuilding index for node");
             }
         });
 
-        $Graph.rebuildIndexes();
+        graph.rebuildIndexes();
 
-        $Peers.removeMocks();
+        Peers.removeMocks();
     });
 
     test("fromJSON", function () {
         expect(3);
 
-        $Node.addMock({
+        Node.addMock({
             fromJSON: function (json) {
                 ok(true, "Node reconstructed from JSON");
-                return $Node.create(json.load);
+                return Node.create(json.load);
             }
         });
 
-        $Graph.fromJSON({
+        graph.fromJSON({
             hello: {
                 load: 'hello',
                 peers: {}
@@ -49,11 +51,11 @@
             }
         });
 
-        $Node.removeMocks();
+        Node.removeMocks();
     });
 
     test("Serialization integration", function () {
-        $Graph.reset();
+        graph.reset();
 
         $('food',
             $('fruit',
@@ -67,9 +69,9 @@
                 $('cat'),
                 $('lion')));
 
-        var original = $Graph.nodes,
-            json = JSON.stringify($Graph),
-            rebuilt = $Graph.fromJSON(JSON.parse(json)).nodes;
+        var original = graph.nodes,
+            json = JSON.stringify(graph),
+            rebuilt = graph.fromJSON(JSON.parse(json)).nodes;
 
         notEqual(rebuilt, original, "Rebuilt registry is different object");
         deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");
