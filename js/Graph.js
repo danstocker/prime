@@ -5,6 +5,9 @@
 troop.promise(prime, 'Graph', function () {
     var self = prime.Graph = troop.base.extend()
         .addMethod({
+            //////////////////////////////
+            // OOP
+
             /**
              * @constructor
              */
@@ -13,6 +16,51 @@ troop.promise(prime, 'Graph', function () {
                  * System-wide registry of nodes.
                  */
                 this.nodes = {};
+            },
+
+            //////////////////////////////
+            // Control
+
+            /**
+             * Adds node to graph.
+             * @param node {prime.Node}
+             */
+            add: function (node) {
+                var nodes = this.nodes,
+                    load = node.load;
+                if (!nodes.hasOwnProperty(load)) {
+                    nodes[load] = node;
+                }
+            },
+
+            /**
+             * Accesses a node in the graph. Creates it on demand.
+             * @param load {string} Node load.
+             * @see prime.Node.init
+             * @return {prime.Node} A node in the graph.
+             */
+            node: function (load /*, node1, node2, ...*/) {
+                var Node = prime.Node,
+                    nodes = this.nodes,
+                    node,
+                    i, remoteNode;
+
+                if (nodes.hasOwnProperty(load)) {
+                    node = nodes[load];
+                } else {
+                    node = Node.create(load, this);
+                    this.add(node);
+                }
+
+                // connecting node to remotes
+                for (i = 1; i < arguments.length; i++) {
+                    remoteNode = arguments[i];
+                    if (Node.isPrototypeOf(remoteNode)) {
+                        node.to(remoteNode);
+                    }
+                }
+
+                return node;
             },
 
             /**
@@ -49,16 +97,13 @@ troop.promise(prime, 'Graph', function () {
              */
             fromJSON: function (json) {
                 var Node = prime.Node,
-                    graph = Node.graph,
+                    graph = self.create(),
                     load;
-
-                // emptying registry
-                graph.reset();
 
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        Node.fromJSON(load, json[load]);
+                        graph.add(Node.fromJSON(load, graph, json[load]));
                     }
                 }
 
@@ -67,4 +112,20 @@ troop.promise(prime, 'Graph', function () {
         });
 
     return self;
+});
+
+troop.promise(prime, '$', function () {
+    /**
+     * Shortcut to Node.create.
+     * @return {prime.Node}
+     */
+    var $ = prime.$ = function () {
+        var graph = $.graph;
+        return graph.node.apply(graph, arguments);
+    };
+
+    // adding graph reference to shortcut function
+    $.graph = prime.Graph.create();
+
+    return $;
 });

@@ -2,7 +2,23 @@
 (function (Graph, Node, $, Peers) {
     module("Graph");
 
-    var graph = Node.graph;
+    var graph = $.graph;
+
+    test("Node accessor", function () {
+        expect(1);
+
+        // testing addition
+        Node.addMock({
+            create: function (load) {
+                equal(load, 'hello', "Node created");
+                return this;
+            }
+        });
+
+        $('hello');
+
+        Node.removeMocks();
+    });
 
     test("Index", function () {
         expect(4);

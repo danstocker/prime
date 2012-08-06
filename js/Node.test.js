@@ -1,9 +1,11 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Node, Peers, $) {
+(function (Graph, Node, Peers) {
     module("Node");
 
+    var graph;
+
     function reset() {
-        Node.graph.reset();
+        graph = Graph.create();
     }
 
     test("Creation", function () {
@@ -11,53 +13,14 @@
             node,
             peers;
 
-        expect(6);
-
         reset();
-        hello = Node.create('hello');
+        hello = Node.create('hello', graph);
         equal(hello.load, 'hello', "Single new node");
-
-        node = Node.create('hello');
-        equal(node, hello, "Single existing node");
 
         reset();
         peers = Peers.create();
-        node = Node.create('hello', peers);
+        node = Node.create('hello', graph, peers);
         equal(node.peers, peers, "Single node with pre-defined peers");
-
-        node = Node.create('hello', Peers.create());
-        equal(node.peers, peers, "Peers object cannot be overwritten");
-
-        Node.addMock({
-            to: function () {
-                ok(true, "Node.to called");
-            }
-        });
-
-        // 2x1 calls to Node.to
-        node = Node.create('hello',
-            Node.create('foo'),
-            Node.create('bar'));
-
-        Node.removeMocks();
-    });
-
-    test("Node accessor", function () {
-        reset();
-
-        expect(1);
-
-        // testing addition
-        Node.addMock({
-            create: function (load) {
-                equal(load, 'hello', "Node created");
-                return this;
-            }
-        });
-
-        $('hello');
-
-        Node.removeMocks();
     });
 
     test("Strengthening", function () {
@@ -65,8 +28,8 @@
 
         expect(5);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
+        var foo = Node.create('foo', graph),
+            bar = Node.create('bar', graph),
             i;
 
         equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
@@ -97,9 +60,9 @@
 
         expect(8);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
-            car = Node.create('car');
+        var foo = Node.create('foo', graph),
+            bar = Node.create('bar', graph),
+            car = Node.create('car', graph);
 
         Peers.addMock({
             tread: function (load, wear) {
@@ -121,7 +84,7 @@
     test("Hop", function () {
         reset();
 
-        var node = $('test');
+        var node = Node.create('test', graph);
 
         equal(node.hop(), node, "Unconnected node hops to self");
     });
@@ -129,9 +92,9 @@
     test("toJSON", function () {
         reset();
 
-        var node = $('bar')
-            .to($('hello'), 5)
-            .to($('foo'), 4);
+        var node = Node.create('bar', graph)
+            .to(Node.create('hello', graph), 5)
+            .to(Node.create('foo', graph), 4);
 
         deepEqual(Object.keys(node.toJSON()), ['hello', 'foo'], "Node peer loads sent to JSON");
 
@@ -146,7 +109,7 @@
         var nodeJSON = {
             },
             load = 'test',
-            node = Node.create(load);
+            node = Node.create(load, graph);
 
         expect(3);
 
@@ -159,7 +122,7 @@
         });
 
         deepEqual(
-            Node.fromJSON(load, nodeJSON),
+            Node.fromJSON(load, graph, nodeJSON),
             node,
             "Node re-initialized from JSON"
         );
@@ -167,7 +130,7 @@
         Peers.removeMocks();
     });
 }(
+    prime.Graph,
     prime.Node,
-    prime.Peers,
-    prime.$
+    prime.Peers
 ));

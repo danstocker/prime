@@ -4,21 +4,14 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, troop */
-troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
+troop.promise(prime, 'Node', function (ns, className, Peers) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
      * @requires prime.Peers
      */
     var self = prime.Node = troop.base.extend()
-        .addConstant({
-            /**
-             * Reference to graph.
-             * @static
-             * @type {prime.Graph}
-             */
-            graph: Graph.create()
-        }).addPublic({
+        .addPublic({
             /**
              * Probability of sub-sequential hops.
              * Must be 0 < reach < 1.
@@ -32,53 +25,31 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
 
             /**
              * Initializes node.
-             * Takes a load string, and either a peers object, or a series of nodes.
-             * @constructs
+             * @constructor
              * @param load {string} Node load.
+             * @param graph {prime.Graph} Host graph.
              * @param [peers] {prime.Peers} Initial node peers.
              */
-            init: function (load, peers) {
-                var that,
-                    nodes,
-                    i, node;
+            init: function (load, graph, peers) {
+                /**
+                 * String wrapped inside node.
+                 * @type {string}
+                 */
+                this.load = load;
 
-                // checking node in registry
-                nodes = self.graph.nodes;
-                if (nodes.hasOwnProperty(load)) {
-                    // node exists in lookup, fetching
-                    that = nodes[load];
-                } else {
-                    // node is new
-                    that = this;
+                /**
+                 * Reference to graph.
+                 * @type {prime.Graph}
+                 */
+                this.graph = graph;
 
-                    /**
-                     * String wrapped inside node.
-                     * @type {string}
-                     */
-                    this.load = load;
-
-                    /**
-                     * Collection of nodes connected to current node
-                     * @type {prime.Peers}
-                     */
-                    this.peers = Peers.isPrototypeOf(peers) ?
-                        peers :
-                        Peers.create();
-
-                    // registering in graph
-                    nodes[load] = this;
-                }
-
-                // adding nodes as peers when supplied
-                for (i = 1; i < arguments.length; i++) {
-                    node = arguments[i];
-                    if (self.isPrototypeOf(node)) {
-                        that.to(node);
-                    }
-                }
-
-                // must return because
-                return that;
+                /**
+                 * Collection of nodes connected to current node
+                 * @type {prime.Peers}
+                 */
+                this.peers = Peers.isPrototypeOf(peers) ?
+                    peers :
+                    Peers.create();
             },
 
             //////////////////////////////
@@ -108,7 +79,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
                  * Taking random peer.
                  * @see prime.Peers.random
                  */
-                var next = self.graph.nodes[this.peers.random().load];
+                var next = this.graph.nodes[this.peers.random().load];
 
                 // making another jump at chance
                 if (Math.random() < self.reach) {
@@ -144,14 +115,18 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
             /**
              * Reconstructs Node object from JSON data.
              * @static
+             * @param load {string}
+             * @param graph {prime.Graph}
+             * @see prime.Node.init
              * @param json {object} De-serialized JSON.
              * @param json.load {string}
              * @param json.peers {object}
              * @return {prime.Node}
              */
-            fromJSON: function (load, json) {
+            fromJSON: function (load, graph, json) {
                 return self.create(
                     load,
+                    graph,
 
                     // initializing peers form JSON
                     Peers.fromJSON(json)
@@ -160,15 +135,4 @@ troop.promise(prime, 'Node', function (ns, className, Peers, Graph) {
         });
 
     return self;
-}, prime.Peers, prime.Graph);
-
-troop.promise(prime, '$', function () {
-    /**
-     * Shortcut to Node.create.
-     * @param load {string} Node load.
-     * @return {prime.Node}
-     */
-    return prime.$ = function () {
-        return prime.Node.create.apply(prime.Node, arguments);
-    };
-});
+}, prime.Peers);
