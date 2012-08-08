@@ -10,7 +10,14 @@ troop.promise(prime, 'Peer', function () {
      * @requires prime.Node
      */
     var self = prime.Peer = troop.base.extend()
-        .addMethod({
+        .addPublic({
+            /**
+             * Total tread across all peers.
+             * @type {number}
+             * @static
+             */
+            totalTread: 0
+        }).addMethod({
             //////////////////////////////
             // OOP
 
@@ -44,8 +51,12 @@ troop.promise(prime, 'Peer', function () {
              * @param [value] {number} Wear amount.
              */
             wear: function (value) {
-                // setting value
-                this.tread += value || 1;
+                // default wear
+                value = value || 1;
+                
+                // setting tread
+                this.tread += value;
+                self.totalTread += value;
 
                 return this;
             },

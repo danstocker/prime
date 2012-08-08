@@ -21,11 +21,18 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
             reach: 0.5
         }).addPublic({
             /**
-             * Lookup for all nodes in the system.
-             * @static
+             * Registry all nodes in the system.
              * @type {object}
+             * @static
              */
-            nodes: {}
+            nodes: {},
+            
+            /**
+             * Total number of nodes.
+             * @type {number}
+             * @static
+             */
+            count: 0
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -59,8 +66,9 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
                         Peers.create()
                 });
 
-                // storing node in registry
-                nodes[load] = this;
+                // adding node to registry
+                self.nodes[load] = this;
+                self.count++;
             },
 
             /**

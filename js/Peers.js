@@ -16,6 +16,13 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
              * @type {number}
              */
             defaultWear: 1
+        }).addPublic({
+            /**
+             * Total number of peers in the system.
+             * @type {number}
+             * @static
+             */
+            count: 0
         }).addMethod({
             //////////////////////////////
             // OOP
@@ -62,6 +69,7 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
                     // adding peer to peer registry
                     this.lookup[peer.load] = peer;
                     this.count++;
+                    self.count++;
 
                     // adding peer details to index
                     this._index.add(peer.load, peer.tread);
