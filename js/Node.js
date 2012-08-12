@@ -26,7 +26,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
              * @static
              */
             nodes: {},
-            
+
             /**
              * Total number of nodes.
              * @type {number}
@@ -73,19 +73,28 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
 
             /**
              * Accesses a node in the graph. Creates it on demand.
-             * @param load {string} Node load.
+             * Arguments may be either nodes or strings (load).
+             * @param node {prime.Node|string} Node (load).
              * @return {prime.Node} A node in the graph.
              * @see prime.Node.init
              * @static
              */
-            $: function (load /*, node1, node2, ...*/) {
-                var node = self.create(load),
-                    i, remoteNode;
+            $: function (node /*, node1, node2, ...*/) {
+                if (typeof node === 'string') {
+                    // current node specified through load
+                    node = self.create(node);
+                }
+
+                var i, remoteNode;
 
                 // connecting node to remotes
                 for (i = 1; i < arguments.length; i++) {
                     remoteNode = arguments[i];
-                    if (self.isPrototypeOf(remoteNode)) {
+                    if (typeof remoteNode === 'string') {
+                        // remote node specified through load
+                        node.to(self.create(remoteNode));
+                    } else if (self.isPrototypeOf(remoteNode)) {
+                        // remote node passed as node object
                         node.to(remoteNode);
                     }
                 }

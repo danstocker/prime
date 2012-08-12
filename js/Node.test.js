@@ -90,7 +90,7 @@
     });
 
     test("Node accessor", function () {
-        expect(5);
+        expect(9);
 
         // testing addition
         Node.addMock({
@@ -117,6 +117,12 @@
         $('hello',
             $('foo'),
             $('bar'));
+
+        // 2x1 calls to Node.to
+        $('hello', 'foo', 'bar');
+
+        // 2x1 calls to Node.to
+        $($('hello'), 'foo', 'bar');
 
         Node.removeMocks();
     });
