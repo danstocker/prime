@@ -10,7 +10,12 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
      * @requires prime.Node
      */
     var self = prime.Index = troop.base.extend()
-        .addMethod({
+        .addPublic({
+            /**
+             * Total number of empty slots across all Index instances.
+             */
+            totalSlotCount: 0
+        }).addMethod({
             init: function () {
                 this
                     .addPrivate({
@@ -120,6 +125,7 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                     // removing slot
                     delete slots[weight][pos];
                     this.slotCount--;
+                    self.totalSlotCount--;
                     if (utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
@@ -156,6 +162,7 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                 }
                 slots[weight][pos] = true;
                 this.slotCount++;
+                self.totalSlotCount++;
 
                 return this;
             },
@@ -173,6 +180,9 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                 var loads = this._loads,
                     weights = this._weights,
                     i, load, weight;
+
+                // decreasing total slot count
+                self.totalSlotCount -= this.slotCount;
 
                 // re-setting buffers
                 this.init();
