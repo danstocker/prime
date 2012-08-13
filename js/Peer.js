@@ -39,8 +39,12 @@ troop.promise(prime, 'Peer', function () {
                          * Weariness (weight) of connection to peer node.
                          * @type {Number}
                          */
-                        tread: tread || 0
+                        tread: 0
                     });
+
+                if (tread) {
+                    this.wear(tread);
+                }
             },
 
             //////////////////////////////
@@ -53,7 +57,7 @@ troop.promise(prime, 'Peer', function () {
             wear: function (value) {
                 // default wear
                 value = value || 1;
-                
+
                 // setting tread
                 this.tread += value;
                 self.totalTread += value;
