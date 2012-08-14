@@ -8,5 +8,5 @@ var prime = {},
 
 // adding Node.js dependencies
 if (typeof exports === 'object' && typeof require === 'function') {
-    troop = require('troop-0.1.4').troop;
+    troop = require('troop-0.1.5').troop;
 }
