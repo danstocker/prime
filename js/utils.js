@@ -8,7 +8,7 @@ troop.promise(prime, 'utils', function () {
     /**
      * @namespace Holds various utility functions.
      */
-    return prime.utils = troop.base.extend()
+    return prime.utils = troop.Base.extend()
         .addMethod({
             /**
              * Tests whether an object is empty.

@@ -6,7 +6,7 @@
  */
 /*global prime, troop */
 troop.promise(prime, 'Graph', function (ns, className, Node) {
-    var self = prime.Graph = troop.base.extend()
+    var self = prime.Graph = troop.Base.extend()
         .addMethod({
             //////////////////////////////
             // Control

@@ -10,7 +10,7 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
      * @class Represents a graph node.
      * @requires prime.Peers
      */
-    var self = prime.Node = troop.base.extend()
+    var self = prime.Node = troop.Base.extend()
         .addConstant({
             /**
              * Probability of sub-sequential hops.

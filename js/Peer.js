@@ -9,7 +9,7 @@ troop.promise(prime, 'Peer', function () {
      * @class Represents connection to another node.
      * @requires prime.Node
      */
-    var self = prime.Peer = troop.base.extend()
+    var self = prime.Peer = troop.Base.extend()
         .addPublic({
             /**
              * Total tread across all peers.

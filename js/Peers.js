@@ -9,7 +9,7 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
      * @requires prime.Peer
      * @requires prime.Node
      */
-    var self = prime.Peers = troop.base.extend()
+    var self = prime.Peers = troop.Base.extend()
         .addConstant({
             /**
              * Default value to be added to peer tread, when none is specified.

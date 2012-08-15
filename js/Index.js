@@ -9,7 +9,7 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
      * @class Represents connection to another node.
      * @requires prime.Node
      */
-    var self = prime.Index = troop.base.extend()
+    var self = prime.Index = troop.Base.extend()
         .addPublic({
             /**
              * Total number of empty slots across all Index instances.
