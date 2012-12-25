@@ -1,4 +1,4 @@
-/*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
+/*global prime, module, test, expect, ok, equal, deepEqual, raises */
 (function (Graph, Node, $, Peers) {
     module("Graph");
 
@@ -71,7 +71,7 @@
             json = JSON.stringify(Graph),
             rebuilt = Graph.fromJSON(JSON.parse(json)).nodes;
 
-        notEqual(rebuilt, original, "Rebuilt registry is different object");
+        ok(rebuilt !== original, "Rebuilt registry is different object");
         deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");
     });
 }(
