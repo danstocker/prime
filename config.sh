@@ -10,7 +10,3 @@ js/Node.js
 js/Graph.js
 js/exports.js
 "
-
-PUSH=(
-kwaia/js/node_modules
-)
