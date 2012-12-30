@@ -4,9 +4,11 @@
 /*global exports, require */
 /** @namespace */
 var prime = {},
+    dessert,
     troop;
 
 // adding Node.js dependencies
 if (typeof exports === 'object' && typeof require === 'function') {
-    troop = require('troop-0.2').troop;
+    dessert = require('dessert-0.2.1').dessert;
+    troop = require('troop-0.2.1').troop;
 }
