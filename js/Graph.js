@@ -5,7 +5,7 @@
  * Such as serialization and de-serialization, and re-initialization.
  */
 /*global prime, troop */
-troop.promise(prime, 'Graph', function (ns, className, Node) {
+troop.promise('prime.Graph', function (prime, className, Node) {
     var self = prime.Graph = troop.Base.extend()
         .addMethod({
             //////////////////////////////

@@ -4,7 +4,7 @@
  * Describes connection between two nodes.
  */
 /*global prime, troop */
-troop.promise(prime, 'Peer', function () {
+troop.promise('prime.Peer', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -17,7 +17,8 @@ troop.promise(prime, 'Peer', function () {
              * @static
              */
             totalTread: 0
-        }).addMethod({
+        })
+        .addMethod({
             //////////////////////////////
             // OOP
 
@@ -34,7 +35,8 @@ troop.promise(prime, 'Peer', function () {
                          * @type {string}
                          */
                         load: load
-                    }).addPublic({
+                    })
+                    .addPublic({
                         /**
                          * Weariness (weight) of connection to peer node.
                          * @type {Number}

@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
+troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
@@ -16,14 +16,16 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
              * @type {number}
              */
             defaultWear: 1
-        }).addPublic({
+        })
+        .addPublic({
             /**
              * Total number of peers in the system.
              * @type {number}
              * @static
              */
             count: 0
-        }).addMethod({
+        })
+        .addMethod({
             //////////////////////////////
             // OOP
 
@@ -40,14 +42,16 @@ troop.promise(prime, 'Peers', function (ns, className, utils, Peer, Index) {
                          * @private
                          */
                         lookup: {}
-                    }).addPrivateConstant({
+                    })
+                    .addPrivateConstant({
                         /**
                          * Weighted index of peer information.
                          * @type {prime.Index}
                          * @private
                          */
                         _index: Index.create()
-                    }).addPublic({
+                    })
+                    .addPublic({
                         /**
                          * Total number of peers in lookup.
                          * @type {Number}

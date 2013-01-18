@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, troop */
-troop.promise(prime, 'Node', function (ns, className, Peers) {
+troop.promise('prime.Node', function (prime, className, Peers) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
@@ -19,7 +19,8 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
              * @type {number}
              */
             reach: 0.5
-        }).addPublic({
+        })
+        .addPublic({
             /**
              * Registry all nodes in the system.
              * @type {object}
@@ -33,7 +34,8 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
              * @static
              */
             count: 0
-        }).addMethod({
+        })
+        .addMethod({
             //////////////////////////////
             // OOP
 
@@ -185,6 +187,6 @@ troop.promise(prime, 'Node', function (ns, className, Peers) {
     return self;
 }, prime.Peers);
 
-troop.promise(prime, '$', function () {
+troop.promise('prime.$', function (prime) {
     return prime.Node.$;
 });

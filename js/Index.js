@@ -4,7 +4,9 @@
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global prime, troop */
-troop.promise(prime, 'Index', function (ns, className, utils) {
+troop.promise('prime.Index', function (prime, className, utils) {
+    console.log(arguments);
+
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -15,7 +17,8 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
              * Total number of empty slots across all Index instances.
              */
             totalSlotCount: 0
-        }).addMethod({
+        })
+        .addMethod({
             init: function () {
                 this
                     .addPrivate({
@@ -56,7 +59,8 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                          * @private
                          */
                         _slots: {}
-                    }).addPublic({
+                    })
+                    .addPublic({
                         /**
                          * Next total weight. Equals to cumulative weight of all entries.
                          * @type {Number}
@@ -104,7 +108,8 @@ troop.promise(prime, 'Index', function (ns, className, utils) {
                     return self._bsearch.call(this, value, pos, end);
                 }
             }
-        }).addMethod({
+        })
+        .addMethod({
             /**
              * Adds index entry.
              * @param load {string} Entry load.
