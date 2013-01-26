@@ -9,7 +9,7 @@
         expect(8); // 2x2 from mocks
 
         Index.addMock({
-            add: function (load, weight) {
+            addEntry: function (load, weight) {
                 equal(load, 'hello', "Peer load");
                 equal(weight, 2, "Peer tread");
             }
@@ -36,11 +36,11 @@
         expect(5); // 2x .add(), 1x .remove()
 
         Index.addMock({
-            remove: function (load) {
+            removeEntry: function (load) {
                 equal(load, 'load', "Removing load from index");
                 return this;
             },
-            add   : function (load, weight) {
+            addEntry   : function (load, weight) {
                 equal(load, 'load', "Adding load to index");
                 equal(weight, [1, 3][i++], "Peer weight");
                 return this;

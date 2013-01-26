@@ -107,7 +107,7 @@ troop.promise('prime.Index', function (prime, className, utils) {
              * @param load {string} Entry load.
              * @param weight {number} Entry weight.
              */
-            add: function (load, weight) {
+            addEntry: function (load, weight) {
                 var slots = this._slots,
                     pos; // position of new entry in the array buffers
 
@@ -143,7 +143,7 @@ troop.promise('prime.Index', function (prime, className, utils) {
              * Removes entry from index by adding position to slots.
              * @param load {string} Load of entry to be removed.
              */
-            remove: function (load) {
+            removeEntry: function (load) {
                 var pos = this._lookup[load],
                     slots = this._slots,
                     weight = this._weights[pos];
@@ -184,7 +184,7 @@ troop.promise('prime.Index', function (prime, className, utils) {
                     load = loads[i];
                     weight = weights[i];
                     if (typeof load !== 'undefined') {
-                        this.add(load, weight);
+                        this.addEntry(load, weight);
                     }
                 }
 

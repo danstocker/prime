@@ -29,7 +29,7 @@
         equal(index.nextTotal, 0, "Next total is initially zero");
         equal(index.slotCount, 0, "Slot count is initially zero");
 
-        index.add('foo', 5);
+        index.addEntry('foo', 5);
         deepEqual(index._weights, [5], "Weights after addition");
         deepEqual(index._totals, [0], "Totals after addition");
         deepEqual(index._loads, ['foo'], "Loads after addition");
@@ -39,14 +39,14 @@
 
     test("Removal", function () {
         var index = Index.create()
-            .add('foo', 5)
-            .add('bar', 1)
-            .add('hello', 2);
+            .addEntry('foo', 5)
+            .addEntry('bar', 1)
+            .addEntry('hello', 2);
 
         deepEqual(index._slots, {}, "Empty slots before removal");
         equal(index.slotCount, 0, "Empty count before removal");
 
-        index.remove('foo');
+        index.removeEntry('foo');
 
         deepEqual(index._weights, [5, 1, 2], "Weights index unchanged after removal");
         deepEqual(index._totals, [0, 5, 6], "Totals index unchanged after removal");
@@ -64,12 +64,12 @@
 
     test("Re-addition", function () {
         var index = Index.create()
-            .add('foo', 5) // 0
-            .add('bar', 1) // 1
-            .add('hello', 2) // 2
-            .add('world', 1)
-            .remove('bar')
-            .remove('world');
+            .addEntry('foo', 5) // 0
+            .addEntry('bar', 1) // 1
+            .addEntry('hello', 2) // 2
+            .addEntry('world', 1)
+            .removeEntry('bar')
+            .removeEntry('world');
 
         deepEqual(index._loads, ['foo', undefined, 'hello', undefined], "Loads before re-addition");
         deepEqual(index._lookup, {'foo': 0, 'hello': 2}, "Lookup before re-addition");
@@ -77,14 +77,14 @@
         equal(index.slotCount, 2, "Slot count before re-addition");
 
         // re-adding one entry
-        index.add('bam', 1);
+        index.addEntry('bam', 1);
         deepEqual(index._loads, ['foo', 'bam', 'hello', undefined], "Loads after re-addition");
         deepEqual(index._lookup, {'foo': 0, 'hello': 2, 'bam': 1}, "Lookup after re-addition");
         deepEqual(index._slots, {1: {3: true}}, "Empty slots after re-addition");
         equal(index.slotCount, 1, "Slot count after re-addition");
 
         // filling all remaining slots
-        index.add('whoop', 1);
+        index.addEntry('whoop', 1);
         deepEqual(index._loads, ['foo', 'bam', 'hello', 'whoop'], "Loads after re-addition");
         deepEqual(index._lookup, {'foo': 0, 'hello': 2, 'bam': 1, 'whoop': 3}, "Lookup after re-addition");
         deepEqual(index._slots, {}, "Empty slots after re-addition");
@@ -93,10 +93,10 @@
 
     test("Rebuilding", function () {
         var index = Index.create()
-            .add('foo', 5) // 0
-            .add('bar', 1) // 1
-            .add('hello', 2) // 2
-            .remove('bar');
+            .addEntry('foo', 5) // 0
+            .addEntry('bar', 1) // 1
+            .addEntry('hello', 2) // 2
+            .removeEntry('bar');
 
         index.rebuild();
 
@@ -111,9 +111,9 @@
 
     test("Querying", function () {
         var index = Index.create()
-            .add('foo', 5)
-            .add('bar', 1)
-            .add('hello', 2);
+            .addEntry('foo', 5)
+            .addEntry('bar', 1)
+            .addEntry('hello', 2);
 
         equal(index.get(4), 'foo', "Load at 4 (inexact)");
         equal(index.get(6), 'hello', "Load at 6 (exact)");
@@ -122,10 +122,10 @@
 
     test("Random query", function () {
         var index = Index.create()
-            .add('foo', 5)
-            .add('bar', 1)
-            .add('hello', 2)
-            .remove('bar');
+            .addEntry('foo', 5)
+            .addEntry('bar', 1)
+            .addEntry('hello', 2)
+            .removeEntry('bar');
 
         ok(index.random() in {'foo': true, 'hello': true}, "Random query yields one of remaining entries");
     });
