@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, dessert, troop, sntls */
-troop.promise('prime.Node', function (prime) {
+troop.promise('prime.Node', function (prime, className, Peers) {
     var self;
 
     dessert.addTypes({
@@ -21,7 +21,7 @@ troop.promise('prime.Node', function (prime) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
-     * @requires prime.Peers
+     * @requires Peers
      */
     self = prime.Node = troop.Base.extend()
         .addConstant({
@@ -41,7 +41,7 @@ troop.promise('prime.Node', function (prime) {
              * Initializes node.
              * @constructor
              * @param load {string} Node load.
-             * @param [peers] {prime.Peers} Initial node peers.
+             * @param [peers] {Peers} Initial node peers.
              */
             init: function (load, peers) {
                 this.addConstant({
@@ -53,11 +53,11 @@ troop.promise('prime.Node', function (prime) {
 
                     /**
                      * Collection of nodes connected to current node
-                     * @type {prime.Peers}
+                     * @type {Peers}
                      */
-                    peers: prime.Peers.isPrototypeOf(peers) ?
+                    peers: Peers.isPrototypeOf(peers) ?
                         peers :
-                        prime.Peers.create()
+                        Peers.create()
                 });
             },
 
@@ -73,9 +73,9 @@ troop.promise('prime.Node', function (prime) {
             /**
              * Accesses a node in the graph. Creates it on demand.
              * Arguments may be either nodes or strings (load).
-             * @param node {prime.Node|string} Node (load).
-             * @return {prime.Node} A node in the graph.
-             * @see prime.Node.init
+             * @param node {Node|string} Node (load).
+             * @return {Node} A node in the graph.
+             * @see Node.init
              * @static
              */
             $: function (node /*, node1, node2, ...*/) {
@@ -107,8 +107,8 @@ troop.promise('prime.Node', function (prime) {
             /**
              * Retrieves a peer object for a given node.
              * When node is not a peer, returns undefined.
-             * @param node {prime.Node}
-             * @return {prime.Peer}
+             * @param node {Node}
+             * @return {Peer}
              */
             peer: function (node) {
                 return this.peers.get(node.load);
@@ -116,7 +116,7 @@ troop.promise('prime.Node', function (prime) {
 
             /**
              * Hops to a peer node randomly, weighted by tread.
-             * @returns {prime.Node}
+             * @returns {Node}
              */
             hop: function () {
                 if (!this.peers.count) {
@@ -126,7 +126,7 @@ troop.promise('prime.Node', function (prime) {
 
                 /**
                  * Taking random peer.
-                 * @see prime.Peers.random
+                 * @see Peers.random
                  */
                 var next = prime.Graph.nodes.get(this.peers.random().load);
 
@@ -140,7 +140,7 @@ troop.promise('prime.Node', function (prime) {
 
             /**
              * Strengthens connection weight between this node and remote node.
-             * @param remote {prime.Node}
+             * @param remote {Node}
              * @param [forwardWear] {number}
              * @param [backwardsWear] {number}
              */
@@ -167,26 +167,26 @@ troop.promise('prime.Node', function (prime) {
              * @param json {object} De-serialized JSON.
              * @param json.load {string}
              * @param json.peers {object}
-             * @return {prime.Node}
+             * @return {Node}
              * @static
-             * @see prime.Node.init
+             * @see Node.init
              */
             fromJSON: function (load, json) {
                 return self.create(
                     load,
 
                     // initializing peers form JSON
-                    prime.Peers.fromJSON(json)
+                    Peers.fromJSON(json)
                 );
             }
         });
 
     return self;
-});
+}, prime.Peers);
 
-troop.promise('prime.NodeCollection', function (prime) {
-    prime.NodeCollection = sntls.Collection.of(prime.Node);
-});
+troop.promise('prime.NodeCollection', function (prime, className, Node) {
+    prime.NodeCollection = sntls.Collection.of(Node);
+}, prime.Node);
 
 troop.promise('prime.$', function (prime) {
     return prime.Node.$;

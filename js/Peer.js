@@ -70,7 +70,7 @@ troop.promise('prime.Peer', function (prime) {
              * @static
              * @param load {string} Peer node's load.
              * @param tread {number|string} De-serialized JSON.
-             * @return {prime.Peer}
+             * @return {Peer}
              */
             fromJSON: function (load, tread) {
                 return self.create(
