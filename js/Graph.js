@@ -5,7 +5,7 @@
  * Such as serialization and de-serialization, and re-initialization.
  */
 /*global prime, dessert, troop, sntls */
-troop.promise('prime.Graph', function (prime, className, Node) {
+troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
     var self = prime.Graph = troop.Base.extend()
         .addMethod({
             init: function () {
@@ -15,8 +15,26 @@ troop.promise('prime.Graph', function (prime, className, Node) {
                      * @type {NodeCollection}
                      * @static
                      */
-                    nodes: prime.NodeCollection.create()
+                    nodes: NodeCollection.create()
                 });
+            },
+
+            //////////////////////////////
+            // Getters, setters
+
+            /**
+             * Retrieves a node from the graph's registry.
+             * Creates one on demand.
+             * @param load {string}
+             * @return {Node}
+             */
+            node: function (load) {
+                var node = this.nodes.get(load);
+                if (!node) {
+                    node = Node.create(load);
+                    this.nodes.set(load, node);
+                }
+                return node;
             },
 
             //////////////////////////////
@@ -76,7 +94,7 @@ troop.promise('prime.Graph', function (prime, className, Node) {
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        result.addNode(prime.Node.fromJSON(load, json[load]));
+                        result.addNode(Node.fromJSON(load, json[load]));
                     }
                 }
 
@@ -85,4 +103,4 @@ troop.promise('prime.Graph', function (prime, className, Node) {
         });
 
     return self;
-}, prime.Node);
+}, prime.Node, prime.NodeCollection);

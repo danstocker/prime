@@ -1,4 +1,4 @@
-/*global prime, module, test, expect, ok, equal, deepEqual, raises */
+/*global prime, module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
 (function (Graph, Node, $, Peers) {
     module("Graph");
 
@@ -17,6 +17,21 @@
 
         graph.addNode(Node.create('bar'), Node.create('hello'));
         equal(graph.nodes.count, 3, "Node count after multiple addition");
+    });
+
+    test("Node retrieval", function () {
+        var graph = Graph.create(),
+            fooNode = Node.create('foo'),
+            barNode = Node.create('bar');
+
+        // dealing with existing nodes
+        graph.addNode(fooNode, barNode);
+        strictEqual(graph.node('foo'), fooNode, "Retrieved attached node");
+        strictEqual(graph.node('bar'), barNode, "Retrieved attached node");
+
+        // newly created
+        equal(graph.nodes.get('hello'), undefined, "Node doesn't exist on graph");
+        notStrictEqual(graph.node('hello'), Node.create('hello'), "Retrieved non-attached node");
     });
 
     test("Index", function () {
