@@ -67,9 +67,9 @@
                 $('cat'),
                 $('lion')));
 
-        var original = Node.nodes,
+        var original = Graph.nodes.items,
             json = JSON.stringify(Graph),
-            rebuilt = Graph.fromJSON(JSON.parse(json)).nodes;
+            rebuilt = Graph.fromJSON(JSON.parse(json)).nodes.items;
 
         ok(rebuilt !== original, "Rebuilt registry is different object");
         deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");

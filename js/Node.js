@@ -3,7 +3,7 @@
  *
  * Nodes are the central building blocks of the Association Engine.
  */
-/*global prime, troop */
+/*global prime, troop, sntls */
 troop.promise('prime.Node', function (prime, className, Peers) {
     /**
      * Conceptual node. Basic component of the association engine.
@@ -20,21 +20,6 @@ troop.promise('prime.Node', function (prime, className, Peers) {
              */
             reach: 0.5
         })
-        .addPublic({
-            /**
-             * Registry all nodes in the system.
-             * @type {object}
-             * @static
-             */
-            nodes: {},
-
-            /**
-             * Total number of nodes.
-             * @type {number}
-             * @static
-             */
-            count: 0
-        })
         .addMethod({
             //////////////////////////////
             // OOP
@@ -46,10 +31,11 @@ troop.promise('prime.Node', function (prime, className, Peers) {
              * @param [peers] {prime.Peers} Initial node peers.
              */
             init: function (load, peers) {
-                var nodes = self.nodes;
+                var nodes = prime.Graph.nodes,
+                    node = nodes.get(load);
 
-                if (nodes.hasOwnProperty(load)) {
-                    return nodes[load];
+                if (node) {
+                    return node;
                 }
 
                 this.addConstant({
@@ -69,8 +55,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                 });
 
                 // adding node to registry
-                self.nodes[load] = this;
-                self.count++;
+                nodes.set(load, this);
             },
 
             /**
@@ -131,7 +116,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                  * Taking random peer.
                  * @see prime.Peers.random
                  */
-                var next = self.nodes[this.peers.random().load];
+                var next = prime.Graph.nodes.get(this.peers.random().load);
 
                 // making another jump at chance
                 if (Math.random() < self.reach) {
@@ -186,6 +171,10 @@ troop.promise('prime.Node', function (prime, className, Peers) {
 
     return self;
 }, prime.Peers);
+
+troop.promise('prime.NodeCollection', function (prime) {
+    prime.NodeCollection = sntls.Collection.of(prime.Node);
+});
 
 troop.promise('prime.$', function (prime) {
     return prime.Node.$;

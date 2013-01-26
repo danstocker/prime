@@ -4,9 +4,17 @@
  * Static class that is an API to prime.Node offering graph-level functionality.
  * Such as serialization and de-serialization, and re-initialization.
  */
-/*global prime, troop */
+/*global prime, troop, sntls */
 troop.promise('prime.Graph', function (prime, className, Node) {
     var self = prime.Graph = troop.Base.extend()
+        .addPublic({
+            /**
+             * Registry all nodes in the system.
+             * @type {object}
+             * @static
+             */
+            nodes: prime.NodeCollection.create()
+        })
         .addMethod({
             //////////////////////////////
             // Control
@@ -16,27 +24,24 @@ troop.promise('prime.Graph', function (prime, className, Node) {
              * @static
              */
             reset: function () {
-                Node.nodes = {};
+                self.nodes.clear();
             },
 
             /**
              * Rebuilds weighted indexes for all nodes.
+             * TODO: should be making use of the specified collection features
              */
             rebuildIndexes: function () {
-                var nodes = Node.nodes,
-                    load;
-                for (load in nodes) {
-                    if (nodes.hasOwnProperty(load)) {
-                        nodes[load].peers.rebuildIndex();
-                    }
-                }
+                self.nodes.forEach(function () {
+                    this.peers.rebuildIndex();
+                });
             },
 
             //////////////////////////////
             // JSON
 
             toJSON: function () {
-                return Node.nodes;
+                return self.nodes.items;
             },
 
             /**
@@ -57,7 +62,7 @@ troop.promise('prime.Graph', function (prime, className, Node) {
                     }
                 }
 
-                return Node;
+                return self;
             }
         });
 
