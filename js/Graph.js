@@ -10,7 +10,7 @@ troop.promise('prime.Graph', function (prime, className, Node) {
         .addPublic({
             /**
              * Registry all nodes in the system.
-             * @type {object}
+             * @type {NodeCollection}
              * @static
              */
             nodes: prime.NodeCollection.create()
@@ -29,12 +29,9 @@ troop.promise('prime.Graph', function (prime, className, Node) {
 
             /**
              * Rebuilds weighted indexes for all nodes.
-             * TODO: should be making use of the specified collection features
              */
             rebuildIndexes: function () {
-                self.nodes.forEach(function () {
-                    this.peers.rebuildIndex();
-                });
+                self.nodes.getPeers().callEach('rebuildIndex');
             },
 
             //////////////////////////////

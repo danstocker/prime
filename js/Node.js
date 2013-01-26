@@ -59,6 +59,15 @@ troop.promise('prime.Node', function (prime, className, Peers) {
             },
 
             /**
+             * Simple getter for peer collection.
+             * To be used with specified collection methods.
+             * @return {Peers}
+             */
+            getPeers: function () {
+                return this.peers;
+            },
+
+            /**
              * Accesses a node in the graph. Creates it on demand.
              * Arguments may be either nodes or strings (load).
              * @param node {prime.Node|string} Node (load).
