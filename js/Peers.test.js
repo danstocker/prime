@@ -17,7 +17,7 @@
 
         peer = Peer.create(load, 2);
         peers = Peers.create()
-            .add(peer);
+            .addPeer(peer);
         equal(peers.get('hello'), peer, "Peer added to by-load buffer");
         equal(peers.count, 1, "Peer count");
 
@@ -40,7 +40,7 @@
                 equal(load, 'load', "Removing load from index");
                 return this;
             },
-            add: function (load, weight) {
+            add   : function (load, weight) {
                 equal(load, 'load', "Adding load to index");
                 equal(weight, [1, 3][i++], "Peer weight");
                 return this;
@@ -56,9 +56,9 @@
 
     test("Querying", function () {
         var peers = Peers.create()
-                .add(Peer.create('foo', 1))
-                .add(Peer.create('bar', 1))
-                .add(Peer.create('hello', 1)),
+                .addPeer(Peer.create('foo', 1))
+                .addPeer(Peer.create('bar', 1))
+                .addPeer(Peer.create('hello', 1)),
             next = peers.random();
 
         equal(Peer.isPrototypeOf(next), true, "Random returns Peer object");
@@ -85,13 +85,13 @@
                 hello: {
                     tread: 5
                 },
-                foo: {
+                foo  : {
                     tread: 4
                 }
             },
             peers = Peers.create()
-                .add(Peer.create('hello', 5))
-                .add(Peer.create('foo', 4));
+                .addPeer(Peer.create('hello', 5))
+                .addPeer(Peer.create('foo', 4));
 
         Peer.addMock({
             fromJSON: function (load, json) {

@@ -58,7 +58,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
              * @param peer {prime.Peer} New peer.
              * @throws {Error} When peer already exists.
              */
-            add: function (peer) {
+            addPeer: function (peer) {
                 if (!this.get(peer.load)) {
                     // adding peer to peer registry
                     this.set(peer.load, peer);
@@ -102,7 +102,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
 
                 if (!peer) {
                     // adding new peer
-                    this.add(Peer.create(load, wear));
+                    this.addPeer(Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
                     peer.wear(wear);
@@ -131,7 +131,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                 // initializing individual peers from JSON
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        peers.add(Peer.fromJSON(load, json[load]));
+                        peers.addPeer(Peer.fromJSON(load, json[load]));
                     }
                 }
 
