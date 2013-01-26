@@ -18,7 +18,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
              * @static
              * @type {number}
              */
-            reach: 0.5
+            REACH: 0.5
         })
         .addMethod({
             //////////////////////////////
@@ -128,7 +128,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                 var next = prime.Graph.nodes.get(this.peers.random().load);
 
                 // making another jump at chance
-                if (Math.random() < self.reach) {
+                if (Math.random() < self.REACH) {
                     next = next.hop();
                 }
 

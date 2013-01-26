@@ -20,14 +20,6 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
              */
             defaultWear: 1
         })
-        .addPublic({
-            /**
-             * Total number of peers in the system.
-             * @type {number}
-             * @static
-             */
-            count: 0
-        })
         .addMethod({
             //////////////////////////////
             // OOP
@@ -39,15 +31,14 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
             init: function () {
                 base.init.apply(this, arguments);
 
-                this
-                    .addPrivateConstant({
-                        /**
-                         * Weighted index of peer information.
-                         * @type {prime.Index}
-                         * @private
-                         */
-                        _index: Index.create()
-                    });
+                this.addPrivateConstant({
+                    /**
+                     * Weighted index of peer information.
+                     * @type {prime.Index}
+                     * @private
+                     */
+                    _index: Index.create()
+                });
             },
 
             //////////////////////////////
@@ -62,7 +53,6 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                 if (!this.get(peer.load)) {
                     // adding peer to peer registry
                     this.set(peer.load, peer);
-                    self.count++;
 
                     // adding peer details to index
                     this._index.add(peer.load, peer.tread);

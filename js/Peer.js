@@ -10,14 +10,6 @@ troop.promise('prime.Peer', function (prime) {
      * @requires prime.Node
      */
     var self = prime.Peer = troop.Base.extend()
-        .addPublic({
-            /**
-             * Total tread across all peers.
-             * @type {number}
-             * @static
-             */
-            totalTread: 0
-        })
         .addMethod({
             //////////////////////////////
             // OOP
@@ -62,7 +54,6 @@ troop.promise('prime.Peer', function (prime) {
 
                 // setting tread
                 this.tread += value;
-                self.totalTread += value;
 
                 return this;
             },
