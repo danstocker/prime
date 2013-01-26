@@ -99,7 +99,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
              * @return {prime.Peer}
              */
             peer: function (node) {
-                return this.peers.lookup[node.load];
+                return this.peers.get(node.load);
             },
 
             /**
@@ -146,7 +146,7 @@ troop.promise('prime.Node', function (prime, className, Peers) {
             // JSON
 
             toJSON: function () {
-                return this.peers.lookup;
+                return this.peers.items;
             },
 
             /**

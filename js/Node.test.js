@@ -138,7 +138,7 @@
 
         equal(
             JSON.stringify(node),
-            '{"hello":' + JSON.stringify(node.peers.lookup.hello) + ',"foo":' + JSON.stringify(node.peers.lookup.foo) + '}',
+            '{"hello":' + JSON.stringify(node.peers.items.hello) + ',"foo":' + JSON.stringify(node.peers.items.foo) + '}',
             "Full node JSON"
         );
     });

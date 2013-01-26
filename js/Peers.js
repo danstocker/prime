@@ -3,13 +3,16 @@
  */
 /*global prime, troop */
 troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
+    var base = prime.PeerCollection,
+        self;
+
     /**
      * @class Represents a collection of peers.
      * @requires prime.utils
      * @requires prime.Peer
      * @requires prime.Node
      */
-    var self = prime.Peers = troop.Base.extend()
+    self = prime.Peers = base.extend()
         .addConstant({
             /**
              * Default value to be added to peer tread, when none is specified.
@@ -34,15 +37,9 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
              * @constructs
              */
             init: function () {
+                base.init.apply(this, arguments);
+
                 this
-                    .addConstant({
-                        /**
-                         * Peer objects indexed by load.
-                         * @type {Object}
-                         * @private
-                         */
-                        lookup: {}
-                    })
                     .addPrivateConstant({
                         /**
                          * Weighted index of peer information.
@@ -50,13 +47,6 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                          * @private
                          */
                         _index: Index.create()
-                    })
-                    .addPublic({
-                        /**
-                         * Total number of peers in lookup.
-                         * @type {Number}
-                         */
-                        count: 0
                     });
             },
 
@@ -69,10 +59,9 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
              * @throws {Error} When peer already exists.
              */
             add: function (peer) {
-                if (!this.lookup.hasOwnProperty(peer.load)) {
+                if (!this.get(peer.load)) {
                     // adding peer to peer registry
-                    this.lookup[peer.load] = peer;
-                    this.count++;
+                    this.set(peer.load, peer);
                     self.count++;
 
                     // adding peer details to index
@@ -89,7 +78,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
              * @returns {prime.Peer}
              */
             random: function () {
-                return this.lookup[this._index.random()];
+                return this.get(this._index.random());
             },
 
             /**
@@ -109,15 +98,14 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                 wear = wear || self.defaultWear;
 
                 var lookup = this.lookup,
-                    peer;
+                    peer = this.get(load);
 
-                if (!lookup.hasOwnProperty(load)) {
+                if (!peer) {
                     // adding new peer
                     this.add(Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
-                    peer = lookup[load]
-                        .wear(wear);
+                    peer.wear(wear);
 
                     this._index
                         .remove(load)

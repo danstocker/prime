@@ -3,7 +3,7 @@
  *
  * Describes connection between two nodes.
  */
-/*global prime, troop */
+/*global prime, troop, sntls */
 troop.promise('prime.Peer', function (prime) {
     /**
      * @class Represents connection to another node.
@@ -90,4 +90,8 @@ troop.promise('prime.Peer', function (prime) {
         });
 
     return self;
+});
+
+troop.promise('prime.PeerCollection', function () {
+    prime.PeerCollection = sntls.Collection.of(prime.Peer);
 });
