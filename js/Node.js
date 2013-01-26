@@ -3,14 +3,27 @@
  *
  * Nodes are the central building blocks of the Association Engine.
  */
-/*global prime, troop, sntls */
+/*global prime, dessert, troop, sntls */
 troop.promise('prime.Node', function (prime) {
+    var self;
+
+    dessert.addTypes({
+        isNode: function (expr) {
+            return self.isPrototypeOf(expr);
+        },
+
+        isNodeOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   self.isPrototypeOf(expr);
+        }
+    });
+
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
      * @requires prime.Peers
      */
-    var self = prime.Node = troop.Base.extend()
+    self = prime.Node = troop.Base.extend()
         .addConstant({
             /**
              * Probability of sub-sequential hops.
@@ -31,13 +44,6 @@ troop.promise('prime.Node', function (prime) {
              * @param [peers] {prime.Peers} Initial node peers.
              */
             init: function (load, peers) {
-                var nodes = prime.Graph.nodes,
-                    node = nodes.get(load);
-
-                if (node) {
-                    return node;
-                }
-
                 this.addConstant({
                     /**
                      * String wrapped inside node.
@@ -53,9 +59,6 @@ troop.promise('prime.Node', function (prime) {
                         peers :
                         prime.Peers.create()
                 });
-
-                // adding node to registry
-                prime.Graph.nodes.set(load, this);
             },
 
             /**

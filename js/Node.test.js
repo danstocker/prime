@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Graph, Node, $, Peers) {
+(function (Node, $, Peers) {
     module("Node");
 
     test("Creation", function () {
@@ -7,14 +7,12 @@
             node,
             peers;
 
-        Graph.reset();
         hello = Node.create('hello');
         equal(hello.load, 'hello', "Single new node");
 
         node = Node.create('hello');
         equal(node, hello, "Single existing node");
 
-        Graph.reset();
         peers = Peers.create();
         node = Node.create('hello', peers);
         equal(node.peers, peers, "Single node with pre-defined peers");
@@ -24,8 +22,6 @@
     });
 
     test("Strengthening", function () {
-        Graph.reset();
-
         expect(5);
 
         var foo = Node.create('foo'),
@@ -56,8 +52,6 @@
     });
 
     test("Connecting", function () {
-        Graph.reset();
-
         expect(8);
 
         var foo = Node.create('foo'),
@@ -82,8 +76,6 @@
     });
 
     test("Hop", function () {
-        Graph.reset();
-
         var node = Node.create('test');
 
         equal(node.hop(), node, "Unconnected node hops to self");
@@ -128,8 +120,6 @@
     });
 
     test("toJSON", function () {
-        Graph.reset();
-
         var node = Node.create('bar')
             .to(Node.create('hello'), 5)
             .to(Node.create('foo'), 4);
@@ -168,7 +158,6 @@
         Peers.removeMocks();
     });
 }(
-    prime.Graph,
     prime.Node,
     prime.$,
     prime.Peers

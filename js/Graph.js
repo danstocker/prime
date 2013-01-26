@@ -4,41 +4,64 @@
  * Static class that is an API to prime.Node offering graph-level functionality.
  * Such as serialization and de-serialization, and re-initialization.
  */
-/*global prime, troop, sntls */
+/*global prime, dessert, troop, sntls */
 troop.promise('prime.Graph', function (prime, className, Node) {
     var self = prime.Graph = troop.Base.extend()
-        .addPublic({
-            /**
-             * Registry all nodes in the system.
-             * @type {NodeCollection}
-             * @static
-             */
-            nodes: prime.NodeCollection.create()
-        })
         .addMethod({
+            init: function () {
+                this.addPublic({
+                    /**
+                     * Registry all nodes in the system.
+                     * @type {NodeCollection}
+                     * @static
+                     */
+                    nodes: prime.NodeCollection.create()
+                });
+            },
+
             //////////////////////////////
             // Control
+
+            /**
+             * Adds node(s) to the current graph.
+             * @param node {Node}
+             */
+            addNode: function (node) {
+                var i;
+                for (i = 0; i < arguments.length; i++) {
+                    node = arguments[i];
+                    if (dessert.validators.isNode(node)) {
+                        this.nodes.set(node.load, node);
+                    }
+                }
+
+                return this;
+            },
 
             /**
              * Resets datastore by emptying the registry.
              * @static
              */
             reset: function () {
-                self.nodes.clear();
+                this.nodes.clear();
+
+                return this;
             },
 
             /**
              * Rebuilds weighted indexes for all nodes.
              */
             rebuildIndexes: function () {
-                self.nodes.getPeers().callEach('rebuildIndex');
+                this.nodes.getPeers().callEach('rebuildIndex');
+
+                return this;
             },
 
             //////////////////////////////
             // JSON
 
             toJSON: function () {
-                return self.nodes.items;
+                return this.nodes.items;
             },
 
             /**
@@ -47,19 +70,17 @@ troop.promise('prime.Graph', function (prime, className, Node) {
              * @static
              */
             fromJSON: function (json) {
-                var Node = prime.Node,
+                var result = self.create(),
                     load;
-
-                self.reset();
 
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        Node.fromJSON(load, json[load]);
+                        result.addNode(prime.Node.fromJSON(load, json[load]));
                     }
                 }
 
-                return self;
+                return result;
             }
         });
 
