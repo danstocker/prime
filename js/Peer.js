@@ -30,7 +30,7 @@ troop.promise('prime.Peer', function (prime) {
                     })
                     .addPublic({
                         /**
-                         * Weariness (weight) of connection to peer node.
+                         * Wear (weight) of connection to peer node.
                          * @type {Number}
                          */
                         tread: 0

@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
+troop.promise('prime.Peers', function (prime) {
     var base = prime.PeerCollection,
         self;
 
@@ -37,7 +37,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                      * @type {prime.Index}
                      * @private
                      */
-                    _index: Index.create()
+                    _index: prime.Index.create()
                 });
             },
 
@@ -87,12 +87,11 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
             tread: function (load, wear) {
                 wear = wear || self.defaultWear;
 
-                var lookup = this.lookup,
-                    peer = this.get(load);
+                var peer = this.get(load);
 
                 if (!peer) {
                     // adding new peer
-                    this.addPeer(Peer.create(load, wear));
+                    this.addPeer(prime.Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
                     peer.wear(wear);
@@ -121,7 +120,7 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
                 // initializing individual peers from JSON
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        peers.addPeer(Peer.fromJSON(load, json[load]));
+                        peers.addPeer(prime.Peer.fromJSON(load, json[load]));
                     }
                 }
 
@@ -130,4 +129,4 @@ troop.promise('prime.Peers', function (prime, className, utils, Peer, Index) {
         });
 
     return self;
-}, prime.utils, prime.Peer, prime.Index);
+});

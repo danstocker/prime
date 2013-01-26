@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, troop, sntls */
-troop.promise('prime.Node', function (prime, className, Peers) {
+troop.promise('prime.Node', function (prime) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
@@ -49,13 +49,13 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                      * Collection of nodes connected to current node
                      * @type {prime.Peers}
                      */
-                    peers: Peers.isPrototypeOf(peers) ?
+                    peers: prime.Peers.isPrototypeOf(peers) ?
                         peers :
-                        Peers.create()
+                        prime.Peers.create()
                 });
 
                 // adding node to registry
-                nodes.set(load, this);
+                prime.Graph.nodes.set(load, this);
             },
 
             /**
@@ -173,13 +173,13 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                     load,
 
                     // initializing peers form JSON
-                    Peers.fromJSON(json)
+                    prime.Peers.fromJSON(json)
                 );
             }
         });
 
     return self;
-}, prime.Peers);
+});
 
 troop.promise('prime.NodeCollection', function (prime) {
     prime.NodeCollection = sntls.Collection.of(prime.Node);
