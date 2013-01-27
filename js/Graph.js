@@ -29,12 +29,42 @@ troop.promise('prime.Graph', function (prime) {
              * @return {Node}
              */
             node: function (load) {
+                dessert.isString(load);
+
                 var node = this.nodes.get(load);
                 if (!node) {
                     node = prime.Node.create(load);
                     this.nodes.set(load, node);
                 }
+
                 return node;
+            },
+
+            /**
+             * Convenience shortcut for constructing sub-graphs out of load literals.
+             * @param load {string} Node load.
+             * Parameter is followed by any number of loads of remote nodes.
+             * @return {string} The first argument.
+             */
+            $: function (load) {
+                var node = this.node(load),
+                    i;
+
+                // connecting node to remotes
+                for (i = 1; i < arguments.length; i++) {
+                    node.to(this.node(arguments[i]));
+                }
+
+                return load;
+            },
+
+            /**
+             * Generates a function that can be used to create and
+             * connect nodes on the current graph.
+             * @return {function}
+             */
+            noConflict: function () {
+                return self.$.bind(this);
             },
 
             //////////////////////////////
@@ -43,14 +73,14 @@ troop.promise('prime.Graph', function (prime) {
             /**
              * Adds node(s) to the current graph.
              * @param node {Node}
+             * Argument may be followed by any number of subsequent nodes.
              */
             addNode: function (node) {
                 var i;
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
-                    if (dessert.validators.isNode(node)) {
-                        this.nodes.set(node.load, node);
-                    }
+                    dessert.isNode(node);
+                    this.nodes.set(node.load, node);
                 }
 
                 return this;
@@ -58,7 +88,6 @@ troop.promise('prime.Graph', function (prime) {
 
             /**
              * Resets datastore by emptying the registry.
-             * @static
              */
             reset: function () {
                 this.nodes.clear();

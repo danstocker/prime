@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
-(function (Graph, Node, $, Peers) {
+(function (Graph, Node, Peers) {
     module("Graph");
 
     test("Creation", function () {
@@ -66,9 +66,9 @@
         expect(3);
 
         Node.addMock({
-            fromJSON: function (json) {
+            fromJSON: function (load, json) {
                 ok(true, "Node reconstructed from JSON");
-                return Node.create(json.load);
+                return Node.create(load);
             }
         });
 
@@ -76,15 +76,15 @@
 
         graph.fromJSON({
             hello: {
-                load: 'hello',
+                load : 'hello',
                 peers: {}
             },
-            foo: {
-                load: 'foo',
+            foo  : {
+                load : 'foo',
                 peers: {}
             },
-            bar: {
-                load: 'bar',
+            bar  : {
+                load : 'bar',
                 peers: {}
             }
         });
@@ -92,8 +92,36 @@
         Node.removeMocks();
     });
 
+    test("Node accessor", function () {
+        var graph = Graph.create(),
+            $ = graph.noConflict();
+
+        expect(5);
+
+        equal($('hello'), 'hello', "Shortcut returns load");
+
+        Node.addMock({
+            to: function () {
+                ok(true, "Node.to called");
+            }
+        });
+
+        // 2x1 calls to Node.to
+        $('hello',
+            $('foo'),
+            $('bar'));
+
+        // 2x1 calls to Node.to
+        $('hello',
+            'foo',
+            'bar');
+
+        Node.removeMocks();
+    });
+
     test("Serialization integration", function () {
-        var graph = Graph.create();
+        var graph = Graph.create(),
+            $ = graph.noConflict();
 
         $('food',
             $('fruit',
@@ -117,6 +145,5 @@
 }(
     prime.Graph,
     prime.Node,
-    prime.$,
     prime.Peers
 ));

@@ -44,6 +44,8 @@ troop.promise('prime.Node', function (prime) {
              * @param [peers] {Peers} Initial node peers.
              */
             init: function (load, peers) {
+                dessert.isString(load);
+
                 peers = prime.Peers.isPrototypeOf(peers) ?
                     peers :
                     prime.Peers.create();
@@ -70,37 +72,6 @@ troop.promise('prime.Node', function (prime) {
              */
             getPeers: function () {
                 return this.peers;
-            },
-
-            /**
-             * Accesses a node in the graph. Creates it on demand.
-             * Arguments may be either nodes or strings (load).
-             * @param node {Node|string} Node (load).
-             * @return {Node} A node in the graph.
-             * @see Node.init
-             * @static
-             */
-            $: function (node /*, node1, node2, ...*/) {
-                if (typeof node === 'string') {
-                    // current node specified through load
-                    node = self.create(node);
-                }
-
-                var i, remoteNode;
-
-                // connecting node to remotes
-                for (i = 1; i < arguments.length; i++) {
-                    remoteNode = arguments[i];
-                    if (typeof remoteNode === 'string') {
-                        // remote node specified through load
-                        node.to(self.create(remoteNode));
-                    } else if (self.isPrototypeOf(remoteNode)) {
-                        // remote node passed as node object
-                        node.to(remoteNode);
-                    }
-                }
-
-                return node;
             },
 
             //////////////////////////////
@@ -142,16 +113,18 @@ troop.promise('prime.Node', function (prime) {
 
             /**
              * Strengthens connection weight between this node and remote node.
-             * @param remote {Node}
+             * @param remoteNode {Node}
              * @param [forwardWear] {number}
              * @param [backwardsWear] {number}
              */
-            to: function (remote, forwardWear, backwardsWear) {
+            to: function (remoteNode, forwardWear, backwardsWear) {
+                dessert.isNode(remoteNode);
+
                 backwardsWear = backwardsWear || forwardWear;
 
                 // updating peer tread in both directions
-                this.peers.tread(remote.load, forwardWear);
-                remote.peers.tread(this.load, backwardsWear);
+                this.peers.tread(remoteNode.load, forwardWear);
+                remoteNode.peers.tread(this.load, backwardsWear);
 
                 return this;
             },
@@ -188,8 +161,4 @@ troop.promise('prime.Node', function (prime) {
 
 troop.promise('prime.NodeCollection', function (prime) {
     prime.NodeCollection = sntls.Collection.of(prime.Node);
-});
-
-troop.promise('prime.$', function (prime) {
-    return prime.Node.$;
 });

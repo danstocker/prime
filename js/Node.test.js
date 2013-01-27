@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Node, $, Peers) {
+(function (Node, Peers) {
     module("Node");
 
     test("Creation", function () {
@@ -81,44 +81,6 @@
         equal(node.hop(), node, "Unconnected node hops to self");
     });
 
-    test("Node accessor", function () {
-        expect(9);
-
-        // testing addition
-        Node.addMock({
-            create: function () {
-                ok(true, "Node created");
-                return this;
-            }
-        });
-
-        // 3x1 calls to Node.create
-        $('hello',
-            $('foo'),
-            $('bar'));
-
-        Node.removeMocks();
-
-        Node.addMock({
-            to: function () {
-                ok(true, "Node.to called");
-            }
-        });
-
-        // 2x1 calls to Node.to
-        $('hello',
-            $('foo'),
-            $('bar'));
-
-        // 2x1 calls to Node.to
-        $('hello', 'foo', 'bar');
-
-        // 2x1 calls to Node.to
-        $($('hello'), 'foo', 'bar');
-
-        Node.removeMocks();
-    });
-
     test("toJSON", function () {
         var node = Node.create('bar')
             .to(Node.create('hello'), 5)
@@ -159,6 +121,5 @@
     });
 }(
     prime.Node,
-    prime.$,
     prime.Peers
 ));
