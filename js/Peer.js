@@ -4,7 +4,7 @@
  * Describes connection between two nodes.
  */
 /*global prime, dessert, troop, sntls */
-troop.promise('prime.Peer', function (prime, className, Node) {
+troop.promise('prime.Peer', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -21,7 +21,7 @@ troop.promise('prime.Peer', function (prime, className, Node) {
              */
             init: function (node, tread) {
                 if (typeof node === 'string') {
-                    node = Node.create(node);
+                    node = prime.Node.create(node);
                 } else {
                     dessert.isNode(node);
                 }
@@ -87,8 +87,8 @@ troop.promise('prime.Peer', function (prime, className, Node) {
         });
 
     return self;
-}, prime.Node);
+});
 
-troop.promise('prime.PeerCollection', function (prime, className, Peer) {
-    prime.PeerCollection = sntls.Collection.of(Peer);
-}, prime.Peer);
+troop.promise('prime.PeerCollection', function (prime) {
+    prime.PeerCollection = sntls.Collection.of(prime.Peer);
+});
