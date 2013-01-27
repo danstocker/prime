@@ -94,7 +94,7 @@
 
     test("Node accessor", function () {
         var graph = Graph.create(),
-            $ = graph.noConflict();
+            $ = graph.builder();
 
         expect(5);
 
@@ -121,7 +121,7 @@
 
     test("Serialization integration", function () {
         var graph = Graph.create(),
-            $ = graph.noConflict();
+            $ = graph.builder();
 
         $('food',
             $('fruit',

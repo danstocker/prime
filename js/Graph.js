@@ -7,6 +7,25 @@
 /*global prime, dessert, troop, sntls */
 troop.promise('prime.Graph', function (prime) {
     var self = prime.Graph = troop.Base.extend()
+        .addPrivateMethod({
+            /**
+             * Convenience shortcut for constructing sub-graphs out of load literals.
+             * @param load {string} Node load.
+             * Parameter is followed by any number of loads of remote nodes.
+             * @return {string} The first argument.
+             */
+            _builder: function (load) {
+                var node = this.node(load),
+                    i;
+
+                // connecting node to remotes
+                for (i = 1; i < arguments.length; i++) {
+                    node.to(this.node(arguments[i]));
+                }
+
+                return load;
+            }
+        })
         .addMethod({
             init: function () {
                 this.addPublic({
@@ -41,30 +60,12 @@ troop.promise('prime.Graph', function (prime) {
             },
 
             /**
-             * Convenience shortcut for constructing sub-graphs out of load literals.
-             * @param load {string} Node load.
-             * Parameter is followed by any number of loads of remote nodes.
-             * @return {string} The first argument.
-             */
-            $: function (load) {
-                var node = this.node(load),
-                    i;
-
-                // connecting node to remotes
-                for (i = 1; i < arguments.length; i++) {
-                    node.to(this.node(arguments[i]));
-                }
-
-                return load;
-            },
-
-            /**
              * Generates a function that can be used to create and
-             * connect nodes on the current graph.
+             * connect nodes on the current graph, ie. to build the graph.
              * @return {function}
              */
-            noConflict: function () {
-                return self.$.bind(this);
+            builder: function () {
+                return self._builder.bind(this);
             },
 
             //////////////////////////////
