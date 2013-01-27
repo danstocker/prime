@@ -96,9 +96,9 @@
         var graph = Graph.create(),
             $ = graph.builder();
 
-        expect(5);
+        expect(3);
 
-        equal($('hello'), 'hello', "Shortcut returns load");
+        deepEqual($('foo'), prime.Node.create('foo'), "Builder returns node instance");
 
         Node.addMock({
             to: function () {
@@ -110,11 +110,6 @@
         $('hello',
             $('foo'),
             $('bar'));
-
-        // 2x1 calls to Node.to
-        $('hello',
-            'foo',
-            'bar');
 
         Node.removeMocks();
     });

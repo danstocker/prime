@@ -11,19 +11,21 @@ troop.promise('prime.Graph', function (prime) {
             /**
              * Convenience shortcut for constructing sub-graphs out of load literals.
              * @param load {string} Node load.
-             * Parameter is followed by any number of loads of remote nodes.
-             * @return {string} The first argument.
+             * Parameter is followed by any number of remote nodes (type {Node}).
+             * @return {Node} Node instance based on the first argument.
              */
             _builder: function (load) {
                 var node = this.node(load),
-                    i;
+                    i, remoteNode;
 
                 // connecting node to remotes
                 for (i = 1; i < arguments.length; i++) {
-                    node.to(this.node(arguments[i]));
+                    remoteNode = arguments[i];
+                    node.to(remoteNode);
+                    this.nodes.set(remoteNode.load, remoteNode);
                 }
 
-                return load;
+                return node;
             }
         })
         .addMethod({
