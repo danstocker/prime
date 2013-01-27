@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global prime, dessert, troop, sntls */
-troop.promise('prime.Node', function (prime, className, Peers) {
+troop.promise('prime.Node', function (prime) {
     var self;
 
     dessert.addTypes({
@@ -55,9 +55,9 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                      * Collection of nodes connected to current node
                      * @type {Peers}
                      */
-                    peers: Peers.isPrototypeOf(peers) ?
+                    peers: prime.Peers.isPrototypeOf(peers) ?
                         peers :
-                        Peers.create()
+                        prime.Peers.create()
                 });
             },
 
@@ -176,17 +176,17 @@ troop.promise('prime.Node', function (prime, className, Peers) {
                     load,
 
                     // initializing peers form JSON
-                    Peers.fromJSON(json)
+                    prime.Peers.fromJSON(json)
                 );
             }
         });
 
     return self;
-}, prime.Peers);
+});
 
-troop.promise('prime.NodeCollection', function (prime, className, Node) {
-    prime.NodeCollection = sntls.Collection.of(Node);
-}, prime.Node);
+troop.promise('prime.NodeCollection', function (prime, className) {
+    prime.NodeCollection = sntls.Collection.of(prime.Node);
+});
 
 troop.promise('prime.$', function (prime) {
     return prime.Node.$;

@@ -5,7 +5,7 @@
  * Such as serialization and de-serialization, and re-initialization.
  */
 /*global prime, dessert, troop, sntls */
-troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
+troop.promise('prime.Graph', function (prime) {
     var self = prime.Graph = troop.Base.extend()
         .addMethod({
             init: function () {
@@ -15,7 +15,7 @@ troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
                      * @type {NodeCollection}
                      * @static
                      */
-                    nodes: NodeCollection.create()
+                    nodes: prime.NodeCollection.create()
                 });
             },
 
@@ -31,7 +31,7 @@ troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
             node: function (load) {
                 var node = this.nodes.get(load);
                 if (!node) {
-                    node = Node.create(load);
+                    node = prime.Node.create(load);
                     this.nodes.set(load, node);
                 }
                 return node;
@@ -94,7 +94,7 @@ troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
                 // re-building registry based on json data
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        result.addNode(Node.fromJSON(load, json[load]));
+                        result.addNode(prime.Node.fromJSON(load, json[load]));
                     }
                 }
 
@@ -103,4 +103,4 @@ troop.promise('prime.Graph', function (prime, className, Node, NodeCollection) {
         });
 
     return self;
-}, prime.Node, prime.NodeCollection);
+});

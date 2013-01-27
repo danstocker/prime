@@ -4,7 +4,7 @@
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global prime, troop */
-troop.promise('prime.Index', function (prime, className, utils) {
+troop.promise('prime.Index', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -113,7 +113,7 @@ troop.promise('prime.Index', function (prime, className, utils) {
 
                 if (slots.hasOwnProperty(weight)) {
                     // there is an available empty slot
-                    pos = utils.firstProperty(slots[weight]);
+                    pos = prime.utils.firstProperty(slots[weight]);
 
                     // filling slot
                     this._loads[pos] = load;
@@ -122,7 +122,7 @@ troop.promise('prime.Index', function (prime, className, utils) {
                     // removing slot
                     delete slots[weight][pos];
                     this.slotCount--;
-                    if (utils.isEmpty(slots[weight])) {
+                    if (prime.utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
                     }
@@ -219,4 +219,4 @@ troop.promise('prime.Index', function (prime, className, utils) {
         });
 
     return self;
-}, prime.utils);
+});

@@ -2,8 +2,8 @@
  * Peer Collection
  */
 /*global prime, troop */
-troop.promise('prime.Peers', function (prime, className, Peer, PeerCollection) {
-    var base = PeerCollection,
+troop.promise('prime.Peers', function (prime) {
+    var base = prime.PeerCollection,
         self;
 
     /**
@@ -91,7 +91,7 @@ troop.promise('prime.Peers', function (prime, className, Peer, PeerCollection) {
 
                 if (!peer) {
                     // adding new peer
-                    this.addPeer(Peer.create(load, wear));
+                    this.addPeer(prime.Peer.create(load, wear));
                 } else {
                     // increasing tread on existing peer
                     peer.wear(wear);
@@ -120,7 +120,7 @@ troop.promise('prime.Peers', function (prime, className, Peer, PeerCollection) {
                 // initializing individual peers from JSON
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
-                        peers.addPeer(Peer.fromJSON(load, json[load]));
+                        peers.addPeer(prime.Peer.fromJSON(load, json[load]));
                     }
                 }
 
@@ -129,4 +129,4 @@ troop.promise('prime.Peers', function (prime, className, Peer, PeerCollection) {
         });
 
     return self;
-}, prime.Peer, prime.PeerCollection);
+});
