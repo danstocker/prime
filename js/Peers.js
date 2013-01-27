@@ -50,12 +50,14 @@ troop.promise('prime.Peers', function (prime) {
              * @throws {Error} When peer already exists.
              */
             addPeer: function (peer) {
-                if (!this.get(peer.load)) {
+                var load = peer.node.load;
+
+                if (!this.get(load)) {
                     // adding peer to peer registry
-                    this.set(peer.load, peer);
+                    this.set(load, peer);
 
                     // adding peer details to index
-                    this._index.addEntry(peer.load, peer.tread);
+                    this._index.addEntry(load, peer.tread);
                 } else {
                     throw Error("Peer already exists.");
                 }

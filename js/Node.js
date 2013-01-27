@@ -44,6 +44,10 @@ troop.promise('prime.Node', function (prime) {
              * @param [peers] {Peers} Initial node peers.
              */
             init: function (load, peers) {
+                peers = prime.Peers.isPrototypeOf(peers) ?
+                    peers :
+                    prime.Peers.create();
+
                 this.addConstant({
                     /**
                      * String wrapped inside node.
@@ -55,9 +59,7 @@ troop.promise('prime.Node', function (prime) {
                      * Collection of nodes connected to current node
                      * @type {Peers}
                      */
-                    peers: prime.Peers.isPrototypeOf(peers) ?
-                        peers :
-                        prime.Peers.create()
+                    peers: peers
                 });
             },
 
@@ -128,7 +130,7 @@ troop.promise('prime.Node', function (prime) {
                  * Taking random peer.
                  * @see Peers.random
                  */
-                var next = prime.Graph.nodes.get(this.peers.random().load);
+                var next = this.peers.random().node;
 
                 // making another jump at chance
                 if (Math.random() < self.REACH) {
@@ -184,7 +186,7 @@ troop.promise('prime.Node', function (prime) {
     return self;
 });
 
-troop.promise('prime.NodeCollection', function (prime, className) {
+troop.promise('prime.NodeCollection', function (prime) {
     prime.NodeCollection = sntls.Collection.of(prime.Node);
 });
 

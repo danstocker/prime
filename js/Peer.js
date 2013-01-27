@@ -3,8 +3,8 @@
  *
  * Describes connection between two nodes.
  */
-/*global prime, troop, sntls */
-troop.promise('prime.Peer', function (prime) {
+/*global prime, dessert, troop, sntls */
+troop.promise('prime.Peer', function (prime, className, Node) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -16,17 +16,23 @@ troop.promise('prime.Peer', function (prime) {
 
             /**
              * Initializes a new peer.
-             * @param load {string} Peer node load.
+             * @param node {string|Node} Peer node, or load.
              * @param [tread] {number} Initial peer tread.
              */
-            init: function (load, tread) {
+            init: function (node, tread) {
+                if (typeof node === 'string') {
+                    node = Node.create(node);
+                } else {
+                    dessert.isNode(node);
+                }
+
                 this
                     .addConstant({
                         /**
-                         * Peer node,
-                         * @type {string}
+                         * Peer node
+                         * @type {Node}
                          */
-                        load: load
+                        node: node
                     })
                     .addPublic({
                         /**
@@ -81,8 +87,8 @@ troop.promise('prime.Peer', function (prime) {
         });
 
     return self;
-});
+}, prime.Node);
 
-troop.promise('prime.PeerCollection', function () {
-    prime.PeerCollection = sntls.Collection.of(prime.Peer);
-});
+troop.promise('prime.PeerCollection', function (prime, className, Peer) {
+    prime.PeerCollection = sntls.Collection.of(Peer);
+}, prime.Peer);

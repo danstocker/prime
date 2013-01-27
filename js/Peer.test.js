@@ -6,11 +6,11 @@
         var peer;
 
         peer = Peer.create('hello');
-        equal(peer.load, 'hello', "Peer load");
+        equal(peer.node.load, 'hello', "Peer load");
         equal(peer.tread, 0, "Default peer tread");
 
         peer = Peer.create('blah', 5);
-        equal(peer.load, 'blah', "Peer load");
+        equal(peer.node.load, 'blah', "Peer load");
         equal(peer.tread, 5, "Custom peer tread");
     });
 

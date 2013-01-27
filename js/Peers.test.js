@@ -23,7 +23,7 @@
 
         peers = Peers.create()
             .tread(load, 2);
-        equal(peers.get('hello').load, load, "Node added to by-load buffer");
+        equal(peers.get('hello').node.load, load, "Node added to by-load buffer");
         equal(peers.get('hello').tread, 2, "Newly added node's tread is 1 (default)");
 
         Index.removeMocks();
@@ -62,7 +62,7 @@
             next = peers.random();
 
         equal(Peer.isPrototypeOf(next), true, "Random returns Peer object");
-        ok(next.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");
+        ok(next.node.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");
     });
 
     test("Miscellaneous", function () {
