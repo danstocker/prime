@@ -1,20 +1,15 @@
 /**
  * Top-Level Library Namespace
  */
-/*global exports, require */
-var prime,
-    dessert,
-    troop,
-    sntls;
-
+/*global require */
 (function () {
     /** @namespace */
-    prime = this.prime = {};
+    this.prime = {};
 }());
 
 // adding Node.js dependencies
-if (typeof exports === 'object' && typeof require === 'function') {
-    dessert = require('dessert-0.2.3').dessert;
-    troop = require('troop-0.2.3').troop;
-    sntls = require('sntls-0.1.3').sntls;
+if (typeof require === 'function') {
+    require('dessert-0.2.3');
+    require('troop-0.2.3');
+    require('sntls-0.1.3');
 }
