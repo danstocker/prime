@@ -94,11 +94,19 @@
 
     test("Node accessor", function () {
         var graph = Graph.create(),
-            $ = graph.builder();
+            $ = graph.accessor();
+
+        strictEqual(graph.node('foo'), $('foo'), "Retrieves the same node as accessor method");
+        deepEqual($('hello'), Node.create('hello'), "Creates a new node on demand");
+    });
+
+    test("Graph builder", function () {
+        var graph = Graph.create(),
+            _ = graph.builder();
 
         expect(3);
 
-        deepEqual($('foo'), prime.Node.create('foo'), "Builder returns node instance");
+        equal(_('foo'), 'foo', "Builder returns node instance");
 
         Node.addMock({
             to: function () {
@@ -107,28 +115,28 @@
         });
 
         // 2x1 calls to Node.to
-        $('hello',
-            $('foo'),
-            $('bar'));
+        _('hello',
+            _('foo'),
+            _('bar'));
 
         Node.removeMocks();
     });
 
     test("Serialization integration", function () {
         var graph = Graph.create(),
-            $ = graph.builder();
+            _ = graph.builder();
 
-        $('food',
-            $('fruit',
-                $('apple'),
-                $('pear')),
-            $('turkey'));
-        $('animal',
-            $('bird',
-                $('turkey')),
-            $('feline',
-                $('cat'),
-                $('lion')));
+        _('food',
+            _('fruit',
+                _('apple'),
+                _('pear')),
+            _('turkey'));
+        _('animal',
+            _('bird',
+                _('turkey')),
+            _('feline',
+                _('cat'),
+                _('lion')));
 
         var original = graph.nodes.items,
             json = JSON.stringify(graph),

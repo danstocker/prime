@@ -23,21 +23,38 @@ Examples
 Usage
 -----
 
+### Creating a graph
+
+```javascript
+var graph = prime.Graph.create();
+```
+
+### Accessing nodes in the graph
+
+```javascript
+var $ = graph.accessor(),
+    node;
+
+node = $('foo');
+// or
+node = graph.node('foo');
+```
+
 ### Building the graph
 
 ```javascript
-var $ = prime.$;
-$('food',
-    $('fruit',
-        $('apple'),
-        $('pear')),
-    $('turkey'));
-$('animal',
-    $('bird',
-        $('turkey')),
-    $('feline',
-        $('cat'),
-        $('lion')));
+var _ = graph.builder();
+_('food',
+    _('fruit',
+        'apple',
+        'pear'),
+    _('turkey'));
+_('animal',
+    _('bird',
+        'turkey'),
+    _('feline',
+        'cat',
+        'lion'));
 ```
 
 ### Modifying the graph

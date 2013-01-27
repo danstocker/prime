@@ -7,28 +7,10 @@
 /*global prime, dessert, troop, sntls */
 troop.promise('prime.Graph', function (prime) {
     var self = prime.Graph = troop.Base.extend()
-        .addPrivateMethod({
-            /**
-             * Convenience shortcut for constructing sub-graphs out of load literals.
-             * @param load {string} Node load.
-             * Parameter is followed by any number of remote nodes (type {Node}).
-             * @return {Node} Node instance based on the first argument.
-             */
-            _builder: function (load) {
-                var node = this.node(load),
-                    i, remoteNode;
-
-                // connecting node to remotes
-                for (i = 1; i < arguments.length; i++) {
-                    remoteNode = arguments[i];
-                    node.to(remoteNode);
-                    this.nodes.set(remoteNode.load, remoteNode);
-                }
-
-                return node;
-            }
-        })
         .addMethod({
+            /**
+             * @constructor
+             */
             init: function () {
                 this.addPublic({
                     /**
@@ -62,12 +44,41 @@ troop.promise('prime.Graph', function (prime) {
             },
 
             /**
+             * Generates a function that retrieves a node from the graph
+             * based on
+             * @return {function}
+             */
+            accessor: function () {
+                return self.node.bind(this);
+            },
+
+            /**
+             * Convenience shortcut for constructing sub-graphs out of load literals.
+             * @param load {string} Node load.
+             * Argument `load` is followed by any number of remote loads.
+             * @return {string} The first argument.
+             */
+            build: function (load) {
+                var node = this.node(load),
+                    i;
+
+                // connecting node to remotes
+                for (i = 1; i < arguments.length; i++) {
+                    this.node(arguments[i])
+                        .to(node);
+                }
+
+                return load;
+            },
+
+            /**
              * Generates a function that can be used to create and
              * connect nodes on the current graph, ie. to build the graph.
              * @return {function}
+             * @see Graph.build
              */
             builder: function () {
-                return self._builder.bind(this);
+                return self.build.bind(this);
             },
 
             //////////////////////////////
@@ -85,15 +96,6 @@ troop.promise('prime.Graph', function (prime) {
                     dessert.isNode(node);
                     this.nodes.set(node.load, node);
                 }
-
-                return this;
-            },
-
-            /**
-             * Resets datastore by emptying the registry.
-             */
-            reset: function () {
-                this.nodes.clear();
 
                 return this;
             },
