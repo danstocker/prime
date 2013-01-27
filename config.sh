@@ -6,7 +6,7 @@
 LIB="prime"
 
 FILES="
-js/prime.js
+js/namespace.js
 js/utils.js
 js/Index.js
 js/Peer.js
