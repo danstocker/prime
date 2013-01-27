@@ -2,11 +2,15 @@
  * Top-Level Library Namespace
  */
 /*global exports, require */
-/** @namespace */
-var prime = {},
+var prime,
     dessert,
     troop,
     sntls;
+
+(function () {
+    /** @namespace */
+    prime = this.prime = {};
+}());
 
 // adding Node.js dependencies
 if (typeof exports === 'object' && typeof require === 'function') {
