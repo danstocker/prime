@@ -135,6 +135,4 @@ troop.promise('prime.Graph', function (prime) {
                 return result;
             }
         });
-
-    return self;
 });

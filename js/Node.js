@@ -155,8 +155,6 @@ troop.promise('prime.Node', function (prime) {
                 );
             }
         });
-
-    return self;
 });
 
 troop.promise('prime.NodeCollection', function (prime) {

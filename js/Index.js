@@ -217,6 +217,4 @@ troop.promise('prime.Index', function (prime) {
                 }
             }
         });
-
-    return self;
 });

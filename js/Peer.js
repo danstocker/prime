@@ -85,8 +85,6 @@ troop.promise('prime.Peer', function (prime) {
                 );
             }
         });
-
-    return self;
 });
 
 troop.promise('prime.PeerCollection', function (prime) {

@@ -129,6 +129,4 @@ troop.promise('prime.Peers', function (prime) {
                 return peers;
             }
         });
-
-    return self;
 });
