@@ -12,13 +12,13 @@ troop.promise('prime.Graph', function (prime) {
              * @constructor
              */
             init: function () {
-                this.addPublic({
+                this.addPrivate({
                     /**
                      * Registry all nodes in the system.
                      * @type {NodeCollection}
                      * @static
                      */
-                    nodes: prime.NodeCollection.create()
+                    _nodes: prime.NodeCollection.create()
                 });
             },
 
@@ -34,10 +34,10 @@ troop.promise('prime.Graph', function (prime) {
             node: function (load) {
                 dessert.isString(load);
 
-                var node = this.nodes.get(load);
+                var node = this._nodes.get(load);
                 if (!node) {
                     node = prime.Node.create(load);
-                    this.nodes.set(load, node);
+                    this._nodes.set(load, node);
                 }
 
                 return node;
@@ -94,7 +94,7 @@ troop.promise('prime.Graph', function (prime) {
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
                     dessert.isNode(node);
-                    this.nodes.set(node.load, node);
+                    this._nodes.set(node.load, node);
                 }
 
                 return this;
@@ -104,7 +104,7 @@ troop.promise('prime.Graph', function (prime) {
              * Rebuilds weighted indexes for all nodes.
              */
             rebuildIndexes: function () {
-                this.nodes.getPeers().callEach('rebuildIndex');
+                this._nodes.getPeers().callEach('rebuildIndex');
 
                 return this;
             },
@@ -113,7 +113,7 @@ troop.promise('prime.Graph', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this.nodes.items;
+                return this._nodes.items;
             },
 
             /**
