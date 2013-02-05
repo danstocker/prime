@@ -28,7 +28,7 @@
             bar = Node.create('bar'),
             i;
 
-        equal(typeof foo.peer(bar), 'undefined', "Peer tread before connecting");
+        equal(typeof foo.peers.getPeer(bar), 'undefined', "Peer tread before connecting");
 
         Peers.addMock({
             tread: function (load, wear) {
@@ -90,7 +90,7 @@
 
         equal(
             JSON.stringify(node),
-            '{"hello":' + JSON.stringify(node.peers.items.hello) + ',"foo":' + JSON.stringify(node.peers.items.foo) + '}',
+            '{"hello":' + JSON.stringify(node.peers.getPeer('hello')) + ',"foo":' + JSON.stringify(node.peers.getPeer('foo')) + '}',
             "Full node JSON"
         );
     });

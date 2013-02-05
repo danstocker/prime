@@ -78,16 +78,6 @@ troop.promise('prime.Node', function (prime) {
             // Graph methods
 
             /**
-             * Retrieves a peer object for a given node.
-             * When node is not a peer, returns undefined.
-             * @param node {Node}
-             * @return {Peer}
-             */
-            peer: function (node) {
-                return this.peers.get(node.load);
-            },
-
-            /**
              * Hops to a peer node randomly, weighted by tread.
              * @returns {Node}
              */
@@ -133,7 +123,7 @@ troop.promise('prime.Node', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this.peers.items;
+                return this.peers.toJSON();
             },
 
             /**

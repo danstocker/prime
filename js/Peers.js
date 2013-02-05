@@ -3,8 +3,7 @@
  */
 /*global prime, dessert, troop */
 troop.promise('prime.Peers', function (prime) {
-    var base = prime.PeerCollection,
-        self;
+    var self;
 
     dessert.addTypes({
         isPeers: function (expr) {
@@ -23,7 +22,7 @@ troop.promise('prime.Peers', function (prime) {
      * @requires Peer
      * @requires Node
      */
-    self = prime.Peers = base.extend()
+    self = prime.Peers = troop.Base.extend()
         .addConstant({
             /**
              * Default value to be added to peer tread, when none is specified.
@@ -40,9 +39,13 @@ troop.promise('prime.Peers', function (prime) {
              * @constructs
              */
             init: function () {
-                base.init.apply(this, arguments);
-
                 this.addPrivateConstant({
+                    /**
+                     * Collection of peers involved.
+                     * @type {PeerCollection}
+                     */
+                    _peers: prime.PeerCollection.create(),
+
                     /**
                      * Weighted index of peer information.
                      * @type {Index}
@@ -61,11 +64,12 @@ troop.promise('prime.Peers', function (prime) {
              * @throws {Error} When peer already exists.
              */
             addPeer: function (peer) {
-                var load = peer.node.load;
+                var load = peer.node.load,
+                    peers = this._peers;
 
-                if (!this.get(load)) {
+                if (!peers.get(load)) {
                     // adding peer to peer registry
-                    this.set(load, peer);
+                    peers.set(load, peer);
 
                     // adding peer details to index
                     this._index.addEntry(load, peer.tread);
@@ -77,11 +81,19 @@ troop.promise('prime.Peers', function (prime) {
             },
 
             /**
+             * @param load {string}
+             * @return {Peer}
+             */
+            getPeer: function (load) {
+                return this._peers.get(load);
+            },
+
+            /**
              * Retrieves a random peer, weighted by tread.
              * @returns {Peer}
              */
             random: function () {
-                return this.get(this._index.random());
+                return this._peers.get(this._index.random());
             },
 
             /**
@@ -100,7 +112,7 @@ troop.promise('prime.Peers', function (prime) {
             tread: function (load, wear) {
                 wear = wear || self.defaultWear;
 
-                var peer = this.get(load);
+                var peer = this._peers.get(load);
 
                 if (!peer) {
                     // adding new peer
@@ -119,6 +131,10 @@ troop.promise('prime.Peers', function (prime) {
 
             //////////////////////////////
             // JSON
+
+            toJSON: function () {
+                return this._peers.items;
+            },
 
             /**
              * Reconstructs Peers object from JSON data.
