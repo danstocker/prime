@@ -18,7 +18,7 @@ troop.promise('prime.Graph', function (prime) {
                      * @type {NodeCollection}
                      * @static
                      */
-                    _nodes: prime.NodeCollection.create()
+                    _nodeCollection: prime.NodeCollection.create()
                 });
             },
 
@@ -34,10 +34,12 @@ troop.promise('prime.Graph', function (prime) {
             node: function (load) {
                 dessert.isString(load);
 
-                var node = this._nodes.get(load);
+                var nodeCollection = this._nodeCollection,
+                    node = nodeCollection.get(load);
+
                 if (!node) {
                     node = prime.Node.create(load);
-                    this._nodes.set(load, node);
+                    nodeCollection.set(load, node);
                 }
 
                 return node;
@@ -90,11 +92,13 @@ troop.promise('prime.Graph', function (prime) {
              * Argument may be followed by any number of subsequent nodes.
              */
             addNode: function (node) {
-                var i;
+                var nodeCollection = this._nodeCollection,
+                    i;
+
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
                     dessert.isNode(node);
-                    this._nodes.set(node.load, node);
+                    nodeCollection.set(node.load, node);
                 }
 
                 return this;
@@ -104,7 +108,7 @@ troop.promise('prime.Graph', function (prime) {
              * Rebuilds weighted indexes for all nodes.
              */
             rebuildIndexes: function () {
-                this._nodes.getPeers().callEach('rebuildIndex');
+                this._nodeCollection.getPeers().callEach('rebuildIndex');
 
                 return this;
             },
@@ -113,7 +117,7 @@ troop.promise('prime.Graph', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this._nodes.items;
+                return this._nodeCollection.items;
             },
 
             /**

@@ -44,7 +44,7 @@ troop.promise('prime.Peers', function (prime) {
                      * Collection of peers involved.
                      * @type {PeerCollection}
                      */
-                    _peers: prime.PeerCollection.create(),
+                    _peerCollection: prime.PeerCollection.create(),
 
                     /**
                      * Weighted index of peer information.
@@ -65,7 +65,7 @@ troop.promise('prime.Peers', function (prime) {
              */
             addPeer: function (peer) {
                 var load = peer.node.load,
-                    peers = this._peers;
+                    peers = this._peerCollection;
 
                 if (!peers.get(load)) {
                     // adding peer to peer registry
@@ -85,7 +85,7 @@ troop.promise('prime.Peers', function (prime) {
              * @return {Peer}
              */
             getPeer: function (load) {
-                return this._peers.get(load);
+                return this._peerCollection.get(load);
             },
 
             /**
@@ -93,7 +93,7 @@ troop.promise('prime.Peers', function (prime) {
              * @returns {Peer}
              */
             random: function () {
-                return this._peers.get(this._index.random());
+                return this._peerCollection.get(this._index.random());
             },
 
             /**
@@ -112,7 +112,7 @@ troop.promise('prime.Peers', function (prime) {
             tread: function (load, wear) {
                 wear = wear || self.defaultWear;
 
-                var peer = this._peers.get(load);
+                var peer = this._peerCollection.get(load);
 
                 if (!peer) {
                     // adding new peer
@@ -133,7 +133,7 @@ troop.promise('prime.Peers', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this._peers.items;
+                return this._peerCollection.items;
             },
 
             /**
