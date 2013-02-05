@@ -44,11 +44,11 @@ troop.promise('prime.Node', function (prime) {
              * @param [peers] {Peers} Initial node peers.
              */
             init: function (load, peers) {
-                dessert.isString(load);
+                dessert
+                    .isString(load)
+                    .isPeersOptional(peers);
 
-                peers = prime.Peers.isPrototypeOf(peers) ?
-                    peers :
-                    prime.Peers.create();
+                peers = peers ? peers : prime.Peers.create();
 
                 this.addConstant({
                     /**

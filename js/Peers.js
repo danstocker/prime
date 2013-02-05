@@ -1,10 +1,21 @@
 /**
  * Peer Collection
  */
-/*global prime, troop */
+/*global prime, dessert, troop */
 troop.promise('prime.Peers', function (prime) {
     var base = prime.PeerCollection,
         self;
+
+    dessert.addTypes({
+        isPeers: function (expr) {
+            return self.isPrototypeOf(expr);
+        },
+
+        isPeersOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   self.isPrototypeOf(expr);
+        }
+    });
 
     /**
      * @class Represents a collection of peers.

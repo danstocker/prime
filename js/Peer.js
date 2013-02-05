@@ -5,11 +5,24 @@
  */
 /*global prime, dessert, troop, sntls */
 troop.promise('prime.Peer', function (prime) {
+    var self;
+
+    dessert.addTypes({
+        isPeer: function (expr) {
+            return self.isPrototypeOf(expr);
+        },
+
+        isPeerOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   self.isPrototypeOf(expr);
+        }
+    });
+
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
      */
-    var self = prime.Peer = troop.Base.extend()
+    self = prime.Peer = troop.Base.extend()
         .addMethod({
             //////////////////////////////
             // OOP
