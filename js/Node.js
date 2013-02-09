@@ -28,14 +28,9 @@ troop.promise('prime.Node', function (prime) {
              * Initializes node.
              * @constructor
              * @param load {string} Node load.
-             * @param [peers] {Peers} Initial node peers.
              */
-            init: function (load, peers) {
-                dessert
-                    .isString(load)
-                    .isPeersOptional(peers);
-
-                peers = peers ? peers : prime.Peers.create();
+            init: function (load) {
+                dessert.isString(load);
 
                 this.addConstant({
                     /**
@@ -45,10 +40,10 @@ troop.promise('prime.Node', function (prime) {
                     load: load,
 
                     /**
-                     * Collection of nodes connected to current node
+                     * Collection of node references connected to current node
                      * @type {Peers}
                      */
-                    peers: peers
+                    peers: prime.Peers.create()
                 });
             },
 
@@ -124,12 +119,10 @@ troop.promise('prime.Node', function (prime) {
              * @see Node.init
              */
             fromJSON: function (load, json) {
-                return self.create(
-                    load,
+                var result = self.create(load);
+                result.peers.fromJSON(json);
 
-                    // initializing peers form JSON
-                    prime.Peers.fromJSON(json)
-                );
+                return result;
             }
         });
 });

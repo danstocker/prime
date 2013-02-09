@@ -128,15 +128,18 @@ troop.promise('prime.Peers', function (prime) {
 
             /**
              * Reconstructs Peers object from JSON data.
-             * @static
+             * Works in both static & instance mode.
              * @param json {object} De-serialized JSON.
              * @return {Peers}
+             * @static
              */
             fromJSON: function (json) {
-                var peers = self.create(),
-                    load;
+                var peers = this === self ?
+                    self.create() :
+                    this;
 
                 // initializing individual peers from JSON
+                var load;
                 for (load in json) {
                     if (json.hasOwnProperty(load)) {
                         peers.addPeer(prime.Peer.fromJSON(load, json[load]));

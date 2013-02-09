@@ -28,16 +28,10 @@ troop.promise('prime.Peer', function (prime) {
 
             /**
              * Initializes a new peer.
-             * @param node {string|Node} Peer node, or load.
+             * @param load {string} Peer load.
              * @param profile {sntls.ProfileCollection}
              */
-            init: function (node, profile) {
-                if (typeof node === 'string') {
-                    node = prime.Node.create(node);
-                } else {
-                    dessert.isNode(node);
-                }
-
+            init: function (load, profile) {
                 this
                     .initProfiled(self.PROFILE_ID, profile)
                     .addConstant({
@@ -45,13 +39,16 @@ troop.promise('prime.Peer', function (prime) {
                          * Peer node
                          * @type {Node}
                          */
-                        node: node
+                        node: prime.Node.create(load)
                     });
             },
 
             //////////////////////////////
             // Graph methods
 
+            /**
+             * Simple getter for peer tread
+             */
             tread: function () {
                 return this.profile.get(self.PROFILE_ID)
                     .counter(self.TREAD_COUNTER_NAME);
