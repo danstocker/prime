@@ -1,28 +1,15 @@
 /**
  * Peer Collection
  */
-/*global prime, dessert, troop */
+/*global dessert, troop */
 troop.promise('prime.Peers', function (prime) {
-    var self;
-
-    dessert.addTypes({
-        isPeers: function (expr) {
-            return self.isPrototypeOf(expr);
-        },
-
-        isPeersOptional: function (expr) {
-            return typeof expr === 'undefined' ||
-                   self.isPrototypeOf(expr);
-        }
-    });
-
     /**
      * @class Represents a collection of peers.
      * @requires utils
      * @requires Peer
      * @requires Node
      */
-    self = prime.Peers = troop.Base.extend()
+    var self = prime.Peers = troop.Base.extend()
         .addConstant({
             /**
              * Default value to be added to peer tread, when none is specified.
@@ -159,4 +146,16 @@ troop.promise('prime.Peers', function (prime) {
                 return peers;
             }
         });
+});
+
+/*global prime */
+dessert.addTypes({
+    isPeers: function (expr) {
+        return prime.Peers.isPrototypeOf(expr);
+    },
+
+    isPeersOptional: function (expr) {
+        return typeof expr === 'undefined' ||
+               prime.Peers.isPrototypeOf(expr);
+    }
 });

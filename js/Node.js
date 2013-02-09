@@ -3,27 +3,14 @@
  *
  * Nodes are the central building blocks of the Association Engine.
  */
-/*global prime, dessert, troop, sntls */
+/*global dessert, troop, sntls */
 troop.promise('prime.Node', function (prime) {
-    var self;
-
-    dessert.addTypes({
-        isNode: function (expr) {
-            return self.isPrototypeOf(expr);
-        },
-
-        isNodeOptional: function (expr) {
-            return typeof expr === 'undefined' ||
-                   self.isPrototypeOf(expr);
-        }
-    });
-
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
      * @requires Peers
      */
-    self = prime.Node = troop.Base.extend()
+    var self = prime.Node = troop.Base.extend()
         .addConstant({
             /**
              * Probability of sub-sequential hops.
@@ -149,4 +136,16 @@ troop.promise('prime.Node', function (prime) {
 
 troop.promise('prime.NodeCollection', function (prime) {
     prime.NodeCollection = sntls.Collection.of(prime.Node);
+});
+
+/*global prime */
+dessert.addTypes({
+    isNode: function (expr) {
+        return prime.Node.isPrototypeOf(expr);
+    },
+
+    isNodeOptional: function (expr) {
+        return typeof expr === 'undefined' ||
+               prime.Node.isPrototypeOf(expr);
+    }
 });
