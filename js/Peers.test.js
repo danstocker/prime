@@ -24,7 +24,7 @@
         peers = Peers.create()
             .tread(load, 2);
         equal(peers._peerCollection.get('hello').node.load, load, "Node added to by-load buffer");
-        equal(peers._peerCollection.get('hello').tread, 2, "Newly added node's tread is 1 (default)");
+        equal(peers._peerCollection.get('hello').tread(), 2, "Newly added node's tread is 1 (default)");
 
         Index.removeMocks();
     });

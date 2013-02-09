@@ -10,6 +10,18 @@ troop.promise('prime.Peer', function (prime) {
      * @requires prime.Node
      */
     var self = prime.Peer = troop.Base.extend()
+        .addTrait(sntls.Profiled)
+        .addConstant({
+            /**
+             * Identifies peer profile in the profile collection.
+             */
+            PROFILE_ID: 'peer',
+
+            /**
+             * Identifies counter in profile.
+             */
+            TREAD_COUNTER_NAME: 'tread'
+        })
         .addMethod({
             //////////////////////////////
             // OOP
@@ -17,8 +29,9 @@ troop.promise('prime.Peer', function (prime) {
             /**
              * Initializes a new peer.
              * @param node {string|Node} Peer node, or load.
+             * @param profile {sntls.ProfileCollection}
              */
-            init: function (node) {
+            init: function (node, profile) {
                 if (typeof node === 'string') {
                     node = prime.Node.create(node);
                 } else {
@@ -26,35 +39,32 @@ troop.promise('prime.Peer', function (prime) {
                 }
 
                 this
+                    .initProfiled(self.PROFILE_ID, profile)
                     .addConstant({
                         /**
                          * Peer node
                          * @type {Node}
                          */
                         node: node
-                    })
-                    .addPublic({
-                        /**
-                         * Wear (weight) of connection to peer node.
-                         * @type {Number}
-                         */
-                        tread: 0
                     });
             },
 
             //////////////////////////////
             // Graph methods
 
+            tread: function () {
+                return this.profile.get(self.PROFILE_ID)
+                    .counter(self.TREAD_COUNTER_NAME);
+            },
+
             /**
              * Changes connection tread.
              * @param [value] {number} Wear amount.
              */
             wear: function (value) {
-                // default wear
-                value = value || 1;
-
                 // setting tread
-                this.tread += value;
+                this.profile
+                    .inc(self.TREAD_COUNTER_NAME, value);
 
                 return this;
             },
@@ -63,7 +73,7 @@ troop.promise('prime.Peer', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this.tread;
+                return this.tread();
             },
 
             /**

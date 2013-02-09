@@ -59,7 +59,7 @@ troop.promise('prime.Peers', function (prime) {
                     peers.set(load, peer);
 
                     // adding peer details to index
-                    this._index.addEntry(load, peer.tread);
+                    this._index.addEntry(load, peer.tread());
                 } else {
                     throw Error("Peer already exists.");
                 }
@@ -113,7 +113,7 @@ troop.promise('prime.Peers', function (prime) {
 
                     this._index
                         .removeEntry(load)
-                        .addEntry(load, peer.tread);
+                        .addEntry(load, peer.tread());
                 }
 
                 return this;
