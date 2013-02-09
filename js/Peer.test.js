@@ -8,10 +8,6 @@
         peer = Peer.create('hello');
         equal(peer.node.load, 'hello', "Peer load");
         equal(peer.tread, 0, "Default peer tread");
-
-        peer = Peer.create('blah', 5);
-        equal(peer.node.load, 'blah', "Peer load");
-        equal(peer.tread, 5, "Custom peer tread");
     });
 
     test("Tread", function () {
@@ -29,7 +25,7 @@
     });
 
     test("toJSON", function () {
-        var peer = Peer.create('hello', 5);
+        var peer = Peer.create('hello').wear(5);
 
         equal(
             JSON.stringify(peer),
@@ -40,7 +36,7 @@
 
     test("fromJSON", function () {
         var peerJSON = 2,
-            peer = Peer.create('hello', 2);
+            peer = Peer.create('hello').wear(2);
 
         deepEqual(
             Peer.fromJSON('hello', peerJSON),

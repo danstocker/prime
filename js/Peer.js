@@ -30,9 +30,8 @@ troop.promise('prime.Peer', function (prime) {
             /**
              * Initializes a new peer.
              * @param node {string|Node} Peer node, or load.
-             * @param [tread] {number} Initial peer tread.
              */
-            init: function (node, tread) {
+            init: function (node) {
                 if (typeof node === 'string') {
                     node = prime.Node.create(node);
                 } else {
@@ -54,10 +53,6 @@ troop.promise('prime.Peer', function (prime) {
                          */
                         tread: 0
                     });
-
-                if (tread) {
-                    this.wear(tread);
-                }
             },
 
             //////////////////////////////
@@ -92,10 +87,8 @@ troop.promise('prime.Peer', function (prime) {
              * @return {Peer}
              */
             fromJSON: function (load, tread) {
-                return self.create(
-                    load,
-                    tread
-                );
+                return self.create(load)
+                    .wear(tread);
             }
         });
 });

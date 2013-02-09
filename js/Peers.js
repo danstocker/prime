@@ -116,7 +116,10 @@ troop.promise('prime.Peers', function (prime) {
 
                 if (!peer) {
                     // adding new peer
-                    this.addPeer(prime.Peer.create(load, wear));
+                    this.addPeer(
+                        prime.Peer.create(load)
+                            .wear(wear)
+                    );
                 } else {
                     // increasing tread on existing peer
                     peer.wear(wear);

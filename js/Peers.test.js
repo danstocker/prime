@@ -15,7 +15,7 @@
             }
         });
 
-        peer = Peer.create(load, 2);
+        peer = Peer.create(load).wear(2);
         peers = Peers.create()
             .addPeer(peer);
         equal(peers._peerCollection.get('hello'), peer, "Peer added to by-load buffer");
@@ -56,9 +56,9 @@
 
     test("Querying", function () {
         var peers = Peers.create()
-                .addPeer(Peer.create('foo', 1))
-                .addPeer(Peer.create('bar', 1))
-                .addPeer(Peer.create('hello', 1)),
+                .addPeer(Peer.create('foo').wear(1))
+                .addPeer(Peer.create('bar').wear(1))
+                .addPeer(Peer.create('hello').wear(1)),
             next = peers.random();
 
         equal(Peer.isPrototypeOf(next), true, "Random returns Peer object");
@@ -90,13 +90,13 @@
                 }
             },
             peers = Peers.create()
-                .addPeer(Peer.create('hello', 5))
-                .addPeer(Peer.create('foo', 4));
+                .addPeer(Peer.create('hello').wear(5))
+                .addPeer(Peer.create('foo').wear(4));
 
         Peer.addMock({
             fromJSON: function (load, json) {
                 ok(true, "Peer being built from JSON");
-                return Peer.create(load, json.tread);
+                return Peer.create(load).wear(json.tread);
             }
         });
 
