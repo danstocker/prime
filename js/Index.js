@@ -3,16 +3,33 @@
  *
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
-/*global prime, troop */
+/*global prime, troop, sntls */
 troop.promise('prime.Index', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
      */
     var self = prime.Index = troop.Base.extend()
+        .addTrait(sntls.Profiled)
+        .addConstant({
+            /**
+             * Identifies index profile in the profile collection.
+             */
+            PROFILE_ID: 'index',
+
+            /**
+             * Identifies slot counter in profile
+             */
+            SLOT_COUNTER_NAME: 'slotCount'
+        })
         .addMethod({
-            init: function () {
+            /**
+             * @constructor
+             * @param profile {sntls.ProfileCollection}
+             */
+            init: function (profile) {
                 this
+                    .initProfiled(self.PROFILE_ID, profile)
                     .addPrivate({
                         /**
                          * List of peers in order identical to _totals.
@@ -57,13 +74,7 @@ troop.promise('prime.Index', function (prime) {
                          * Next total weight. Equals to cumulative weight of all entries.
                          * @type {Number}
                          */
-                        nextTotal: 0,
-
-                        /**
-                         * Number of empty slots.
-                         * @type {Number}
-                         */
-                        slotCount: 0
+                        nextTotal: 0
                     });
             }
         }).addPrivateMethod({
@@ -121,7 +132,7 @@ troop.promise('prime.Index', function (prime) {
 
                     // removing slot
                     delete slots[weight][pos];
-                    this.slotCount--;
+                    this.profile.dec(self.SLOT_COUNTER_NAME);
                     if (prime.utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
@@ -157,16 +168,39 @@ troop.promise('prime.Index', function (prime) {
                     slots[weight] = {};
                 }
                 slots[weight][pos] = true;
-                this.slotCount++;
+                this.profile.inc(self.SLOT_COUNTER_NAME);
 
                 return this;
+            },
+
+            /**
+             * Clears index buffers and resets counters.
+             */
+            clear: function () {
+                this._weights = [];
+                this._totals = [];
+                this._loads = [];
+                this._lookup = {};
+                this._slots = {};
+                this.nextTotal = 0;
+
+                this.profile.get(self.PROFILE_ID)
+                    .reset();
+            },
+
+            /**
+             * Simple getter for slot count
+             */
+            slotCount: function () {
+                return this.profile.get(self.PROFILE_ID)
+                    .counter(self.SLOT_COUNTER_NAME);
             },
 
             /**
              * Rebuilds index, gets rid of unused entries.
              */
             rebuild: function () {
-                if (this.slotCount === 0) {
+                if (this.slotCount() === 0) {
                     // there are no empty slots, rebuild is unnecessary
                     return this;
                 }
@@ -176,8 +210,8 @@ troop.promise('prime.Index', function (prime) {
                     weights = this._weights,
                     i, load, weight;
 
-                // re-setting buffers
-                this.init();
+                // clearing buffers
+                this.clear();
 
                 // re-adding entries one by one
                 for (i = 0; i < loads.length; i++) {
