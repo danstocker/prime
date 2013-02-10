@@ -10,15 +10,7 @@
         hello = Node.create('hello');
         equal(hello.load, 'hello', "Single new node");
 
-        node = Node.create('hello');
-        equal(node, hello, "Single existing node");
-
-        peers = Peers.create();
-        node = Node.create('hello', peers);
-        equal(node.peers, peers, "Single node with pre-defined peers");
-
-        node = Node.create('hello', Peers.create());
-        equal(node.peers, peers, "Peers object cannot be overwritten");
+        ok(hello.peers.isA(Peers), "Peers object created");
     });
 
     test("Strengthening", function () {

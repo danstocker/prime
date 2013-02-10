@@ -67,7 +67,9 @@
             $ = graph.accessor();
 
         strictEqual(graph.node('foo'), $('foo'), "Retrieves the same node as accessor method");
-        deepEqual($('hello'), Node.create('hello'), "Creates a new node on demand");
+
+        $('hello');
+        ok(graph._nodeCollection.get('hello').isA(prime.Node), "Creates a new node on demand");
     });
 
     test("Graph builder", function () {
