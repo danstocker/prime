@@ -48,6 +48,9 @@ troop.promise('prime.Node', function (prime) {
                 });
             },
 
+            //////////////////////////////
+            // Getters, setters
+
             /**
              * Simple getter for peer collection.
              * To be used with specified collection methods.
@@ -57,6 +60,16 @@ troop.promise('prime.Node', function (prime) {
                 return this.peers;
             },
 
+            /**
+             * Determines whether a given node is peer to
+             * the current node.
+             * @param node {Node}
+             * @return {Boolean}
+             */
+            isPeerNode: function (node) {
+                return this.peers.getPeer(node.load) ? true : false;
+            },
+
             //////////////////////////////
             // Graph methods
 
@@ -64,7 +77,7 @@ troop.promise('prime.Node', function (prime) {
              * Hops to a peer node randomly, weighted by tread.
              * @returns {Node}
              */
-            hop: function () {
+            getRandomPeerNode: function () {
                 if (!this.peers.count) {
                     // node has no peers, hops to itself
                     return this;
@@ -78,7 +91,7 @@ troop.promise('prime.Node', function (prime) {
 
                 // making another jump at chance
                 if (Math.random() < self.REACH) {
-                    next = next.hop();
+                    next = next.getRandomPeerNode();
                 }
 
                 return next;
@@ -90,7 +103,7 @@ troop.promise('prime.Node', function (prime) {
              * @param [forwardWear] {number}
              * @param [backwardsWear] {number}
              */
-            to: function (remoteNode, forwardWear, backwardsWear) {
+            connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 dessert.isNode(remoteNode);
 
                 backwardsWear = backwardsWear || forwardWear;
@@ -109,6 +122,14 @@ troop.promise('prime.Node', function (prime) {
                 return this.peers.toJSON();
             }
         });
+
+    /**
+     * Shortcuts
+     */
+    self.addMethod({
+        hop: self.getRandomPeerNode,
+        to : self.connectTo
+    });
 });
 
 troop.promise('prime.NodeCollection', function (prime) {

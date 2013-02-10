@@ -61,16 +61,27 @@
         // adding as argument list
         // 2x2 calls to Peer.tread for each node listed
         foo
-            .to(bar)
-            .to(car);
+            .connectTo(bar)
+            .connectTo(car);
 
         Peers.removeMocks();
     });
 
-    test("Hop", function () {
+    test("Peer testing", function () {
+        var foo = Node.create('foo'),
+            bar = Node.create('bar'),
+            car = Node.create('car');
+
+        foo.to(bar);
+
+        equal(foo.isPeerNode(bar), true, "Peer confirmed");
+        equal(foo.isPeerNode(car), false, "Not peer");
+    });
+
+    test("Hopping", function () {
         var node = Node.create('test');
 
-        equal(node.hop(), node, "Unconnected node hops to self");
+        equal(node.getRandomPeerNode(), node, "Unconnected node hops to self");
     });
 
     test("JSON", function () {
