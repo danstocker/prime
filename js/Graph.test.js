@@ -26,12 +26,12 @@
 
         // dealing with existing nodes
         graph.addNode(fooNode, barNode);
-        strictEqual(graph.node('foo'), fooNode, "Retrieved attached node");
-        strictEqual(graph.node('bar'), barNode, "Retrieved attached node");
+        strictEqual(graph.fetchNode('foo'), fooNode, "Retrieved attached node");
+        strictEqual(graph.fetchNode('bar'), barNode, "Retrieved attached node");
 
         // newly created
         equal(graph._nodeCollection.get('hello'), undefined, "Node doesn't exist on graph");
-        notStrictEqual(graph.node('hello'), Node.create('hello'), "Retrieved non-attached node");
+        notStrictEqual(graph.fetchNode('hello'), Node.create('hello'), "Retrieved non-attached node");
     });
 
     test("Index", function () {
@@ -64,9 +64,9 @@
 
     test("Node accessor", function () {
         var graph = Graph.create(),
-            $ = graph.accessor();
+            $ = graph.getFetcher();
 
-        strictEqual(graph.node('foo'), $('foo'), "Retrieves the same node as accessor method");
+        strictEqual(graph.fetchNode('foo'), $('foo'), "Retrieves the same node as accessor method");
 
         $('hello');
         ok(graph._nodeCollection.get('hello').isA(prime.Node), "Creates a new node on demand");
@@ -74,7 +74,7 @@
 
     test("Graph builder", function () {
         var graph = Graph.create(),
-            _ = graph.builder();
+            _ = graph.getConnector();
 
         expect(3);
 
@@ -96,7 +96,7 @@
 
     test("JSON", function () {
         var graph = Graph.create(),
-            _ = graph.builder();
+            _ = graph.getConnector();
 
         _('food',
             _('fruit',

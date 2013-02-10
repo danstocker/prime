@@ -96,7 +96,7 @@ troop.promise('prime.Peers', function (prime) {
              * Retrieves a random peer, weighted by tread.
              * @returns {Peer}
              */
-            random: function () {
+            getRandomPeer: function () {
                 return this._peerCollection.get(this._index.random());
             },
 

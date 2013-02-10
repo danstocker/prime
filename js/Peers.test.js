@@ -61,7 +61,7 @@
                 .addPeer(Peer.create(Node.create('foo')).wear(1))
                 .addPeer(Peer.create(Node.create('bar')).wear(1))
                 .addPeer(Peer.create(Node.create('hello')).wear(1)),
-            next = peers.random();
+            next = peers.getRandomPeer();
 
         equal(next.isA(Peer), true, "Random returns Peer object");
         ok(next.node.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");

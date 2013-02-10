@@ -85,9 +85,9 @@ troop.promise('prime.Node', function (prime) {
 
                 /**
                  * Taking random peer.
-                 * @see Peers.random
+                 * @see Peers.getRandomPeer
                  */
-                var next = this.peers.random().node;
+                var next = this.peers.getRandomPeer().node;
 
                 // making another jump at chance
                 if (Math.random() < self.REACH) {

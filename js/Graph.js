@@ -40,7 +40,7 @@ troop.promise('prime.Graph', function (prime) {
              * @param load {string}
              * @return {Node}
              */
-            node: function (load) {
+            fetchNode: function (load) {
                 dessert.isString(load);
 
                 var nodeCollection = this._nodeCollection,
@@ -59,8 +59,8 @@ troop.promise('prime.Graph', function (prime) {
              * based on
              * @return {function}
              */
-            accessor: function () {
-                return self.node.bind(this);
+            getFetcher: function () {
+                return self.fetchNode.bind(this);
             },
 
             /**
@@ -69,13 +69,13 @@ troop.promise('prime.Graph', function (prime) {
              * Argument `load` is followed by any number of remote loads.
              * @return {string} The first argument.
              */
-            build: function (load) {
-                var node = this.node(load),
+            connectNodes: function (load) {
+                var node = this.fetchNode(load),
                     i;
 
                 // connecting node to remotes
                 for (i = 1; i < arguments.length; i++) {
-                    this.node(arguments[i])
+                    this.fetchNode(arguments[i])
                         .to(node);
                 }
 
@@ -86,10 +86,10 @@ troop.promise('prime.Graph', function (prime) {
              * Generates a function that can be used to create and
              * connect nodes on the current graph, ie. to build the graph.
              * @return {function}
-             * @see Graph.build
+             * @see Graph.connectNodes
              */
-            builder: function () {
-                return self.build.bind(this);
+            getConnector: function () {
+                return self.connectNodes.bind(this);
             },
 
             //////////////////////////////
