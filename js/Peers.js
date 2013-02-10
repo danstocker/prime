@@ -93,18 +93,19 @@ troop.promise('prime.Peers', function (prime) {
 
             /**
              * Strengthens a peer in the collection, adds peer if necessary.
-             * @param load {string} Node load.
+             * @param node {Node} Peer node.
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
-            tread: function (load, wear) {
+            tread: function (node, wear) {
                 wear = wear || self.defaultWear;
 
-                var peer = this._peerCollection.get(load);
+                var load = node.load,
+                    peer = this._peerCollection.get(load);
 
                 if (!peer) {
                     // adding new peer
                     this.addPeer(
-                        prime.Peer.create(load)
+                        prime.Peer.create(node)
                             .wear(wear)
                     );
                 } else {

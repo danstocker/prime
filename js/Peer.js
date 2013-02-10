@@ -28,10 +28,10 @@ troop.promise('prime.Peer', function (prime) {
 
             /**
              * Initializes a new peer.
-             * @param load {string} Peer load.
+             * @param node {Node} Peer node.
              * @param profile {sntls.ProfileCollection}
              */
-            init: function (load, profile) {
+            init: function (node, profile) {
                 this
                     .initProfiled(self.PROFILE_ID, profile)
                     .addConstant({
@@ -39,7 +39,7 @@ troop.promise('prime.Peer', function (prime) {
                          * Peer node
                          * @type {Node}
                          */
-                        node: prime.Node.create(load)
+                        node: node
                     });
             },
 

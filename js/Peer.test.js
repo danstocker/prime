@@ -1,17 +1,19 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function (Peer) {
+(function (Peer, Node) {
     module("Peer");
 
     test("Creation", function () {
-        var peer;
+        var node = Node.create('hello'),
+            peer;
 
-        peer = Peer.create('hello');
+        peer = Peer.create(node);
         equal(peer.node.load, 'hello', "Peer load");
         equal(peer.tread(), 0, "Default peer tread");
     });
 
     test("Tread", function () {
-        var peer = Peer.create('hello'),
+        var node = Node.create('hello'),
+            peer = Peer.create(node),
             tmp;
 
         equal(peer.tread(), 0, "Initial tread zero");
@@ -33,6 +35,4 @@
             "Full peer JSON"
         );
     });
-}(
-    prime.Peer
-));
+}(prime.Peer, prime.Node));

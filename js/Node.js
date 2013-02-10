@@ -95,8 +95,8 @@ troop.promise('prime.Node', function (prime) {
                 backwardsWear = backwardsWear || forwardWear;
 
                 // updating peer tread in both directions
-                this.peers.tread(remoteNode.load, forwardWear);
-                remoteNode.peers.tread(this.load, backwardsWear);
+                this.peers.tread(remoteNode, forwardWear);
+                remoteNode.peers.tread(this, backwardsWear);
 
                 return this;
             },
