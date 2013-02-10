@@ -116,6 +116,16 @@
             '{"apple":{"fruit":1},"pear":{"fruit":1},"fruit":{"apple":1,"pear":1,"food":1},"turkey":{"food":1,"bird":2},"food":{"fruit":1,"turkey":1},"bird":{"turkey":2,"animal":1},"cat":{"feline":1},"lion":{"feline":1},"feline":{"cat":1,"lion":1,"animal":1},"animal":{"bird":1,"feline":1}}',
             "Serialized graph"
         );
+
+        deepEqual(
+            graph.profile.get('graph').counters,
+            {
+                "tread"    : 20,
+                "peers"    : 18,
+                "slotCount": 1
+            },
+            "Graph-level profile"
+        );
     });
 }(
     prime.Graph,
