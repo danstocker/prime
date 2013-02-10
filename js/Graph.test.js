@@ -62,36 +62,6 @@
         Peers.removeMocks();
     });
 
-    test("fromJSON", function () {
-        expect(3);
-
-        Node.addMock({
-            fromJSON: function (load, json) {
-                ok(true, "Node reconstructed from JSON");
-                return Node.create(load);
-            }
-        });
-
-        var graph = Graph.create();
-
-        graph.fromJSON({
-            hello: {
-                load : 'hello',
-                peers: {}
-            },
-            foo  : {
-                load : 'foo',
-                peers: {}
-            },
-            bar  : {
-                load : 'bar',
-                peers: {}
-            }
-        });
-
-        Node.removeMocks();
-    });
-
     test("Node accessor", function () {
         var graph = Graph.create(),
             $ = graph.accessor();
@@ -122,7 +92,7 @@
         Node.removeMocks();
     });
 
-    test("Serialization integration", function () {
+    test("JSON", function () {
         var graph = Graph.create(),
             _ = graph.builder();
 
@@ -133,17 +103,17 @@
             _('turkey'));
         _('animal',
             _('bird',
+                _('turkey'),
                 _('turkey')),
             _('feline',
                 _('cat'),
                 _('lion')));
 
-        var original = graph._nodeCollection.items,
-            json = JSON.stringify(graph),
-            rebuilt = Graph.fromJSON(JSON.parse(json))._nodeCollection.items;
-
-        ok(rebuilt !== original, "Rebuilt registry is different object");
-        deepEqual(rebuilt, original, "Rebuilt nodes are identical to original");
+        equal(
+            JSON.stringify(graph),
+            '{"apple":{"fruit":1},"pear":{"fruit":1},"fruit":{"apple":1,"pear":1,"food":1},"turkey":{"food":1,"bird":2},"food":{"fruit":1,"turkey":1},"bird":{"turkey":2,"animal":1},"cat":{"feline":1},"lion":{"feline":1},"feline":{"cat":1,"lion":1,"animal":1},"animal":{"bird":1,"feline":1}}',
+            "Serialized graph"
+        );
     });
 }(
     prime.Graph,

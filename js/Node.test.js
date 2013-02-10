@@ -81,7 +81,7 @@
         equal(node.hop(), node, "Unconnected node hops to self");
     });
 
-    test("toJSON", function () {
+    test("JSON", function () {
         var node = Node.create('bar')
             .to(Node.create('hello'), 5)
             .to(Node.create('foo'), 4);
@@ -93,31 +93,6 @@
             '{"hello":' + JSON.stringify(node.peers.getPeer('hello')) + ',"foo":' + JSON.stringify(node.peers.getPeer('foo')) + '}',
             "Full node JSON"
         );
-    });
-
-    test("fromJSON", function () {
-        var nodeJSON = {
-            },
-            load = 'test',
-            node = Node.create(load);
-
-        expect(3);
-
-        Peers.addMock({
-            fromJSON: function (peersJSON) {
-                ok(true, "Peers being built from JSON");
-                deepEqual(peersJSON, {}, "JSON data for peers");
-                return Peers.create();
-            }
-        });
-
-        deepEqual(
-            Node.fromJSON(load, nodeJSON),
-            node,
-            "Node re-initialized from JSON"
-        );
-
-        Peers.removeMocks();
     });
 }(
     prime.Node,

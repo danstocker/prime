@@ -118,25 +118,6 @@ troop.promise('prime.Graph', function (prime) {
 
             toJSON: function () {
                 return this._nodeCollection.items;
-            },
-
-            /**
-             * Reconstructs node collection from JSON.
-             * @param json {object} De-serialized JSON.
-             * @static
-             */
-            fromJSON: function (json) {
-                var result = self.create(),
-                    load;
-
-                // re-building registry based on json data
-                for (load in json) {
-                    if (json.hasOwnProperty(load)) {
-                        result.addNode(prime.Node.fromJSON(load, json[load]));
-                    }
-                }
-
-                return result;
             }
         });
 });

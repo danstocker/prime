@@ -24,24 +24,13 @@
         equal(peer.tread(), 6, "Adding custom wear");
     });
 
-    test("toJSON", function () {
+    test("JSON", function () {
         var peer = Peer.create('hello').wear(5);
 
         equal(
             JSON.stringify(peer),
             '5',
             "Full peer JSON"
-        );
-    });
-
-    test("fromJSON", function () {
-        var peerJSON = 2,
-            peer = Peer.create('hello').wear(2);
-
-        deepEqual(
-            Peer.fromJSON('hello', peerJSON),
-            peer,
-            "Peer re-initialized from JSON"
         );
     });
 }(

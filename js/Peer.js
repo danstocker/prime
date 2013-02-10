@@ -71,18 +71,6 @@ troop.promise('prime.Peer', function (prime) {
 
             toJSON: function () {
                 return this.tread();
-            },
-
-            /**
-             * Reconstructs Peer object from JSON data.
-             * @static
-             * @param load {string} Peer node's load.
-             * @param tread {number|string} De-serialized JSON.
-             * @return {Peer}
-             */
-            fromJSON: function (load, tread) {
-                return self.create(load)
-                    .wear(tread);
             }
         });
 });

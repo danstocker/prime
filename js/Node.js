@@ -106,23 +106,6 @@ troop.promise('prime.Node', function (prime) {
 
             toJSON: function () {
                 return this.peers.toJSON();
-            },
-
-            /**
-             * Reconstructs Node object from JSON data.
-             * @param load {string}
-             * @param json {object} De-serialized JSON.
-             * @param json.load {string}
-             * @param json.peers {object}
-             * @return {Node}
-             * @static
-             * @see Node.init
-             */
-            fromJSON: function (load, json) {
-                var result = self.create(load);
-                result.peers.fromJSON(json);
-
-                return result;
             }
         });
 });

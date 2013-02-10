@@ -79,35 +79,6 @@
 
         Index.removeMocks();
     });
-
-    test("fromJSON", function () {
-        var peersJSON = {
-                hello: {
-                    tread: 5
-                },
-                foo  : {
-                    tread: 4
-                }
-            },
-            peers = Peers.create()
-                .addPeer(Peer.create('hello').wear(5))
-                .addPeer(Peer.create('foo').wear(4));
-
-        Peer.addMock({
-            fromJSON: function (load, json) {
-                ok(true, "Peer being built from JSON");
-                return Peer.create(load).wear(json.tread);
-            }
-        });
-
-        deepEqual(
-            Peers.fromJSON(peersJSON),
-            peers,
-            "Peers re-initialized from JSON"
-        );
-
-        Peer.removeMocks();
-    });
 }(
     prime.Peers,
     prime.utils,
