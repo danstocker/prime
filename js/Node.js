@@ -28,8 +28,9 @@ troop.promise('prime.Node', function (prime) {
              * Initializes node.
              * @constructor
              * @param load {string} Node load.
+             * @param [profile] {sntls.ProfileCollection}
              */
-            init: function (load) {
+            init: function (load, profile) {
                 dessert.isString(load);
 
                 this.addConstant({
@@ -43,7 +44,7 @@ troop.promise('prime.Node', function (prime) {
                      * Collection of node references connected to current node
                      * @type {Peers}
                      */
-                    peers: prime.Peers.create()
+                    peers: prime.Peers.create(profile)
                 });
             },
 

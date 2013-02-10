@@ -25,7 +25,7 @@ troop.promise('prime.Index', function (prime) {
         .addMethod({
             /**
              * @constructor
-             * @param profile {sntls.ProfileCollection}
+             * @param [profile] {sntls.ProfileCollection}
              */
             init: function (profile) {
                 this
@@ -184,8 +184,8 @@ troop.promise('prime.Index', function (prime) {
                 this._slots = {};
                 this.nextTotal = 0;
 
-                this.profile.get(self.PROFILE_ID)
-                    .reset();
+                // subtracting current slot count from all available profiles
+                this.profile.dec(self.SLOT_COUNTER_NAME, this.slotCount());
             },
 
             /**

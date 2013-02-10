@@ -29,7 +29,7 @@ troop.promise('prime.Peer', function (prime) {
             /**
              * Initializes a new peer.
              * @param node {Node} Peer node.
-             * @param profile {sntls.ProfileCollection}
+             * @param [profile] {sntls.ProfileCollection}
              */
             init: function (node, profile) {
                 this

@@ -7,19 +7,28 @@
 /*global prime, dessert, troop, sntls */
 troop.promise('prime.Graph', function (prime) {
     var self = prime.Graph = troop.Base.extend()
+        .addTrait(sntls.Profiled)
+        .addConstant({
+            /**
+             * Identifies graph profile in the profile collection.
+             */
+            PROFILE_ID: 'graph'
+        })
         .addMethod({
             /**
              * @constructor
              */
             init: function () {
-                this.addPrivate({
-                    /**
-                     * Registry all nodes in the system.
-                     * @type {NodeCollection}
-                     * @static
-                     */
-                    _nodeCollection: prime.NodeCollection.create()
-                });
+                this
+                    .initProfiled(self.PROFILE_ID)
+                    .addPrivate({
+                        /**
+                         * Registry all nodes in the system.
+                         * @type {NodeCollection}
+                         * @static
+                         */
+                        _nodeCollection: prime.NodeCollection.create()
+                    });
             },
 
             //////////////////////////////
@@ -38,7 +47,7 @@ troop.promise('prime.Graph', function (prime) {
                     node = nodeCollection.get(load);
 
                 if (!node) {
-                    node = prime.Node.create(load);
+                    node = prime.Node.create(load, this.profile);
                     nodeCollection.set(load, node);
                 }
 

@@ -1,7 +1,7 @@
 /**
  * Peer Collection
  */
-/*global dessert, troop */
+/*global dessert, troop, sntls */
 troop.promise('prime.Peers', function (prime) {
     /**
      * @class Represents a collection of peers.
@@ -15,31 +15,45 @@ troop.promise('prime.Peers', function (prime) {
              * Default value to be added to peer tread, when none is specified.
              * @type {number}
              */
-            defaultWear: 1
+            DEFAULT_WEAR: 1,
+
+            /**
+             * Identifies peer profile in the profile collection.
+             */
+            PROFILE_ID: 'peers',
+
+            /**
+             * Identifies counter in profile.
+             */
+            PEER_COUNTER_NAME: 'peers'
         })
+        .addTrait(sntls.Profiled)
         .addMethod({
             //////////////////////////////
             // OOP
 
             /**
              * Initializes peer collection.
-             * @constructs
+             * @constructor
+             * @param [profile] {sntls.ProfileCollection}
              */
-            init: function () {
-                this.addPrivateConstant({
-                    /**
-                     * Collection of peers involved.
-                     * @type {PeerCollection}
-                     */
-                    _peerCollection: prime.PeerCollection.create(),
+            init: function (profile) {
+                this
+                    .initProfiled(self.PROFILE_ID, profile)
+                    .addPrivateConstant({
+                        /**
+                         * Collection of peers involved.
+                         * @type {PeerCollection}
+                         */
+                        _peerCollection: prime.PeerCollection.create(),
 
-                    /**
-                     * Weighted index of peer information.
-                     * @type {Index}
-                     * @private
-                     */
-                    _index: prime.Index.create()
-                });
+                        /**
+                         * Weighted index of peer information.
+                         * @type {Index}
+                         * @private
+                         */
+                        _index: prime.Index.create(profile)
+                    });
             },
 
             //////////////////////////////
@@ -57,6 +71,9 @@ troop.promise('prime.Peers', function (prime) {
                 if (!peers.get(load)) {
                     // adding peer to peer registry
                     peers.set(load, peer);
+
+                    // increasing peer count
+                    this.profile.inc(self.PEER_COUNTER_NAME);
 
                     // adding peer details to index
                     this._index.addEntry(load, peer.tread());
@@ -97,7 +114,7 @@ troop.promise('prime.Peers', function (prime) {
              * @param [wear] {number} Peer wear (incremental connection weight).
              */
             tread: function (node, wear) {
-                wear = wear || self.defaultWear;
+                wear = wear || self.DEFAULT_WEAR;
 
                 var load = node.load,
                     peer = this._peerCollection.get(load);
@@ -105,7 +122,7 @@ troop.promise('prime.Peers', function (prime) {
                 if (!peer) {
                     // adding new peer
                     this.addPeer(
-                        prime.Peer.create(node)
+                        prime.Peer.create(node, this.profile)
                             .wear(wear)
                     );
                 } else {
