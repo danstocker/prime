@@ -44,15 +44,18 @@ troop.promise('prime.Peer', function (prime) {
             },
 
             //////////////////////////////
-            // Graph methods
+            // Getters, setters
 
             /**
              * Simple getter for peer tread
              */
-            tread: function () {
+            getTread: function () {
                 return this.profile.get(self.PROFILE_ID)
                     .counter(self.TREAD_COUNTER_NAME);
             },
+
+            //////////////////////////////
+            // Graph methods
 
             /**
              * Changes connection tread.
@@ -70,7 +73,7 @@ troop.promise('prime.Peer', function (prime) {
             // JSON
 
             toJSON: function () {
-                return this.tread();
+                return this.getTread();
             }
         });
 });

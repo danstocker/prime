@@ -57,6 +57,25 @@ troop.promise('prime.Peers', function (prime) {
             },
 
             //////////////////////////////
+            // Getters, setters
+
+            /**
+             * @param load {string}
+             * @return {Peer}
+             */
+            getPeer: function (load) {
+                return this._peerCollection.get(load);
+            },
+
+            /**
+             * Retrieves a random peer, weighted by tread.
+             * @returns {Peer}
+             */
+            getRandomPeer: function () {
+                return this._peerCollection.get(this._index.random());
+            },
+
+            //////////////////////////////
             // Graph methods
 
             /**
@@ -76,28 +95,12 @@ troop.promise('prime.Peers', function (prime) {
                     this.profile.inc(self.PEER_COUNTER_NAME);
 
                     // adding peer details to index
-                    this._index.addEntry(load, peer.tread());
+                    this._index.addEntry(load, peer.getTread());
                 } else {
                     throw Error("Peer already exists.");
                 }
 
                 return this;
-            },
-
-            /**
-             * @param load {string}
-             * @return {Peer}
-             */
-            getPeer: function (load) {
-                return this._peerCollection.get(load);
-            },
-
-            /**
-             * Retrieves a random peer, weighted by tread.
-             * @returns {Peer}
-             */
-            getRandomPeer: function () {
-                return this._peerCollection.get(this._index.random());
             },
 
             /**
@@ -131,7 +134,7 @@ troop.promise('prime.Peers', function (prime) {
 
                     this._index
                         .removeEntry(load)
-                        .addEntry(load, peer.tread());
+                        .addEntry(load, peer.getTread());
                 }
 
                 return this;
