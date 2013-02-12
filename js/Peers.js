@@ -1,8 +1,8 @@
 /**
  * Peer Collection
  */
-/*global dessert, troop, sntls */
-troop.promise('prime.Peers', function (prime) {
+/*global dessert, troop, sntls, prime */
+troop.promise(prime, 'Peers', function (prime) {
     /**
      * @class Represents a collection of peers.
      * @requires utils
@@ -149,7 +149,6 @@ troop.promise('prime.Peers', function (prime) {
         });
 });
 
-/*global prime */
 dessert.addTypes({
     isPeers: function (expr) {
         return prime.Peers.isPrototypeOf(expr);

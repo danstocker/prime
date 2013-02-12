@@ -3,8 +3,8 @@
  *
  * Various general utility functions used by the Association Engine.
  */
-/*global prime, troop */
-troop.promise('prime.utils', function (prime) {
+/*global troop, prime */
+troop.promise(prime, 'utils', function (prime) {
     /**
      * @namespace Holds various utility functions.
      */

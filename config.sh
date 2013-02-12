@@ -13,4 +13,5 @@ js/Peer.js
 js/Peers.js
 js/Node.js
 js/Graph.js
+js/exports.js
 "

@@ -3,8 +3,8 @@
  *
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
-/*global prime, troop, sntls */
-troop.promise('prime.Index', function (prime) {
+/*global troop, sntls, prime */
+troop.promise(prime, 'Index', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node

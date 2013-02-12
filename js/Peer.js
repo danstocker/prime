@@ -3,8 +3,8 @@
  *
  * Describes connection between two nodes.
  */
-/*global dessert, troop, sntls */
-troop.promise('prime.Peer', function (prime) {
+/*global dessert, troop, sntls, prime */
+troop.promise(prime, 'Peer', function (prime) {
     /**
      * @class Represents connection to another node.
      * @requires prime.Node
@@ -78,11 +78,10 @@ troop.promise('prime.Peer', function (prime) {
         });
 });
 
-troop.promise('prime.PeerCollection', function (prime) {
+troop.promise(prime, 'PeerCollection', function (prime) {
     prime.PeerCollection = sntls.Collection.of(prime.Peer);
 });
 
-/*global prime */
 dessert.addTypes({
     isPeer: function (expr) {
         return prime.Peer.isPrototypeOf(expr);

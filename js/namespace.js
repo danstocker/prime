@@ -2,14 +2,15 @@
  * Top-Level Library Namespace
  */
 /*global require */
-(function () {
-    /** @namespace */
-    this.prime = {};
-}());
+/** @namespace */
+var prime = {},
+    dessert,
+    troop,
+    sntls;
 
 // adding Node.js dependencies
 if (typeof require === 'function') {
-    require('dessert-0.2.3');
-    require('troop-0.2.3');
-    require('sntls-0.1.3');
+    dessert = require('dessert-0.2.3').dessert;
+    troop = require('troop-0.2.3').troop;
+    sntls = require('sntls-0.1.3').sntls;
 }

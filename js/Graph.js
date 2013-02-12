@@ -4,8 +4,8 @@
  * Static class that is an API to prime.Node offering graph-level functionality.
  * Such as serialization and de-serialization, and re-initialization.
  */
-/*global prime, dessert, troop, sntls */
-troop.promise('prime.Graph', function (prime) {
+/*global dessert, troop, sntls, prime */
+troop.promise(prime, 'Graph', function (prime) {
     var self = prime.Graph = troop.Base.extend()
         .addTrait(sntls.Profiled)
         .addConstant({

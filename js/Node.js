@@ -3,8 +3,8 @@
  *
  * Nodes are the central building blocks of the Association Engine.
  */
-/*global dessert, troop, sntls */
-troop.promise('prime.Node', function (prime) {
+/*global dessert, troop, sntls, prime */
+troop.promise(prime, 'Node', function (prime) {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class Represents a graph node.
@@ -132,11 +132,10 @@ troop.promise('prime.Node', function (prime) {
     });
 });
 
-troop.promise('prime.NodeCollection', function (prime) {
+troop.promise(prime, 'NodeCollection', function (prime) {
     prime.NodeCollection = sntls.Collection.of(prime.Node);
 });
 
-/*global prime */
 dessert.addTypes({
     isNode: function (expr) {
         return prime.Node.isPrototypeOf(expr);
