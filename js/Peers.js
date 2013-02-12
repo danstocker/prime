@@ -68,6 +68,14 @@ troop.promise(prime, 'Peers', function (prime) {
             },
 
             /**
+             * Retrieves number of peers in this collection.
+             * @return {Number}
+             */
+            getPeerCount: function () {
+                return this._peerCollection.count;
+            },
+
+            /**
              * Retrieves a random peer, weighted by tread.
              * @returns {Peer}
              */

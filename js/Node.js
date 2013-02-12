@@ -78,7 +78,7 @@ troop.promise(prime, 'Node', function (prime) {
              * @returns {Node}
              */
             getRandomPeerNode: function () {
-                if (!this.peers.count) {
+                if (!this.peers.getPeerCount()) {
                     // node has no peers, hops to itself
                     return this;
                 }
