@@ -12,7 +12,11 @@ In the graph below, a hop from *fruit* would most likely lead to *food*, then *a
 Requires
 --------
 
-- [Troop 0.2.1](https://github.com/production-minds/troop): for OOP
+- [Dessert](https://github.com/danstocker/dessert): for assertions
+- [Troop](https://github.com/production-minds/troop): for OOP
+- [Sntls](https://github.com/danstocker/sntls): for collections and profiles
+
+Check `js/namespace.js` for version numbers.
 
 Examples
 --------
@@ -29,21 +33,26 @@ Usage
 var graph = prime.Graph.create();
 ```
 
-### Accessing nodes in the graph
+### Fetching nodes from the graph
+
+Or, creating one on demand.
 
 ```javascript
-var $ = graph.accessor(),
+var $ = graph.getFetcher(),
     node;
 
 node = $('foo');
 // or
-node = graph.node('foo');
+node = graph.fetchNode('foo');
 ```
 
 ### Building the graph
 
+Quickly connecting nodes that are created on the fly.
+
 ```javascript
-var _ = graph.builder();
+var _ = graph.getConnector();
+
 _('food',
     _('fruit',
         'apple',
