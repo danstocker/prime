@@ -12,5 +12,5 @@ var prime = {},
 if (typeof require === 'function') {
     dessert = require('dessert-0.2.3').dessert;
     troop = require('troop-0.2.3').troop;
-    sntls = require('sntls-0.1.3').sntls;
+    sntls = require('sntls-0.2.0').sntls;
 }
