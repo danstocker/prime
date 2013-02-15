@@ -20,7 +20,7 @@ troop.promise(prime, 'Index', function (prime) {
             /**
              * Identifies slot counter in profile
              */
-            SLOT_COUNTER_NAME: 'slotCount'
+            SLOT_COUNTER_NAME: 'slots'
         })
         .addMethod({
             /**
@@ -87,7 +87,7 @@ troop.promise(prime, 'Index', function (prime) {
              * @private
              * @static
              */
-            _bsearch: function (value, start, end) {
+            _bSearch: function (value, start, end) {
                 start = start || 0;
                 end = end || this.length - 1;
 
@@ -105,10 +105,10 @@ troop.promise(prime, 'Index', function (prime) {
                     return start;
                 } else if (hit > value) {
                     // narrowing range to lower half
-                    return self._bsearch.call(this, value, start, pos);
+                    return self._bSearch.call(this, value, start, pos);
                 } else if (hit < value) {
                     // narrowing range to upper half
-                    return self._bsearch.call(this, value, pos, end);
+                    return self._bSearch.call(this, value, pos, end);
                 }
             }
         })
@@ -185,13 +185,13 @@ troop.promise(prime, 'Index', function (prime) {
                 this.nextTotal = 0;
 
                 // subtracting current slot count from all available profiles
-                this.profile.dec(self.SLOT_COUNTER_NAME, this.slotCount());
+                this.profile.dec(self.SLOT_COUNTER_NAME, this.getSlotCount());
             },
 
             /**
              * Simple getter for slot count
              */
-            slotCount: function () {
+            getSlotCount: function () {
                 return this.profile.getItem(self.PROFILE_ID)
                     .getCount(self.SLOT_COUNTER_NAME);
             },
@@ -200,7 +200,7 @@ troop.promise(prime, 'Index', function (prime) {
              * Rebuilds index, gets rid of unused entries.
              */
             rebuild: function () {
-                if (this.slotCount() === 0) {
+                if (this.getSlotCount() === 0) {
                     // there are no empty slots, rebuild is unnecessary
                     return this;
                 }
@@ -230,21 +230,21 @@ troop.promise(prime, 'Index', function (prime) {
              * @param total {number} Number between zero and this.lastTotal
              * @return {string} Load of requested entry.
              */
-            get: function (total) {
-                return this._loads[this._bsearch.call(this._totals, total)];
+            getEntryByTotal: function (total) {
+                return this._loads[this._bSearch.call(this._totals, total)];
             },
 
             /**
              * Retrieves a random slot based on total weight.
              * @return {string} Random entry load.
              */
-            random: function () {
+            getRandomEntry: function () {
                 var total = Math.random() * this.nextTotal,
-                    load = this._loads[this._bsearch.call(this._totals, total)];
+                    load = this._loads[this._bSearch.call(this._totals, total)];
 
                 if (typeof load === 'undefined') {
                     // empty slot was hit, trying again
-                    return this.random();
+                    return this.getRandomEntry();
                 } else {
                     // valid entry was hit
                     return load;

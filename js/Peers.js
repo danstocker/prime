@@ -80,7 +80,7 @@ troop.promise(prime, 'Peers', function (prime) {
              * @returns {Peer}
              */
             getRandomPeer: function () {
-                return this._peerCollection.getItem(this._index.random());
+                return this._peerCollection.getItem(this._index.getRandomEntry());
             },
 
             //////////////////////////////

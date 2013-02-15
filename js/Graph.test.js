@@ -120,9 +120,9 @@
         deepEqual(
             graph.profile.getItem('graph').counters,
             {
-                "tread"    : 20,
-                "peers"    : 18,
-                "slotCount": 1
+                "tread": 20,
+                "peers": 18,
+                "slots": 1
             },
             "Graph-level profile"
         );
