@@ -193,7 +193,7 @@ troop.promise(prime, 'Index', function (prime) {
              */
             slotCount: function () {
                 return this.profile.get(self.PROFILE_ID)
-                    .counter(self.SLOT_COUNTER_NAME);
+                    .getCount(self.SLOT_COUNTER_NAME);
             },
 
             /**
