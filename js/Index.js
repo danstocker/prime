@@ -192,7 +192,7 @@ troop.promise(prime, 'Index', function (prime) {
              * Simple getter for slot count
              */
             slotCount: function () {
-                return this.profile.get(self.PROFILE_ID)
+                return this.profile.getItem(self.PROFILE_ID)
                     .getCount(self.SLOT_COUNTER_NAME);
             },
 

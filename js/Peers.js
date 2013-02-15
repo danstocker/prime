@@ -64,7 +64,7 @@ troop.promise(prime, 'Peers', function (prime) {
              * @return {Peer}
              */
             getPeer: function (load) {
-                return this._peerCollection.get(load);
+                return this._peerCollection.getItem(load);
             },
 
             /**
@@ -80,7 +80,7 @@ troop.promise(prime, 'Peers', function (prime) {
              * @returns {Peer}
              */
             getRandomPeer: function () {
-                return this._peerCollection.get(this._index.random());
+                return this._peerCollection.getItem(this._index.random());
             },
 
             //////////////////////////////
@@ -95,9 +95,9 @@ troop.promise(prime, 'Peers', function (prime) {
                 var load = peer.node.load,
                     peers = this._peerCollection;
 
-                if (!peers.get(load)) {
+                if (!peers.getItem(load)) {
                     // adding peer to peer registry
-                    peers.set(load, peer);
+                    peers.setItem(load, peer);
 
                     // increasing peer count
                     this.profile.inc(self.PEER_COUNTER_NAME);
@@ -128,7 +128,7 @@ troop.promise(prime, 'Peers', function (prime) {
                 wear = wear || self.DEFAULT_WEAR;
 
                 var load = node.load,
-                    peer = this._peerCollection.get(load);
+                    peer = this._peerCollection.getItem(load);
 
                 if (!peer) {
                     // adding new peer

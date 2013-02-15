@@ -50,7 +50,7 @@ troop.promise(prime, 'Peer', function (prime) {
              * Simple getter for peer tread
              */
             getTread: function () {
-                return this.profile.get(self.PROFILE_ID)
+                return this.profile.getItem(self.PROFILE_ID)
                     .getCount(self.TREAD_COUNTER_NAME);
             },
 

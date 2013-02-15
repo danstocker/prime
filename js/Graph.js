@@ -44,11 +44,11 @@ troop.promise(prime, 'Graph', function (prime) {
                 dessert.isString(load);
 
                 var nodeCollection = this._nodeCollection,
-                    node = nodeCollection.get(load);
+                    node = nodeCollection.getItem(load);
 
                 if (!node) {
                     node = prime.Node.create(load, this.profile);
-                    nodeCollection.set(load, node);
+                    nodeCollection.setItem(load, node);
                 }
 
                 return node;
@@ -107,7 +107,7 @@ troop.promise(prime, 'Graph', function (prime) {
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
                     dessert.isNode(node);
-                    nodeCollection.set(node.load, node);
+                    nodeCollection.setItem(node.load, node);
                 }
 
                 return this;

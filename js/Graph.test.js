@@ -30,7 +30,7 @@
         strictEqual(graph.fetchNode('bar'), barNode, "Retrieved attached node");
 
         // newly created
-        equal(graph._nodeCollection.get('hello'), undefined, "Node doesn't exist on graph");
+        equal(graph._nodeCollection.getItem('hello'), undefined, "Node doesn't exist on graph");
         notStrictEqual(graph.fetchNode('hello'), Node.create('hello'), "Retrieved non-attached node");
     });
 
@@ -46,10 +46,10 @@
             Node.create('world')
         );
 
-        graph._nodeCollection.get('foo')
-            .to(graph._nodeCollection.get('bar'))
-            .to(graph._nodeCollection.get('hello'))
-            .to(graph._nodeCollection.get('world'));
+        graph._nodeCollection.getItem('foo')
+            .to(graph._nodeCollection.getItem('bar'))
+            .to(graph._nodeCollection.getItem('hello'))
+            .to(graph._nodeCollection.getItem('world'));
 
         Peers.addMock({
             rebuildIndex: function () {
@@ -69,7 +69,7 @@
         strictEqual(graph.fetchNode('foo'), $('foo'), "Retrieves the same node as accessor method");
 
         $('hello');
-        ok(graph._nodeCollection.get('hello').isA(prime.Node), "Creates a new node on demand");
+        ok(graph._nodeCollection.getItem('hello').isA(prime.Node), "Creates a new node on demand");
     });
 
     test("Graph builder", function () {
@@ -118,7 +118,7 @@
         );
 
         deepEqual(
-            graph.profile.get('graph').counters,
+            graph.profile.getItem('graph').counters,
             {
                 "tread"    : 20,
                 "peers"    : 18,

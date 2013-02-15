@@ -19,13 +19,13 @@
         peer = Peer.create(node).wear(2);
         peers = Peers.create()
             .addPeer(peer);
-        equal(peers._peerCollection.get('hello'), peer, "Peer added to by-load buffer");
+        equal(peers._peerCollection.getItem('hello'), peer, "Peer added to by-load buffer");
         equal(peers._peerCollection.count, 1, "Peer count");
 
         peers = Peers.create()
             .tread(node, 2);
-        equal(peers._peerCollection.get('hello').node.load, load, "Node added to by-load buffer");
-        equal(peers._peerCollection.get('hello').getTread(), 2, "Newly added node's tread is 1 (default)");
+        equal(peers._peerCollection.getItem('hello').node.load, load, "Node added to by-load buffer");
+        equal(peers._peerCollection.getItem('hello').getTread(), 2, "Newly added node's tread is 1 (default)");
 
         Index.removeMocks();
     });
