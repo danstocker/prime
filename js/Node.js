@@ -106,11 +106,9 @@ troop.promise(prime, 'Node', function (prime) {
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 dessert.isNode(remoteNode);
 
-                backwardsWear = backwardsWear || forwardWear;
-
                 // updating peer tread in both directions
                 this.peers.tread(remoteNode, forwardWear);
-                remoteNode.peers.tread(this, backwardsWear);
+                remoteNode.peers.tread(this, backwardsWear || forwardWear);
 
                 return this;
             },
