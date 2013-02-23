@@ -1,4 +1,5 @@
-/*global prime, module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
+/*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
+/*global dessert, prime */
 (function (Graph, Node, Peers) {
     module("Graph");
 
@@ -72,6 +73,26 @@
         ok(graph._nodeCollection.getItem('hello').isA(prime.Node), "Creates a new node on demand");
     });
 
+    test("Connecting node pairs", function () {
+        expect(5);
+
+        var graph = Graph.create();
+
+        Node.addMock({
+            connectTo: function (remoteNode, forwardWear, backwardsWear) {
+                ok(dessert.validators.isNode(remoteNode), "Remote node ok");
+                equal(this.load, 'hello', "Own load");
+                equal(remoteNode.load, 'world', "Remote load");
+                equal(forwardWear, 5, "Forward wear");
+                equal(typeof backwardsWear, 'undefined', "Backwards wear");
+            }
+        });
+
+        graph.pairNodes('hello', 'world', 5);
+
+        Node.removeMocks();
+    });
+
     test("Node connector", function () {
         var graph = Graph.create(),
             _ = graph.getConnector();
@@ -127,8 +148,4 @@
             "Graph-level profile"
         );
     });
-}(
-    prime.Graph,
-    prime.Node,
-    prime.Peers
-));
+}(prime.Graph, prime.Node, prime.Peers ));

@@ -64,6 +64,22 @@ troop.promise(prime, 'Graph', function (prime) {
             },
 
             /**
+             * Connects two nodes, wear may be specified.
+             * @param localLoad {string}
+             * @param remoteLoad {string}
+             * @param [forwardWear] {number}
+             * @param [backwardsWear] {number}
+             */
+            pairNodes: function (localLoad, remoteLoad, forwardWear, backwardsWear) {
+                var localNode = this.fetchNode(localLoad),
+                    remoteNode = this.fetchNode(remoteLoad);
+
+                localNode.connectTo(remoteNode, forwardWear, backwardsWear);
+
+                return this;
+            },
+
+            /**
              * Convenience shortcut for constructing sub-graphs out of load literals.
              * @param load {string} Node load.
              * Argument `load` is followed by any number of remote loads.
