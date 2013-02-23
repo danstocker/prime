@@ -136,11 +136,11 @@ troop.promise(prime, 'NodeCollection', function (prime) {
 
 dessert.addTypes({
     isNode: function (expr) {
-        return prime.Node.isPrototypeOf(expr);
+        return prime.Node.isBaseOf(expr);
     },
 
     isNodeOptional: function (expr) {
         return typeof expr === 'undefined' ||
-               prime.Node.isPrototypeOf(expr);
+               prime.Node.isBaseOf(expr);
     }
 });

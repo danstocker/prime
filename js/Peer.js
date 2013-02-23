@@ -84,12 +84,12 @@ troop.promise(prime, 'PeerCollection', function (prime) {
 
 dessert.addTypes({
     isPeer: function (expr) {
-        return prime.Peer.isPrototypeOf(expr);
+        return prime.Peer.isBaseOf(expr);
     },
 
     isPeerOptional: function (expr) {
         return typeof expr === 'undefined' ||
-               prime.Peer.isPrototypeOf(expr);
+               prime.Peer.isBaseOf(expr);
     }
 });
 

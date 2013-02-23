@@ -159,11 +159,11 @@ troop.promise(prime, 'Peers', function (prime) {
 
 dessert.addTypes({
     isPeers: function (expr) {
-        return prime.Peers.isPrototypeOf(expr);
+        return prime.Peers.isBaseOf(expr);
     },
 
     isPeersOptional: function (expr) {
         return typeof expr === 'undefined' ||
-               prime.Peers.isPrototypeOf(expr);
+               prime.Peers.isBaseOf(expr);
     }
 });
