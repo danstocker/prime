@@ -41,7 +41,7 @@ troop.promise(prime, 'Graph', function (prime) {
              * @return {Node}
              */
             fetchNode: function (load) {
-                dessert.isString(load);
+                dessert.isString(load, "Invalid node load");
 
                 var nodeCollection = this._nodeCollection,
                     node = nodeCollection.getItem(load);
@@ -122,7 +122,7 @@ troop.promise(prime, 'Graph', function (prime) {
 
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
-                    dessert.isNode(node);
+                    dessert.isNode(node, "Invalid node");
                     nodeCollection.setItem(node.load, node);
                 }
 

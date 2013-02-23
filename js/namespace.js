@@ -10,7 +10,7 @@ var prime = {},
 
 // adding Node.js dependencies
 if (typeof require === 'function') {
-    dessert = require('dessert-0.2.3').dessert;
-    troop = require('troop-0.2.3').troop;
-    sntls = require('sntls-0.2.0').sntls;
+    dessert = require('dessert-0.2.4').dessert;
+    troop = require('troop-0.3.0').troop;
+    sntls = require('sntls-0.2.1').sntls;
 }

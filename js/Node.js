@@ -31,7 +31,7 @@ troop.promise(prime, 'Node', function (prime) {
              * @param [profile] {sntls.ProfileCollection}
              */
             init: function (load, profile) {
-                dessert.isString(load);
+                dessert.isString(load, "Invalid node load");
 
                 this.addConstant({
                     /**
@@ -104,7 +104,7 @@ troop.promise(prime, 'Node', function (prime) {
              * @param [backwardsWear] {number}
              */
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
-                dessert.isNode(remoteNode);
+                dessert.isNode(remoteNode, "Invalid remote node");
 
                 // updating peer tread in both directions
                 this.peers.tread(remoteNode, forwardWear);
