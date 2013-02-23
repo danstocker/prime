@@ -62,7 +62,7 @@
         Peers.removeMocks();
     });
 
-    test("Node accessor", function () {
+    test("Node fetcher", function () {
         var graph = Graph.create(),
             $ = graph.getFetcher();
 
@@ -72,7 +72,7 @@
         ok(graph._nodeCollection.getItem('hello').isA(prime.Node), "Creates a new node on demand");
     });
 
-    test("Graph builder", function () {
+    test("Node connector", function () {
         var graph = Graph.create(),
             _ = graph.getConnector();
 
