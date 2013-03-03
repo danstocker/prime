@@ -35,7 +35,7 @@ troop.promise(prime, 'Peers', function (prime) {
             /**
              * Initializes peer collection.
              * @constructor
-             * @param [profile] {sntls.ProfileCollection}
+             * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
                 this
@@ -60,7 +60,7 @@ troop.promise(prime, 'Peers', function (prime) {
             // Getters, setters
 
             /**
-             * @param load {string}
+             * @param {string} load
              * @return {Peer}
              */
             getPeer: function (load) {
@@ -88,7 +88,7 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Adds new peer to tread.
-             * @param peer {Peer} New peer.
+             * @param {Peer} peer New peer.
              * @throws {Error} When peer already exists.
              */
             addPeer: function (peer) {
@@ -121,8 +121,8 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Strengthens a peer in the collection, adds peer if necessary.
-             * @param node {Node} Peer node.
-             * @param [wear] {number} Peer wear (incremental connection weight).
+             * @param {Node} node Peer node.
+             * @param {number} [wear] Peer wear (incremental connection weight).
              */
             tread: function (node, wear) {
                 wear = wear || self.DEFAULT_WEAR;

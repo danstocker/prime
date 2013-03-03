@@ -28,8 +28,8 @@ troop.promise(prime, 'Peer', function (prime) {
 
             /**
              * Initializes a new peer.
-             * @param node {Node} Peer node.
-             * @param [profile] {sntls.ProfileCollection}
+             * @param {Node} node Peer node.
+             * @param {sntls.ProfileCollection} [profile]
              */
             init: function (node, profile) {
                 this
@@ -59,7 +59,7 @@ troop.promise(prime, 'Peer', function (prime) {
 
             /**
              * Changes connection tread.
-             * @param [value] {number} Wear amount.
+             * @param {number} [value] Wear amount.
              */
             wear: function (value) {
                 // setting tread

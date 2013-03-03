@@ -37,7 +37,7 @@ troop.promise(prime, 'Graph', function (prime) {
             /**
              * Retrieves a node from the graph's registry.
              * Creates one on demand.
-             * @param load {string}
+             * @param {string} load
              * @return {Node}
              */
             fetchNode: function (load) {
@@ -65,10 +65,10 @@ troop.promise(prime, 'Graph', function (prime) {
 
             /**
              * Connects two nodes, wear may be specified.
-             * @param localLoad {string}
-             * @param remoteLoad {string}
-             * @param [forwardWear] {number}
-             * @param [backwardsWear] {number}
+             * @param {string} localLoad
+             * @param {string} remoteLoad
+             * @param {number} [forwardWear]
+             * @param {number} [backwardsWear]
              */
             pairNodes: function (localLoad, remoteLoad, forwardWear, backwardsWear) {
                 var localNode = this.fetchNode(localLoad),
@@ -81,7 +81,7 @@ troop.promise(prime, 'Graph', function (prime) {
 
             /**
              * Convenience shortcut for constructing sub-graphs out of load literals.
-             * @param load {string} Node load.
+             * @param {string} load Node load.
              * Argument `load` is followed by any number of remote loads.
              * @return {string} The first argument.
              */
@@ -113,7 +113,7 @@ troop.promise(prime, 'Graph', function (prime) {
 
             /**
              * Adds node(s) to the current graph.
-             * @param node {Node}
+             * @param {Node} node
              * Argument may be followed by any number of subsequent nodes.
              */
             addNode: function (node) {

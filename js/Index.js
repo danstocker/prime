@@ -25,7 +25,7 @@ troop.promise(prime, 'Index', function (prime) {
         .addMethod({
             /**
              * @constructor
-             * @param [profile] {sntls.ProfileCollection}
+             * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
                 this
@@ -81,9 +81,9 @@ troop.promise(prime, 'Index', function (prime) {
             /**
              * Performs binary search in the index.
              * @this {number[]} Array to perform search on.
-             * @param value {number} Value searched.
-             * @param [start] {number} Start position of search range. Default: 0.
-             * @param [end] {number} Ending position of search range. Default: this.length - 1.
+             * @param {number} value Value searched.
+             * @param {number} [start] Start position of search range. Default: 0.
+             * @param {number} [end] Ending position of search range. Default: this.length - 1.
              * @private
              * @static
              */
@@ -115,8 +115,8 @@ troop.promise(prime, 'Index', function (prime) {
         .addMethod({
             /**
              * Adds index entry.
-             * @param load {string} Entry load.
-             * @param weight {number} Entry weight.
+             * @param {string} load Entry load.
+             * @param {number} weight Entry weight.
              */
             addEntry: function (load, weight) {
                 var slots = this._slots,
@@ -152,7 +152,7 @@ troop.promise(prime, 'Index', function (prime) {
 
             /**
              * Removes entry from index by adding position to slots.
-             * @param load {string} Load of entry to be removed.
+             * @param {string} load Load of entry to be removed.
              */
             removeEntry: function (load) {
                 var pos = this._lookup[load],
@@ -227,7 +227,7 @@ troop.promise(prime, 'Index', function (prime) {
 
             /**
              * Retrieves an entry based on total weight.
-             * @param total {number} Number between zero and this.lastTotal
+             * @param {number} total Number between zero and this.lastTotal
              * @return {string} Load of requested entry.
              */
             getEntryByTotal: function (total) {

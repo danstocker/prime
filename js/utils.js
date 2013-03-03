@@ -12,7 +12,7 @@ troop.promise(prime, 'utils', function (prime) {
         .addMethod({
             /**
              * Tests whether an object is empty.
-             * @param object {object} Test object.
+             * @param {object} object Test object.
              * @returns {boolean}
              */
             isEmpty: function (object) {
@@ -27,7 +27,7 @@ troop.promise(prime, 'utils', function (prime) {
 
             /**
              * Retrieves the first available key in the object.
-             * @param object {object}
+             * @param {object} object
              * @return {string}
              */
             firstProperty: function (object) {

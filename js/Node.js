@@ -27,8 +27,8 @@ troop.promise(prime, 'Node', function (prime) {
             /**
              * Initializes node.
              * @constructor
-             * @param load {string} Node load.
-             * @param [profile] {sntls.ProfileCollection}
+             * @param {string} load Node load.
+             * @param {sntls.ProfileCollection} [profile]
              */
             init: function (load, profile) {
                 dessert.isString(load, "Invalid node load");
@@ -63,7 +63,7 @@ troop.promise(prime, 'Node', function (prime) {
             /**
              * Determines whether a given node is peer to
              * the current node.
-             * @param node {Node}
+             * @param {Node} node
              * @return {Boolean}
              */
             isPeerNode: function (node) {
@@ -99,9 +99,9 @@ troop.promise(prime, 'Node', function (prime) {
 
             /**
              * Strengthens connection weight between this node and remote node.
-             * @param remoteNode {Node}
-             * @param [forwardWear] {number}
-             * @param [backwardsWear] {number}
+             * @param {Node} remoteNode
+             * @param {number} [forwardWear]
+             * @param {number} [backwardsWear]
              */
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 dessert.isNode(remoteNode, "Invalid remote node");
