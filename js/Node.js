@@ -7,11 +7,11 @@
 troop.promise(prime, 'Node', function (prime) {
     /**
      * Conceptual node. Basic component of the association engine.
-     * @class Represents a graph node.
-     * @requires Peers
+     * @class prime.Node
+     * @extends troop.Base
      */
-    var self = prime.Node = troop.Base.extend()
-        .addConstant({
+    var self = troop.Base.extend()
+        .addConstant(/** @lends prime.Node */{
             /**
              * Probability of sub-sequential hops.
              * Must be 0 < reach < 1.
@@ -20,7 +20,7 @@ troop.promise(prime, 'Node', function (prime) {
              */
             REACH: 0.5
         })
-        .addMethod({
+        .addMethod(/** @lends prime.Node */{
             //////////////////////////////
             // OOP
 
@@ -124,17 +124,24 @@ troop.promise(prime, 'Node', function (prime) {
     /**
      * Shortcuts
      */
-    self.addMethod({
+    self.addMethod(/** @lends prime.Node */{
         hop: self.getRandomPeerNode,
         to : self.connectTo
     });
+
+    return self;
 });
 
 troop.promise(prime, 'NodeCollection', function (prime) {
-    prime.NodeCollection = sntls.Collection.of(prime.Node);
+    /**
+     * @class prime.NodeCollection
+     * @extends sntls.Collection
+     * @borrows prime.Node
+     */
+    return sntls.Collection.of(prime.Node);
 });
 
-dessert.addTypes({
+dessert.addTypes(/** @lends dessert */{
     isNode: function (expr) {
         return prime.Node.isBaseOf(expr);
     },

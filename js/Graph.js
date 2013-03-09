@@ -6,18 +6,20 @@
  */
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Graph', function (prime) {
-    var self = prime.Graph = troop.Base.extend()
+    /**
+     * @class prime.Graph
+     * @extends troop.Base
+     * @borrows sntls.Profiled
+     */
+    var self = troop.Base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant({
+        .addConstant(/** @lends prime.Graph */{
             /**
              * Identifies graph profile in the profile collection.
              */
             PROFILE_ID: 'graph'
         })
-        .addMethod({
-            /**
-             * @constructor
-             */
+        .addMethod(/** @lends prime.Graph */{
             init: function () {
                 this
                     .initProfiled(self.PROFILE_ID)
@@ -145,4 +147,6 @@ troop.promise(prime, 'Graph', function (prime) {
                 return this._nodeCollection.items;
             }
         });
+
+    return self;
 });

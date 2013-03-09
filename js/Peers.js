@@ -4,13 +4,12 @@
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Peers', function (prime) {
     /**
-     * @class Represents a collection of peers.
-     * @requires utils
-     * @requires Peer
-     * @requires Node
+     * @class prime.Peers
+     * @extends troop.Base
+     * @borrows sntls.Profiled
      */
-    var self = prime.Peers = troop.Base.extend()
-        .addConstant({
+    var self = troop.Base.extend()
+        .addConstant(/** @lends prime.Peers */{
             /**
              * Default value to be added to peer tread, when none is specified.
              * @type {number}
@@ -28,7 +27,7 @@ troop.promise(prime, 'Peers', function (prime) {
             PEER_COUNTER_NAME: 'peers'
         })
         .addTrait(sntls.Profiled)
-        .addMethod({
+        .addMethod(/** @lends prime.Peers */{
             //////////////////////////////
             // OOP
 
@@ -155,9 +154,11 @@ troop.promise(prime, 'Peers', function (prime) {
                 return this._peerCollection.items;
             }
         });
+
+    return self;
 });
 
-dessert.addTypes({
+dessert.addTypes(/** @lends dessert */{
     isPeers: function (expr) {
         return prime.Peers.isBaseOf(expr);
     },

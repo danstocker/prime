@@ -4,12 +4,13 @@
  * Describes connection between two nodes.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Peer', function (prime) {
+troop.promise(prime, 'Peer', function () {
     /**
-     * @class Represents connection to another node.
-     * @requires prime.Node
+     * @class prime.Peer
+     * @extends troop.Base
+     * @borrows sntls.Profiled
      */
-    var self = prime.Peer = troop.Base.extend()
+    var self = troop.Base.extend()
         .addTrait(sntls.Profiled)
         .addConstant({
             /**
@@ -76,13 +77,20 @@ troop.promise(prime, 'Peer', function (prime) {
                 return this.getTread();
             }
         });
+
+    return self;
 });
 
 troop.promise(prime, 'PeerCollection', function (prime) {
-    prime.PeerCollection = sntls.Collection.of(prime.Peer);
+    /**
+     * @class prime.PeerCollection
+     * @extends sntls.Collection
+     * @borrows prime.Peer
+     */
+    return sntls.Collection.of(prime.Peer);
 });
 
-dessert.addTypes({
+dessert.addTypes(/** @lends dessert */{
     isPeer: function (expr) {
         return prime.Peer.isBaseOf(expr);
     },

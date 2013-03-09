@@ -6,12 +6,13 @@
 /*global troop, sntls, prime */
 troop.promise(prime, 'Index', function (prime) {
     /**
-     * @class Represents connection to another node.
-     * @requires prime.Node
+     * @class prime.Index
+     * @extends troop.Base
+     * @borrows sntls.Profiled
      */
     var self = prime.Index = troop.Base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant({
+        .addConstant(/** @lends prime.Index */{
             /**
              * Identifies index profile in the profile collection.
              */
@@ -22,7 +23,7 @@ troop.promise(prime, 'Index', function (prime) {
              */
             SLOT_COUNTER_NAME: 'slots'
         })
-        .addMethod({
+        .addMethod(/** @lends prime.Index */{
             /**
              * @constructor
              * @param {sntls.ProfileCollection} [profile]
@@ -77,14 +78,15 @@ troop.promise(prime, 'Index', function (prime) {
                         nextTotal: 0
                     });
             }
-        }).addPrivateMethod({
+        })
+        .addPrivateMethod(/** @lends prime.Index */{
             /**
              * Performs binary search in the index.
              * @this {number[]} Array to perform search on.
              * @param {number} value Value searched.
              * @param {number} [start] Start position of search range. Default: 0.
              * @param {number} [end] Ending position of search range. Default: this.length - 1.
-             * @private
+             * @return {number|undefined}
              * @static
              */
             _bSearch: function (value, start, end) {
@@ -112,7 +114,7 @@ troop.promise(prime, 'Index', function (prime) {
                 }
             }
         })
-        .addMethod({
+        .addMethod(/** @lends prime.Index */{
             /**
              * Adds index entry.
              * @param {string} load Entry load.
@@ -251,4 +253,6 @@ troop.promise(prime, 'Index', function (prime) {
                 }
             }
         });
+
+    return self;
 });

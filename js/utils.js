@@ -4,11 +4,12 @@
  * Various general utility functions used by the Association Engine.
  */
 /*global troop, prime */
-troop.promise(prime, 'utils', function (prime) {
+troop.promise(prime, 'utils', function () {
     /**
-     * @namespace Holds various utility functions.
+     * @class prime.utils
+     * @extends troop.Base
      */
-    prime.utils = troop.Base.extend()
+    return troop.Base.extend()
         .addMethod({
             /**
              * Tests whether an object is empty.
