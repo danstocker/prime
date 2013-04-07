@@ -8,11 +8,11 @@ troop.promise(prime, 'Peer', function () {
     /**
      * @class prime.Peer
      * @extends troop.Base
-     * @borrows sntls.Profiled
+     * @extends sntls.Profiled
      */
-    var self = troop.Base.extend()
+    prime.Peer = troop.Base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant({
+        .addConstant(/** @lends prime.Peer */{
             /**
              * Identifies peer profile in the profile collection.
              */
@@ -23,22 +23,22 @@ troop.promise(prime, 'Peer', function () {
              */
             TREAD_COUNTER_NAME: 'tread'
         })
-        .addMethod({
+        .addMethod(/** @lends prime.Peer */{
             //////////////////////////////
             // OOP
 
             /**
              * Initializes a new peer.
-             * @param {Node} node Peer node.
+             * @param {prime.Node} node Peer node.
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (node, profile) {
                 this
-                    .initProfiled(self.PROFILE_ID, profile)
-                    .addConstant({
+                    .initProfiled(this.PROFILE_ID, profile)
+                    .addConstant(/** @lends prime.Peer */{
                         /**
                          * Peer node
-                         * @type {Node}
+                         * @type {prime.Node}
                          */
                         node: node
                     });
@@ -49,10 +49,11 @@ troop.promise(prime, 'Peer', function () {
 
             /**
              * Simple getter for peer tread
+             * @return {number}
              */
             getTread: function () {
-                return this.profile.getItem(self.PROFILE_ID)
-                    .getCount(self.TREAD_COUNTER_NAME);
+                return this.profile.getItem(this.PROFILE_ID)
+                    .getCount(this.TREAD_COUNTER_NAME);
             },
 
             //////////////////////////////
@@ -61,11 +62,12 @@ troop.promise(prime, 'Peer', function () {
             /**
              * Changes connection tread.
              * @param {number} [value] Wear amount.
+             * @return {prime.Peer}
              */
             wear: function (value) {
                 // setting tread
                 this.profile
-                    .inc(self.TREAD_COUNTER_NAME, value);
+                    .inc(this.TREAD_COUNTER_NAME, value);
 
                 return this;
             },
@@ -77,17 +79,15 @@ troop.promise(prime, 'Peer', function () {
                 return this.getTread();
             }
         });
-
-    return self;
 });
 
 troop.promise(prime, 'PeerCollection', function (prime) {
     /**
      * @class prime.PeerCollection
      * @extends sntls.Collection
-     * @borrows prime.Peer
+     * @extends prime.Peer
      */
-    return sntls.Collection.of(prime.Peer);
+    prime.PeerCollection = sntls.Collection.of(prime.Peer);
 });
 
 dessert.addTypes(/** @lends dessert */{

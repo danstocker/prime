@@ -4,13 +4,13 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Node', function (prime) {
+troop.promise(prime, 'Node', function () {
     /**
      * Conceptual node. Basic component of the association engine.
      * @class prime.Node
      * @extends troop.Base
      */
-    var self = troop.Base.extend()
+    prime.Node = troop.Base.extend()
         .addConstant(/** @lends prime.Node */{
             /**
              * Probability of sub-sequential hops.
@@ -33,7 +33,7 @@ troop.promise(prime, 'Node', function (prime) {
             init: function (load, profile) {
                 dessert.isString(load, "Invalid node load");
 
-                this.addConstant({
+                this.addConstant(/** @lends prime.Node */{
                     /**
                      * String wrapped inside node.
                      * @type {string}
@@ -42,7 +42,7 @@ troop.promise(prime, 'Node', function (prime) {
 
                     /**
                      * Collection of node references connected to current node
-                     * @type {Peers}
+                     * @type {prime.Peers}
                      */
                     peers: prime.Peers.create(profile)
                 });
@@ -54,7 +54,7 @@ troop.promise(prime, 'Node', function (prime) {
             /**
              * Simple getter for peer collection.
              * To be used with specified collection methods.
-             * @return {Peers}
+             * @return {prime.Peers}
              */
             getPeers: function () {
                 return this.peers;
@@ -63,7 +63,7 @@ troop.promise(prime, 'Node', function (prime) {
             /**
              * Determines whether a given node is peer to
              * the current node.
-             * @param {Node} node
+             * @param {prime.Node} node
              * @return {Boolean}
              */
             isPeerNode: function (node) {
@@ -75,7 +75,7 @@ troop.promise(prime, 'Node', function (prime) {
 
             /**
              * Hops to a peer node randomly, weighted by tread.
-             * @returns {Node}
+             * @returns {prime.Node}
              */
             getRandomPeerNode: function () {
                 if (!this.peers.getPeerCount()) {
@@ -85,12 +85,13 @@ troop.promise(prime, 'Node', function (prime) {
 
                 /**
                  * Taking random peer.
-                 * @see Peers.getRandomPeer
+                 * @type {prime.Node}
+                 * @see prime.Peers.getRandomPeer
                  */
                 var next = this.peers.getRandomPeer().node;
 
                 // making another jump at chance
-                if (Math.random() < self.REACH) {
+                if (Math.random() < this.REACH) {
                     next = next.getRandomPeerNode();
                 }
 
@@ -99,9 +100,10 @@ troop.promise(prime, 'Node', function (prime) {
 
             /**
              * Strengthens connection weight between this node and remote node.
-             * @param {Node} remoteNode
+             * @param {prime.Node} remoteNode
              * @param {number} [forwardWear]
              * @param {number} [backwardsWear]
+             * @return {prime.Index}
              */
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 dessert.isNode(remoteNode, "Invalid remote node");
@@ -124,21 +126,19 @@ troop.promise(prime, 'Node', function (prime) {
     /**
      * Shortcuts
      */
-    self.addMethod(/** @lends prime.Node */{
-        hop: self.getRandomPeerNode,
-        to : self.connectTo
+    prime.Node.addMethod(/** @lends prime.Node */{
+        hop: prime.Node.getRandomPeerNode,
+        to : prime.Node.connectTo
     });
-
-    return self;
 });
 
-troop.promise(prime, 'NodeCollection', function (prime) {
+troop.promise(prime, 'NodeCollection', function () {
     /**
      * @class prime.NodeCollection
      * @extends sntls.Collection
-     * @borrows prime.Node
+     * @extends prime.Node
      */
-    return sntls.Collection.of(prime.Node);
+    prime.NodeCollection = sntls.Collection.of(prime.Node);
 });
 
 dessert.addTypes(/** @lends dessert */{

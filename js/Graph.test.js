@@ -4,7 +4,7 @@
     module("Graph");
 
     test("Creation", function () {
-        var graph = Graph.create();
+        var graph = /** @type prime.Graph */ Graph.create();
         ok(graph._nodeCollection.isA(prime.NodeCollection), "Node collection on graph is of correct type");
     });
 

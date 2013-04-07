@@ -4,13 +4,15 @@
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global troop, sntls, prime */
-troop.promise(prime, 'Index', function (prime) {
+troop.promise(prime, 'Index', function () {
+    var self;
+
     /**
      * @class prime.Index
      * @extends troop.Base
-     * @borrows sntls.Profiled
+     * @extends sntls.Profiled
      */
-    var self = prime.Index = troop.Base.extend()
+    prime.Index = self = troop.Base.extend()
         .addTrait(sntls.Profiled)
         .addConstant(/** @lends prime.Index */{
             /**
@@ -30,8 +32,8 @@ troop.promise(prime, 'Index', function (prime) {
              */
             init: function (profile) {
                 this
-                    .initProfiled(self.PROFILE_ID, profile)
-                    .addPrivate({
+                    .initProfiled(this.PROFILE_ID, profile)
+                    .addPrivate(/** @lends prime.Index */{
                         /**
                          * List of peers in order identical to _totals.
                          * @type {number[]}
@@ -70,7 +72,7 @@ troop.promise(prime, 'Index', function (prime) {
                          */
                         _slots: {}
                     })
-                    .addPublic({
+                    .addPublic(/** @lends prime.Index */{
                         /**
                          * Next total weight. Equals to cumulative weight of all entries.
                          * @type {Number}
@@ -119,6 +121,7 @@ troop.promise(prime, 'Index', function (prime) {
              * Adds index entry.
              * @param {string} load Entry load.
              * @param {number} weight Entry weight.
+             * @return {prime.Index}
              */
             addEntry: function (load, weight) {
                 var slots = this._slots,
@@ -134,7 +137,7 @@ troop.promise(prime, 'Index', function (prime) {
 
                     // removing slot
                     delete slots[weight][pos];
-                    this.profile.dec(self.SLOT_COUNTER_NAME);
+                    this.profile.dec(this.SLOT_COUNTER_NAME);
                     if (prime.utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
@@ -155,6 +158,7 @@ troop.promise(prime, 'Index', function (prime) {
             /**
              * Removes entry from index by adding position to slots.
              * @param {string} load Load of entry to be removed.
+             * @return {prime.Index}
              */
             removeEntry: function (load) {
                 var pos = this._lookup[load],
@@ -170,13 +174,14 @@ troop.promise(prime, 'Index', function (prime) {
                     slots[weight] = {};
                 }
                 slots[weight][pos] = true;
-                this.profile.inc(self.SLOT_COUNTER_NAME);
+                this.profile.inc(this.SLOT_COUNTER_NAME);
 
                 return this;
             },
 
             /**
              * Clears index buffers and resets counters.
+             * @return {prime.Index}
              */
             clear: function () {
                 this._weights = [];
@@ -187,19 +192,23 @@ troop.promise(prime, 'Index', function (prime) {
                 this.nextTotal = 0;
 
                 // subtracting current slot count from all available profiles
-                this.profile.dec(self.SLOT_COUNTER_NAME, this.getSlotCount());
+                this.profile.dec(this.SLOT_COUNTER_NAME, this.getSlotCount());
+
+                return this;
             },
 
             /**
              * Simple getter for slot count
+             * @return {number}
              */
             getSlotCount: function () {
-                return this.profile.getItem(self.PROFILE_ID)
-                    .getCount(self.SLOT_COUNTER_NAME);
+                return this.profile.getItem(this.PROFILE_ID)
+                    .getCount(this.SLOT_COUNTER_NAME);
             },
 
             /**
              * Rebuilds index, gets rid of unused entries.
+             * @return {prime.Index}
              */
             rebuild: function () {
                 if (this.getSlotCount() === 0) {
@@ -253,6 +262,4 @@ troop.promise(prime, 'Index', function (prime) {
                 }
             }
         });
-
-    return self;
 });

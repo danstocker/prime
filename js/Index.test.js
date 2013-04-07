@@ -1,30 +1,30 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
-(function (Index) {
+(function () {
     module("Index");
 
     test("Bsearch", function () {
         var buffer = [0, 1, 3, 5, 6, 9];
 
-        equal(Index._bSearch.call(buffer, 4), 2, "Position of 4 (nearest hit)");
-        equal(Index._bSearch.call(buffer, 6), 4, "Position of 6 (exact hit)");
-        equal(Index._bSearch.call(buffer, 0), 0, "Position of 1 (low extreme)");
-        equal(Index._bSearch.call(buffer, 9), 5, "Position of 9 (high extreme)");
-        equal(Index._bSearch.call(buffer, -4), 0, "Position of -4 (out of bounds -)");
-        equal(Index._bSearch.call(buffer, 100), 5, "Position of 100 (out of bounds +)");
+        equal(prime.Index._bSearch.call(buffer, 4), 2, "Position of 4 (nearest hit)");
+        equal(prime.Index._bSearch.call(buffer, 6), 4, "Position of 6 (exact hit)");
+        equal(prime.Index._bSearch.call(buffer, 0), 0, "Position of 1 (low extreme)");
+        equal(prime.Index._bSearch.call(buffer, 9), 5, "Position of 9 (high extreme)");
+        equal(prime.Index._bSearch.call(buffer, -4), 0, "Position of -4 (out of bounds -)");
+        equal(prime.Index._bSearch.call(buffer, 100), 5, "Position of 100 (out of bounds +)");
 
         // extreme case, only 1 element
         buffer = [4];
-        equal(Index._bSearch.call(buffer, 4), 0, "Position of 4 in 1-elem buffer (exact hit)");
-        equal(Index._bSearch.call(buffer, -4), 0, "Position of -4 in 1-elem buffer (out of bounds -)");
-        equal(Index._bSearch.call(buffer, 100), 0, "Position of 100 in 1-elem buffer (out of bounds +)");
+        equal(prime.Index._bSearch.call(buffer, 4), 0, "Position of 4 in 1-elem buffer (exact hit)");
+        equal(prime.Index._bSearch.call(buffer, -4), 0, "Position of -4 in 1-elem buffer (out of bounds -)");
+        equal(prime.Index._bSearch.call(buffer, 100), 0, "Position of 100 in 1-elem buffer (out of bounds +)");
 
         // extreme case, zero elements
         buffer = [];
-        equal(Index._bSearch.call(buffer, 4), 0, "Position of 4 in empty");
+        equal(prime.Index._bSearch.call(buffer, 4), 0, "Position of 4 in empty");
     });
 
     test("Addition", function () {
-        var index = Index.create();
+        var index = prime.Index.create();
 
         equal(index.nextTotal, 0, "Next total is initially zero");
         equal(index.getSlotCount(), 0, "Slot count is initially zero");
@@ -38,7 +38,7 @@
     });
 
     test("Removal", function () {
-        var index = Index.create()
+        var index = prime.Index.create()
             .addEntry('foo', 5)
             .addEntry('bar', 1)
             .addEntry('hello', 2);
@@ -63,7 +63,7 @@
     });
 
     test("Re-addition", function () {
-        var index = Index.create()
+        var index = prime.Index.create()
             .addEntry('foo', 5) // 0
             .addEntry('bar', 1) // 1
             .addEntry('hello', 2) // 2
@@ -92,7 +92,7 @@
     });
 
     test("Rebuilding", function () {
-        var index = Index.create()
+        var index = prime.Index.create()
             .addEntry('foo', 5) // 0
             .addEntry('bar', 1) // 1
             .addEntry('hello', 2) // 2
@@ -110,7 +110,7 @@
     });
 
     test("Querying", function () {
-        var index = Index.create()
+        var index = prime.Index.create()
             .addEntry('foo', 5)
             .addEntry('bar', 1)
             .addEntry('hello', 2);
@@ -121,7 +121,7 @@
     });
 
     test("Random query", function () {
-        var index = Index.create()
+        var index = prime.Index.create()
             .addEntry('foo', 5)
             .addEntry('bar', 1)
             .addEntry('hello', 2)
@@ -129,6 +129,4 @@
 
         ok(index.getRandomEntry() in {'foo': true, 'hello': true}, "Random query yields one of remaining entries");
     });
-}(
-    prime.Index
-));
+}());

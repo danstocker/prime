@@ -4,13 +4,6 @@
 /*global require */
 /** @namespace */
 var prime = {},
-    dessert,
-    troop,
-    sntls;
-
-// adding Node.js dependencies
-if (typeof require === 'function') {
-    dessert = require('dessert-0.2.4').dessert;
-    troop = require('troop-0.3.0').troop;
-    sntls = require('sntls-0.2.1').sntls;
-}
+    dessert = dessert || require('dessert').dessert,
+    troop = troop || require('troop').troop,
+    sntls = sntls || require('sntls').sntls;

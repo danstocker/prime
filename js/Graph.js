@@ -5,13 +5,13 @@
  * Such as serialization and de-serialization, and re-initialization.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Graph', function (prime) {
+troop.promise(prime, 'Graph', function () {
     /**
      * @class prime.Graph
      * @extends troop.Base
-     * @borrows sntls.Profiled
+     * @extends sntls.Profiled
      */
-    var self = troop.Base.extend()
+    prime.Graph = troop.Base.extend()
         .addTrait(sntls.Profiled)
         .addConstant(/** @lends prime.Graph */{
             /**
@@ -22,12 +22,12 @@ troop.promise(prime, 'Graph', function (prime) {
         .addMethod(/** @lends prime.Graph */{
             init: function () {
                 this
-                    .initProfiled(self.PROFILE_ID)
-                    .addPrivate({
+                    .initProfiled(this.PROFILE_ID)
+                    .addPrivate(/** @lends prime.Graph */{
                         /**
                          * Registry all nodes in the system.
-                         * @type {NodeCollection}
-                         * @static
+                         * @type {prime.NodeCollection}
+                         * @private
                          */
                         _nodeCollection: prime.NodeCollection.create()
                     });
@@ -40,7 +40,7 @@ troop.promise(prime, 'Graph', function (prime) {
              * Retrieves a node from the graph's registry.
              * Creates one on demand.
              * @param {string} load
-             * @return {Node}
+             * @return {prime.Node}
              */
             fetchNode: function (load) {
                 dessert.isString(load, "Invalid node load");
@@ -62,7 +62,7 @@ troop.promise(prime, 'Graph', function (prime) {
              * @return {function}
              */
             getFetcher: function () {
-                return self.fetchNode.bind(this);
+                return this.fetchNode.bind(this);
             },
 
             /**
@@ -71,6 +71,7 @@ troop.promise(prime, 'Graph', function (prime) {
              * @param {string} remoteLoad
              * @param {number} [forwardWear]
              * @param {number} [backwardsWear]
+             * @return {prime.Graph}
              */
             pairNodes: function (localLoad, remoteLoad, forwardWear, backwardsWear) {
                 var localNode = this.fetchNode(localLoad),
@@ -104,10 +105,10 @@ troop.promise(prime, 'Graph', function (prime) {
              * Generates a function that can be used to create and
              * connect nodes on the current graph, ie. to build the graph.
              * @return {function}
-             * @see Graph.connectNodes
+             * @see prime.Graph.connectNodes
              */
             getConnector: function () {
-                return self.connectNodes.bind(this);
+                return this.connectNodes.bind(this);
             },
 
             //////////////////////////////
@@ -115,8 +116,9 @@ troop.promise(prime, 'Graph', function (prime) {
 
             /**
              * Adds node(s) to the current graph.
-             * @param {Node} node
+             * @param {prime.Node} node
              * Argument may be followed by any number of subsequent nodes.
+             * @return {prime.Graph}
              */
             addNode: function (node) {
                 var nodeCollection = this._nodeCollection,
@@ -133,6 +135,7 @@ troop.promise(prime, 'Graph', function (prime) {
 
             /**
              * Rebuilds weighted indexes for all nodes.
+             * @return {prime.Graph}
              */
             rebuildIndexes: function () {
                 this._nodeCollection.getPeers().callEach('rebuildIndex');
@@ -147,6 +150,4 @@ troop.promise(prime, 'Graph', function (prime) {
                 return this._nodeCollection.items;
             }
         });
-
-    return self;
 });

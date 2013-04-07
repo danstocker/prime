@@ -2,17 +2,16 @@
  * Peer Collection
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Peers', function (prime) {
+troop.promise(prime, 'Peers', function () {
     /**
      * @class prime.Peers
      * @extends troop.Base
      * @borrows sntls.Profiled
      */
-    var self = troop.Base.extend()
+    prime.Peers = troop.Base.extend()
         .addConstant(/** @lends prime.Peers */{
             /**
              * Default value to be added to peer tread, when none is specified.
-             * @type {number}
              */
             DEFAULT_WEAR: 1,
 
@@ -28,9 +27,6 @@ troop.promise(prime, 'Peers', function (prime) {
         })
         .addTrait(sntls.Profiled)
         .addMethod(/** @lends prime.Peers */{
-            //////////////////////////////
-            // OOP
-
             /**
              * Initializes peer collection.
              * @constructor
@@ -38,17 +34,18 @@ troop.promise(prime, 'Peers', function (prime) {
              */
             init: function (profile) {
                 this
-                    .initProfiled(self.PROFILE_ID, profile)
-                    .addPrivateConstant({
+                    .initProfiled(this.PROFILE_ID, profile)
+                    .addPrivateConstant(/** @lends prime.Peers */{
                         /**
                          * Collection of peers involved.
-                         * @type {PeerCollection}
+                         * @type {prime.PeerCollection}
+                         * @private
                          */
                         _peerCollection: prime.PeerCollection.create(),
 
                         /**
                          * Weighted index of peer information.
-                         * @type {Index}
+                         * @type {prime.Index}
                          * @private
                          */
                         _index: prime.Index.create(profile)
@@ -60,7 +57,7 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * @param {string} load
-             * @return {Peer}
+             * @return {prime.Peer}
              */
             getPeer: function (load) {
                 return this._peerCollection.getItem(load);
@@ -76,7 +73,7 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Retrieves a random peer, weighted by tread.
-             * @returns {Peer}
+             * @returns {prime.Peer}
              */
             getRandomPeer: function () {
                 return this._peerCollection.getItem(this._index.getRandomEntry());
@@ -87,7 +84,8 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Adds new peer to tread.
-             * @param {Peer} peer New peer.
+             * @param {prime.Peer} peer New peer.
+             * @return {prime.Peers}
              * @throws {Error} When peer already exists.
              */
             addPeer: function (peer) {
@@ -99,7 +97,7 @@ troop.promise(prime, 'Peers', function (prime) {
                     peers.setItem(load, peer);
 
                     // increasing peer count
-                    this.profile.inc(self.PEER_COUNTER_NAME);
+                    this.profile.inc(this.PEER_COUNTER_NAME);
 
                     // adding peer details to index
                     this._index.addEntry(load, peer.getTread());
@@ -112,6 +110,7 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Rebuilds weighted index.
+             * @return {prime.Peers}
              */
             rebuildIndex: function () {
                 this._index.rebuild();
@@ -120,11 +119,12 @@ troop.promise(prime, 'Peers', function (prime) {
 
             /**
              * Strengthens a peer in the collection, adds peer if necessary.
-             * @param {Node} node Peer node.
+             * @param {prime.Node} node Peer node.
              * @param {number} [wear] Peer wear (incremental connection weight).
+             * @return {prime.Peers}
              */
             tread: function (node, wear) {
-                wear = wear || self.DEFAULT_WEAR;
+                wear = wear || this.DEFAULT_WEAR;
 
                 var load = node.load,
                     peer = this._peerCollection.getItem(load);
@@ -154,8 +154,6 @@ troop.promise(prime, 'Peers', function (prime) {
                 return this._peerCollection.items;
             }
         });
-
-    return self;
 });
 
 dessert.addTypes(/** @lends dessert */{

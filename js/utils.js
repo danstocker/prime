@@ -9,8 +9,8 @@ troop.promise(prime, 'utils', function () {
      * @class prime.utils
      * @extends troop.Base
      */
-    return troop.Base.extend()
-        .addMethod({
+    prime.utils = troop.Base.extend()
+        .addMethod(/** @lends prime.utils */{
             /**
              * Tests whether an object is empty.
              * @param {object} object Test object.
