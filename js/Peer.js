@@ -33,15 +33,13 @@ troop.promise(prime, 'Peer', function () {
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (node, profile) {
-                this
-                    .initProfiled(this.PROFILE_ID, profile)
-                    .addConstant(/** @lends prime.Peer */{
-                        /**
-                         * Peer node
-                         * @type {prime.Node}
-                         */
-                        node: node
-                    });
+                this.initProfiled(this.PROFILE_ID, profile);
+
+                /**
+                 * Peer node
+                 * @type {prime.Node}
+                 */
+                this.node = node;
             },
 
             //////////////////////////////

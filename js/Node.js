@@ -33,19 +33,17 @@ troop.promise(prime, 'Node', function () {
             init: function (load, profile) {
                 dessert.isString(load, "Invalid node load");
 
-                this.addConstant(/** @lends prime.Node */{
-                    /**
-                     * String wrapped inside node.
-                     * @type {string}
-                     */
-                    load: load,
+                /**
+                 * String wrapped inside node.
+                 * @type {string}
+                 */
+                this.load = load;
 
-                    /**
-                     * Collection of node references connected to current node
-                     * @type {prime.Peers}
-                     */
-                    peers: prime.Peers.create(profile)
-                });
+                /**
+                 * Collection of node references connected to current node
+                 * @type {prime.Peers}
+                 */
+                this.peers = prime.Peers.create(profile);
             },
 
             //////////////////////////////

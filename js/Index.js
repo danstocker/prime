@@ -28,54 +28,51 @@ troop.promise(prime, 'Index', function () {
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
-                this
-                    .initProfiled(this.PROFILE_ID, profile)
-                    .addPrivate(/** @lends prime.Index */{
-                        /**
-                         * List of peers in order identical to _totals.
-                         * @type {number[]}
-                         * @private
-                         */
-                        _weights: [],
+                this.initProfiled(this.PROFILE_ID, profile);
 
-                        /**
-                         * Sorted index of total weights of preceding entries.
-                         * Total weight is the cumulative weight of all slots.
-                         * @type {sntls.OrderedList}
-                         * @private
-                         */
-                        _totals: sntls.OrderedList.create(),
+                /**
+                 * List of peers in order identical to _totals.
+                 * @type {number[]}
+                 * @private
+                 */
+                this._weights = [];
 
-                        /**
-                         * List of loads.
-                         * @type {string[]}
-                         * @private
-                         */
-                        _loads: [],
+                /**
+                 * Sorted index of total weights of preceding entries.
+                 * Total weight is the cumulative weight of all slots.
+                 * @type {sntls.OrderedList}
+                 * @private
+                 */
+                this._totals = sntls.OrderedList.create();
 
-                        /**
-                         * Associates loads with their positions in the index.
-                         * (Both loads and index positions are unique.)
-                         * @type {Object}
-                         * @private
-                         */
-                        _lookup: {},
+                /**
+                 * List of loads.
+                 * @type {string[]}
+                 * @private
+                 */
+                this._loads = [];
 
-                        /**
-                         * Lookup for empty index entries first by weight, then by index position.
-                         * Incoming entries first check here for a suitable position.
-                         * @type {Object}
-                         * @private
-                         */
-                        _slots: {}
-                    })
-                    .addPublic(/** @lends prime.Index */{
-                        /**
-                         * Next total weight. Equals to cumulative weight of all entries.
-                         * @type {Number}
-                         */
-                        nextTotal: 0
-                    });
+                /**
+                 * Associates loads with their positions in the index.
+                 * (Both loads and index positions are unique.)
+                 * @type {Object}
+                 * @private
+                 */
+                this._lookup = {};
+
+                /**
+                 * Lookup for empty index entries first by weight; then by index position.
+                 * Incoming entries first check here for a suitable position.
+                 * @type {Object}
+                 * @private
+                 */
+                this._slots = {};
+
+                /**
+                 * Next total weight. Equals to cumulative weight of all entries.
+                 * @type {Number}
+                 */
+                this.nextTotal = 0;
             },
 
             /**

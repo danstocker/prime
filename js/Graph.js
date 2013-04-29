@@ -21,16 +21,14 @@ troop.promise(prime, 'Graph', function () {
         })
         .addMethod(/** @lends prime.Graph */{
             init: function () {
-                this
-                    .initProfiled(this.PROFILE_ID)
-                    .addPrivate(/** @lends prime.Graph */{
-                        /**
-                         * Registry all nodes in the system.
-                         * @type {prime.NodeCollection}
-                         * @private
-                         */
-                        _nodeCollection: prime.NodeCollection.create()
-                    });
+                this.initProfiled(this.PROFILE_ID);
+
+                /**
+                 * Registry all nodes in the system.
+                 * @type {prime.NodeCollection}
+                 * @private
+                 */
+                this._nodeCollection = prime.NodeCollection.create();
             },
 
             //////////////////////////////

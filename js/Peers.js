@@ -33,23 +33,21 @@ troop.promise(prime, 'Peers', function () {
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
-                this
-                    .initProfiled(this.PROFILE_ID, profile)
-                    .addPrivateConstant(/** @lends prime.Peers */{
-                        /**
-                         * Collection of peers involved.
-                         * @type {prime.PeerCollection}
-                         * @private
-                         */
-                        _peerCollection: prime.PeerCollection.create(),
+                this.initProfiled(this.PROFILE_ID, profile);
 
-                        /**
-                         * Weighted index of peer information.
-                         * @type {prime.Index}
-                         * @private
-                         */
-                        _index: prime.Index.create(profile)
-                    });
+                /**
+                 * Collection of peers involved.
+                 * @type {prime.PeerCollection}
+                 * @private
+                 */
+                this._peerCollection = prime.PeerCollection.create();
+
+                /**
+                 * Weighted index of peer information.
+                 * @type {prime.Index}
+                 * @private
+                 */
+                this._index = prime.Index.create(profile);
             },
 
             //////////////////////////////
