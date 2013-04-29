@@ -5,14 +5,12 @@
  */
 /*global troop, sntls, prime */
 troop.promise(prime, 'Index', function () {
-    var self;
-
     /**
      * @class prime.Index
      * @extends troop.Base
      * @extends sntls.Profiled
      */
-    prime.Index = self = troop.Base.extend()
+    prime.Index = troop.Base.extend()
         .addTrait(sntls.Profiled)
         .addConstant(/** @lends prime.Index */{
             /**
@@ -27,7 +25,6 @@ troop.promise(prime, 'Index', function () {
         })
         .addMethod(/** @lends prime.Index */{
             /**
-             * @constructor
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
@@ -44,10 +41,10 @@ troop.promise(prime, 'Index', function () {
                         /**
                          * Sorted index of total weights of preceding entries.
                          * Total weight is the cumulative weight of all slots.
-                         * @type {number[]}
+                         * @type {sntls.OrderedList}
                          * @private
                          */
-                        _totals: [],
+                        _totals: sntls.OrderedList.create(),
 
                         /**
                          * List of loads.
@@ -79,44 +76,8 @@ troop.promise(prime, 'Index', function () {
                          */
                         nextTotal: 0
                     });
-            }
-        })
-        .addPrivateMethod(/** @lends prime.Index */{
-            /**
-             * Performs binary search in the index.
-             * @this {number[]} Array to perform search on.
-             * @param {number} value Value searched.
-             * @param {number} [start] Start position of search range. Default: 0.
-             * @param {number} [end] Ending position of search range. Default: this.length - 1.
-             * @return {number|undefined}
-             * @static
-             */
-            _bSearch: function (value, start, end) {
-                start = start || 0;
-                end = end || this.length - 1;
+            },
 
-                var pos = Math.floor((start + end) / 2),
-                    hit = this[pos];
-
-                if (hit === value) {
-                    // perfect hit
-                    return pos;
-                } else if (this[end] <= value) {
-                    // end of range hit
-                    return end;
-                } else if (end - start <= 1) {
-                    // between two adjacent values
-                    return start;
-                } else if (hit > value) {
-                    // narrowing range to lower half
-                    return self._bSearch.call(this, value, start, pos);
-                } else if (hit < value) {
-                    // narrowing range to upper half
-                    return self._bSearch.call(this, value, pos, end);
-                }
-            }
-        })
-        .addMethod(/** @lends prime.Index */{
             /**
              * Adds index entry.
              * @param {string} load Entry load.
@@ -147,7 +108,7 @@ troop.promise(prime, 'Index', function () {
                     // adding new entry to index
                     this._lookup[load] = this._loads.length;
                     this._loads.push(load);
-                    this._totals.push(this.nextTotal);
+                    this._totals.addItem(this.nextTotal); //.items.push(this.nextTotal);
                     this._weights.push(weight);
                     this.nextTotal += weight;
                 }
@@ -185,7 +146,7 @@ troop.promise(prime, 'Index', function () {
              */
             clear: function () {
                 this._weights = [];
-                this._totals = [];
+                this._totals.clear();
                 this._loads = [];
                 this._lookup = {};
                 this._slots = {};
@@ -242,7 +203,17 @@ troop.promise(prime, 'Index', function () {
              * @return {string} Load of requested entry.
              */
             getEntryByTotal: function (total) {
-                return this._loads[this._bSearch.call(this._totals, total)];
+                /**
+                 * Load index points to the previous entry when
+                 * `total` does not point to an existing location
+                 */
+                var totals = this._totals,
+                    spliceIndex = totals.spliceIndexOf(total),
+                    loadIndex = totals.items[spliceIndex] === total ?
+                        spliceIndex : // exact hit
+                        spliceIndex - 1; // in between hit
+
+                return this._loads[loadIndex];
             },
 
             /**
@@ -251,7 +222,7 @@ troop.promise(prime, 'Index', function () {
              */
             getRandomEntry: function () {
                 var total = Math.random() * this.nextTotal,
-                    load = this._loads[this._bSearch.call(this._totals, total)];
+                    load = this._loads[this._totals.spliceIndexOf(total)];
 
                 if (typeof load === 'undefined') {
                     // empty slot was hit, trying again

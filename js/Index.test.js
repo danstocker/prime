@@ -2,27 +2,6 @@
 (function () {
     module("Index");
 
-    test("Bsearch", function () {
-        var buffer = [0, 1, 3, 5, 6, 9];
-
-        equal(prime.Index._bSearch.call(buffer, 4), 2, "Position of 4 (nearest hit)");
-        equal(prime.Index._bSearch.call(buffer, 6), 4, "Position of 6 (exact hit)");
-        equal(prime.Index._bSearch.call(buffer, 0), 0, "Position of 1 (low extreme)");
-        equal(prime.Index._bSearch.call(buffer, 9), 5, "Position of 9 (high extreme)");
-        equal(prime.Index._bSearch.call(buffer, -4), 0, "Position of -4 (out of bounds -)");
-        equal(prime.Index._bSearch.call(buffer, 100), 5, "Position of 100 (out of bounds +)");
-
-        // extreme case, only 1 element
-        buffer = [4];
-        equal(prime.Index._bSearch.call(buffer, 4), 0, "Position of 4 in 1-elem buffer (exact hit)");
-        equal(prime.Index._bSearch.call(buffer, -4), 0, "Position of -4 in 1-elem buffer (out of bounds -)");
-        equal(prime.Index._bSearch.call(buffer, 100), 0, "Position of 100 in 1-elem buffer (out of bounds +)");
-
-        // extreme case, zero elements
-        buffer = [];
-        equal(prime.Index._bSearch.call(buffer, 4), 0, "Position of 4 in empty");
-    });
-
     test("Addition", function () {
         var index = prime.Index.create();
 
@@ -31,7 +10,7 @@
 
         index.addEntry('foo', 5);
         deepEqual(index._weights, [5], "Weights after addition");
-        deepEqual(index._totals, [0], "Totals after addition");
+        deepEqual(index._totals.items, [0], "Totals after addition");
         deepEqual(index._loads, ['foo'], "Loads after addition");
         deepEqual(index._lookup, {foo: 0}, "Lookup after addition");
         equal(index.nextTotal, 5, "Next total after addition");
@@ -49,7 +28,7 @@
         index.removeEntry('foo');
 
         deepEqual(index._weights, [5, 1, 2], "Weights index unchanged after removal");
-        deepEqual(index._totals, [0, 5, 6], "Totals index unchanged after removal");
+        deepEqual(index._totals.items, [0, 5, 6], "Totals index unchanged after removal");
         deepEqual(index._loads, [undefined, 'bar', 'hello'], "Loads after removal");
         deepEqual(index._lookup, {bar: 1, hello: 2}, "Lookup after removal");
         deepEqual(
@@ -103,7 +82,7 @@
         deepEqual(index._loads, ['foo', 'hello'], "Loads after rebuild");
         deepEqual(index._lookup, {foo: 0, hello: 1}, "Lookup after rebuild");
         deepEqual(index._weights, [5, 2], "Weights after rebuild");
-        deepEqual(index._totals, [0, 5], "Totals after rebuild");
+        deepEqual(index._totals.items, [0, 5], "Totals after rebuild");
         equal(index.nextTotal, 7, "Next total after rebuild");
         deepEqual(index._slots, {}, "Slots emptied after rebuild");
         equal(index.getSlotCount(), 0, "Slot count after rebuild");
