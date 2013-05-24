@@ -1,31 +1,31 @@
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
 /*global dessert, prime */
-(function (Graph, Node, Peers) {
+(function () {
     "use strict";
 
     module("Graph");
 
     test("Creation", function () {
-        var graph = /** @type prime.Graph */ Graph.create();
+        var graph = /** @type prime.Graph */ prime.Graph.create();
         ok(graph._nodeCollection.isA(prime.NodeCollection), "Node collection on graph is of correct type");
     });
 
     test("Node addition", function () {
-        var graph = Graph.create();
+        var graph = prime.Graph.create();
 
         equal(graph._nodeCollection.count, 0, "Node count before addition");
 
-        graph.addNode(Node.create('foo'));
+        graph.addNode(prime.Node.create('foo'));
         equal(graph._nodeCollection.count, 1, "Node count after single addition");
 
-        graph.addNode(Node.create('bar'), Node.create('hello'));
+        graph.addNode(prime.Node.create('bar'), prime.Node.create('hello'));
         equal(graph._nodeCollection.count, 3, "Node count after multiple addition");
     });
 
     test("Node retrieval", function () {
-        var graph = Graph.create(),
-            fooNode = Node.create('foo'),
-            barNode = Node.create('bar');
+        var graph = prime.Graph.create(),
+            fooNode = prime.Node.create('foo'),
+            barNode = prime.Node.create('bar');
 
         // dealing with existing nodes
         graph.addNode(fooNode, barNode);
@@ -34,19 +34,19 @@
 
         // newly created
         equal(graph._nodeCollection.getItem('hello'), undefined, "Node doesn't exist on graph");
-        notStrictEqual(graph.fetchNode('hello'), Node.create('hello'), "Retrieved non-attached node");
+        notStrictEqual(graph.fetchNode('hello'), prime.Node.create('hello'), "Retrieved non-attached node");
     });
 
     test("Index", function () {
         expect(4);
 
-        var graph = Graph.create();
+        var graph = prime.Graph.create();
 
         graph.addNode(
-            Node.create('foo'),
-            Node.create('bar'),
-            Node.create('hello'),
-            Node.create('world')
+            prime.Node.create('foo'),
+            prime.Node.create('bar'),
+            prime.Node.create('hello'),
+            prime.Node.create('world')
         );
 
         graph._nodeCollection.getItem('foo')
@@ -54,7 +54,7 @@
             .to(graph._nodeCollection.getItem('hello'))
             .to(graph._nodeCollection.getItem('world'));
 
-        Peers.addMock({
+        prime.Peers.addMock({
             rebuildIndex: function () {
                 ok(true, "Rebuilding index for node");
             }
@@ -62,11 +62,11 @@
 
         graph.rebuildIndexes();
 
-        Peers.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Node fetcher", function () {
-        var graph = Graph.create(),
+        var graph = prime.Graph.create(),
             $ = graph.getFetcher();
 
         strictEqual(graph.fetchNode('foo'), $('foo'), "Retrieves the same node as accessor method");
@@ -78,9 +78,9 @@
     test("Connecting node pairs", function () {
         expect(5);
 
-        var graph = Graph.create();
+        var graph = prime.Graph.create();
 
-        Node.addMock({
+        prime.Node.addMock({
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 ok(dessert.validators.isNode(remoteNode), "Remote node ok");
                 equal(this.load, 'hello', "Own load");
@@ -92,33 +92,33 @@
 
         graph.pairNodes('hello', 'world', 5);
 
-        Node.removeMocks();
+        prime.Node.removeMocks();
     });
 
     test("Node connector", function () {
-        var graph = Graph.create(),
+        var graph = prime.Graph.create(),
             _ = graph.getConnector();
 
         expect(3);
 
         equal(_('foo'), 'foo', "Builder returns node instance");
 
-        Node.addMock({
+        prime.Node.addMock({
             to: function () {
-                ok(true, "Node.to called");
+                ok(true, "prime.Node.to called");
             }
         });
 
-        // 2x1 calls to Node.to
+        // 2x1 calls to prime.Node.to
         _('hello',
             _('foo'),
             _('bar'));
 
-        Node.removeMocks();
+        prime.Node.removeMocks();
     });
 
     test("JSON", function () {
-        var graph = Graph.create(),
+        var graph = prime.Graph.create(),
             _ = graph.getConnector();
 
         _('food',
@@ -150,4 +150,4 @@
             "Graph-level profile"
         );
     });
-}(prime.Graph, prime.Node, prime.Peers ));
+}());

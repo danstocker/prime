@@ -1,5 +1,5 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Node, Peers) {
+(function () {
     "use strict";
 
     module("Node");
@@ -9,22 +9,22 @@
             node,
             peers;
 
-        hello = Node.create('hello');
+        hello = prime.Node.create('hello');
         equal(hello.load, 'hello', "Single new node");
 
-        ok(hello.peers.isA(Peers), "Peers object created");
+        ok(hello.peers.isA(prime.Peers), "Peers object created");
     });
 
     test("Strengthening", function () {
         expect(5);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
+        var foo = prime.Node.create('foo'),
+            bar = prime.Node.create('bar'),
             i;
 
         equal(typeof foo.peers.getPeer(bar), 'undefined', "Peer tread before connecting");
 
-        Peers.addMock({
+        prime.Peers.addMock({
             tread: function (node, wear) {
                 switch (i) {
                 case 0:
@@ -42,17 +42,17 @@
         i = 0;
         foo.to(bar, 5);
 
-        Peers.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Connecting", function () {
         expect(8);
 
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
-            car = Node.create('car');
+        var foo = prime.Node.create('foo'),
+            bar = prime.Node.create('bar'),
+            car = prime.Node.create('car');
 
-        Peers.addMock({
+        prime.Peers.addMock({
             tread: function (node, wear) {
                 // TODO: test is crude, should be refined
                 ok(node.load in {foo: 1, car: 1, bar: 1}, "Peer added");
@@ -66,13 +66,13 @@
             .connectTo(bar)
             .connectTo(car);
 
-        Peers.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Peer testing", function () {
-        var foo = Node.create('foo'),
-            bar = Node.create('bar'),
-            car = Node.create('car');
+        var foo = prime.Node.create('foo'),
+            bar = prime.Node.create('bar'),
+            car = prime.Node.create('car');
 
         foo.to(bar);
 
@@ -81,15 +81,15 @@
     });
 
     test("Hopping", function () {
-        var node = Node.create('test');
+        var node = prime.Node.create('test');
 
         equal(node.getRandomPeerNode(), node, "Unconnected node hops to self");
     });
 
     test("JSON", function () {
-        var node = Node.create('bar')
-            .to(Node.create('hello'), 5)
-            .to(Node.create('foo'), 4);
+        var node = prime.Node.create('bar')
+            .to(prime.Node.create('hello'), 5)
+            .to(prime.Node.create('foo'), 4);
 
         deepEqual(Object.keys(node.toJSON()), ['hello', 'foo'], "Node peer loads sent to JSON");
 
@@ -99,4 +99,4 @@
             "Full node JSON"
         );
     });
-}(prime.Node, prime.Peers));
+}());

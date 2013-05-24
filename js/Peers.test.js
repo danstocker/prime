@@ -1,45 +1,45 @@
 /*global prime, mocks, module, test, expect, ok, equal, notEqual, deepEqual, raises */
-(function (Peers, utils, Peer, Node, Index) {
+(function () {
     "use strict";
 
     module("Peers");
 
     test("Addition", function () {
         var load = 'hello',
-            node = Node.create(load),
+            node = prime.Node.create(load),
             peers, peer;
 
         expect(8); // 2x2 from mocks
 
-        Index.addMock({
+        prime.Index.addMock({
             addEntry: function (load, weight) {
                 equal(load, 'hello', "Peer load");
                 equal(weight, 2, "Peer tread");
             }
         });
 
-        peer = Peer.create(node).wear(2);
-        peers = Peers.create()
+        peer = prime.Peer.create(node).wear(2);
+        peers = prime.Peers.create()
             .addPeer(peer);
         equal(peers._peerCollection.getItem('hello'), peer, "Peer added to by-load buffer");
         equal(peers._peerCollection.count, 1, "Peer count");
 
-        peers = Peers.create()
+        peers = prime.Peers.create()
             .tread(node, 2);
         equal(peers._peerCollection.getItem('hello').node.load, load, "Node added to by-load buffer");
         equal(peers._peerCollection.getItem('hello').getTread(), 2, "Newly added node's tread is 1 (default)");
 
-        Index.removeMocks();
+        prime.Index.removeMocks();
     });
 
     test("Modification", function () {
-        var peers = Peers.create(),
-            node = Node.create('load'),
+        var peers = prime.Peers.create(),
+            node = prime.Node.create('load'),
             i = 0;
 
         expect(5); // 2x .add(), 1x .remove()
 
-        Index.addMock({
+        prime.Index.addMock({
             removeEntry: function (load) {
                 equal(load, 'load', "Removing load from index");
                 return this;
@@ -55,32 +55,32 @@
             .tread(node, 1)
             .tread(node, 2);
 
-        Index.removeMocks();
+        prime.Index.removeMocks();
     });
 
     test("Querying", function () {
-        var peers = Peers.create()
-                .addPeer(Peer.create(Node.create('foo')).wear(1))
-                .addPeer(Peer.create(Node.create('bar')).wear(1))
-                .addPeer(Peer.create(Node.create('hello')).wear(1)),
+        var peers = prime.Peers.create()
+                .addPeer(prime.Peer.create(prime.Node.create('foo')).wear(1))
+                .addPeer(prime.Peer.create(prime.Node.create('bar')).wear(1))
+                .addPeer(prime.Peer.create(prime.Node.create('hello')).wear(1)),
             next = peers.getRandomPeer();
 
-        equal(next.isA(Peer), true, "Random returns Peer object");
+        equal(next.isA(prime.Peer), true, "Random returns Peer object");
         ok(next.node.load in {'foo': 1, 'bar': 1, 'hello': 1}, "Random is one of the connected peers");
     });
 
     test("Miscellaneous", function () {
         expect(1);
 
-        Index.addMock({
+        prime.Index.addMock({
             rebuild: function () {
                 ok(true, "Weighted index rebuilt");
             }
         });
 
-        Peers.create()
+        prime.Peers.create()
             .rebuildIndex();
 
-        Index.removeMocks();
+        prime.Index.removeMocks();
     });
 }(prime.Peers, prime.utils, prime.Peer, prime.Node, prime.Index ));
