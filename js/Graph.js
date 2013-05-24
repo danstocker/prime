@@ -136,7 +136,8 @@ troop.promise(prime, 'Graph', function () {
              * @return {prime.Graph}
              */
             rebuildIndexes: function () {
-                this._nodeCollection.getPeers().callEach('rebuildIndex');
+                this._nodeCollection.getPeers()
+                    .callOnEachItem('rebuildIndex');
 
                 return this;
             },
