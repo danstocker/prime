@@ -24,9 +24,6 @@ troop.promise(prime, 'Peer', function () {
             TREAD_COUNTER_NAME: 'tread'
         })
         .addMethod(/** @lends prime.Peer */{
-            //////////////////////////////
-            // OOP
-
             /**
              * Initializes a new peer.
              * @param {prime.Node} node Peer node.
@@ -42,9 +39,6 @@ troop.promise(prime, 'Peer', function () {
                 this.node = node;
             },
 
-            //////////////////////////////
-            // Getters, setters
-
             /**
              * Simple getter for peer tread
              * @return {number}
@@ -53,9 +47,6 @@ troop.promise(prime, 'Peer', function () {
                 return this.profile.getItem(this.PROFILE_ID)
                     .getCount(this.TREAD_COUNTER_NAME);
             },
-
-            //////////////////////////////
-            // Graph methods
 
             /**
              * Changes connection tread.
@@ -70,9 +61,6 @@ troop.promise(prime, 'Peer', function () {
                 return this;
             },
 
-            //////////////////////////////
-            // JSON
-
             toJSON: function () {
                 return this.getTread();
             }
@@ -86,6 +74,11 @@ troop.promise(prime, 'PeerCollection', function (prime) {
      * @extends prime.Peer
      */
     prime.PeerCollection = sntls.Collection.of(prime.Peer);
+
+    /**
+     * @name prime.PeerCollection.create
+     * @return {prime.PeerCollection}
+     */
 });
 
 dessert.addTypes(/** @lends dessert */{

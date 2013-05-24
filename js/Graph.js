@@ -20,6 +20,13 @@ troop.promise(prime, 'Graph', function () {
             PROFILE_ID: 'graph'
         })
         .addMethod(/** @lends prime.Graph */{
+            /**
+             * @name prime.Graph.create
+             * @return {prime.Graph}
+             */
+
+            /**
+             */
             init: function () {
                 this.initProfiled(this.PROFILE_ID);
 
@@ -30,9 +37,6 @@ troop.promise(prime, 'Graph', function () {
                  */
                 this._nodeCollection = prime.NodeCollection.create();
             },
-
-            //////////////////////////////
-            // Getters, setters
 
             /**
              * Retrieves a node from the graph's registry.
@@ -109,9 +113,6 @@ troop.promise(prime, 'Graph', function () {
                 return this.connectNodes.bind(this);
             },
 
-            //////////////////////////////
-            // Control
-
             /**
              * Adds node(s) to the current graph.
              * @param {prime.Node} node
@@ -141,9 +142,6 @@ troop.promise(prime, 'Graph', function () {
 
                 return this;
             },
-
-            //////////////////////////////
-            // JSON
 
             toJSON: function () {
                 return this._nodeCollection.items;

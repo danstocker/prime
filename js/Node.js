@@ -21,8 +21,10 @@ troop.promise(prime, 'Node', function () {
             REACH: 0.5
         })
         .addMethod(/** @lends prime.Node */{
-            //////////////////////////////
-            // OOP
+            /**
+             * @name prime.Node.create
+             * @return {prime.Node}
+             */
 
             /**
              * Initializes node.
@@ -46,9 +48,6 @@ troop.promise(prime, 'Node', function () {
                 this.peers = prime.Peers.create(profile);
             },
 
-            //////////////////////////////
-            // Getters, setters
-
             /**
              * Simple getter for peer collection.
              * To be used with specified collection methods.
@@ -67,9 +66,6 @@ troop.promise(prime, 'Node', function () {
             isPeerNode: function (node) {
                 return this.peers.getPeer(node.load) ? true : false;
             },
-
-            //////////////////////////////
-            // Graph methods
 
             /**
              * Hops to a peer node randomly, weighted by tread.
@@ -113,9 +109,6 @@ troop.promise(prime, 'Node', function () {
                 return this;
             },
 
-            //////////////////////////////
-            // JSON
-
             toJSON: function () {
                 return this.peers.toJSON();
             }
@@ -137,6 +130,11 @@ troop.promise(prime, 'NodeCollection', function () {
      * @extends prime.Node
      */
     prime.NodeCollection = sntls.Collection.of(prime.Node);
+
+    /**
+     * @name prime.NodeCollection.create
+     * @return {prime.NodeCollection}
+     */
 });
 
 dessert.addTypes(/** @lends dessert */{

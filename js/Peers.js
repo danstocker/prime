@@ -6,7 +6,7 @@ troop.promise(prime, 'Peers', function () {
     /**
      * @class prime.Peers
      * @extends troop.Base
-     * @borrows sntls.Profiled
+     * @extends sntls.Profiled
      */
     prime.Peers = troop.Base.extend()
         .addConstant(/** @lends prime.Peers */{
@@ -27,6 +27,11 @@ troop.promise(prime, 'Peers', function () {
         })
         .addTrait(sntls.Profiled)
         .addMethod(/** @lends prime.Peers */{
+            /**
+             * @name prime.Peers.create
+             * @return {prime.Peers}
+             */
+
             /**
              * Initializes peer collection.
              * @constructor
@@ -49,9 +54,6 @@ troop.promise(prime, 'Peers', function () {
                  */
                 this._index = prime.Index.create(profile);
             },
-
-            //////////////////////////////
-            // Getters, setters
 
             /**
              * @param {string} load
@@ -77,31 +79,25 @@ troop.promise(prime, 'Peers', function () {
                 return this._peerCollection.getItem(this._index.getRandomEntry());
             },
 
-            //////////////////////////////
-            // Graph methods
-
             /**
              * Adds new peer to tread.
              * @param {prime.Peer} peer New peer.
              * @return {prime.Peers}
-             * @throws {Error} When peer already exists.
              */
             addPeer: function (peer) {
                 var load = peer.node.load,
                     peers = this._peerCollection;
 
-                if (!peers.getItem(load)) {
-                    // adding peer to peer registry
-                    peers.setItem(load, peer);
+                dessert.assert(!peers.getItem(load), "Peer already exists.");
 
-                    // increasing peer count
-                    this.profile.inc(this.PEER_COUNTER_NAME);
+                // adding peer to peer registry
+                peers.setItem(load, peer);
 
-                    // adding peer details to index
-                    this._index.addEntry(load, peer.getTread());
-                } else {
-                    throw Error("Peer already exists.");
-                }
+                // increasing peer count
+                this.profile.inc(this.PEER_COUNTER_NAME);
+
+                // adding peer details to index
+                this._index.addEntry(load, peer.getTread());
 
                 return this;
             },
@@ -144,9 +140,6 @@ troop.promise(prime, 'Peers', function () {
 
                 return this;
             },
-
-            //////////////////////////////
-            // JSON
 
             toJSON: function () {
                 return this._peerCollection.items;
