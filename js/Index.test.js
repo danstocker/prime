@@ -1,5 +1,7 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
 (function () {
+    "use strict";
+
     module("Index");
 
     test("Addition", function () {

@@ -1,5 +1,7 @@
 /*global prime, module, test, expect, ok, equal, notEqual, deepEqual, raises */
 (function (Node, Peers) {
+    "use strict";
+
     module("Node");
 
     test("Creation", function () {
@@ -97,7 +99,4 @@
             "Full node JSON"
         );
     });
-}(
-    prime.Node,
-    prime.Peers
-));
+}(prime.Node, prime.Peers));

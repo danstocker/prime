@@ -1,6 +1,8 @@
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
 /*global dessert, prime */
 (function (Graph, Node, Peers) {
+    "use strict";
+
     module("Graph");
 
     test("Creation", function () {

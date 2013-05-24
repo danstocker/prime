@@ -5,6 +5,8 @@
  */
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Node', function () {
+    "use strict";
+
     /**
      * Conceptual node. Basic component of the association engine.
      * @class prime.Node
@@ -124,6 +126,8 @@ troop.promise(prime, 'Node', function () {
 });
 
 troop.promise(prime, 'NodeCollection', function () {
+    "use strict";
+
     /**
      * @class prime.NodeCollection
      * @extends sntls.Collection
@@ -137,13 +141,17 @@ troop.promise(prime, 'NodeCollection', function () {
      */
 });
 
-dessert.addTypes(/** @lends dessert */{
-    isNode: function (expr) {
-        return prime.Node.isBaseOf(expr);
-    },
+(function () {
+    "use strict";
 
-    isNodeOptional: function (expr) {
-        return typeof expr === 'undefined' ||
-               prime.Node.isBaseOf(expr);
-    }
-});
+    dessert.addTypes(/** @lends dessert */{
+        isNode: function (expr) {
+            return prime.Node.isBaseOf(expr);
+        },
+
+        isNodeOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   prime.Node.isBaseOf(expr);
+        }
+    });
+}());

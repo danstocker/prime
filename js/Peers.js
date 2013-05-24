@@ -3,6 +3,8 @@
  */
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Peers', function () {
+    "use strict";
+
     /**
      * @class prime.Peers
      * @extends troop.Base
@@ -147,13 +149,17 @@ troop.promise(prime, 'Peers', function () {
         });
 });
 
-dessert.addTypes(/** @lends dessert */{
-    isPeers: function (expr) {
-        return prime.Peers.isBaseOf(expr);
-    },
+(function () {
+    "use strict";
 
-    isPeersOptional: function (expr) {
-        return typeof expr === 'undefined' ||
-               prime.Peers.isBaseOf(expr);
-    }
-});
+    dessert.addTypes(/** @lends dessert */{
+        isPeers: function (expr) {
+            return prime.Peers.isBaseOf(expr);
+        },
+
+        isPeersOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   prime.Peers.isBaseOf(expr);
+        }
+    });
+}());

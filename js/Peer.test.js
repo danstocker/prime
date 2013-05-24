@@ -1,5 +1,7 @@
 /*global prime, mocks, module, test, ok, equal, notEqual, deepEqual, raises */
 (function (Peer, Node) {
+    "use strict";
+
     module("Peer");
 
     test("Creation", function () {

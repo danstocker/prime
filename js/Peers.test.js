@@ -1,5 +1,7 @@
 /*global prime, mocks, module, test, expect, ok, equal, notEqual, deepEqual, raises */
 (function (Peers, utils, Peer, Node, Index) {
+    "use strict";
+
     module("Peers");
 
     test("Addition", function () {

@@ -5,6 +5,8 @@
  */
 /*global troop, prime */
 troop.promise(prime, 'utils', function () {
+    "use strict";
+
     /**
      * @class prime.utils
      * @extends troop.Base

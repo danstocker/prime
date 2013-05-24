@@ -6,6 +6,8 @@
  */
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Graph', function () {
+    "use strict";
+
     /**
      * @class prime.Graph
      * @extends troop.Base

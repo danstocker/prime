@@ -5,6 +5,8 @@
  */
 /*global troop, sntls, prime */
 troop.promise(prime, 'Index', function () {
+    "use strict";
+
     /**
      * @class prime.Index
      * @extends troop.Base

@@ -5,6 +5,8 @@
  */
 /*global dessert, troop, sntls, prime */
 troop.promise(prime, 'Peer', function () {
+    "use strict";
+
     /**
      * @class prime.Peer
      * @extends troop.Base
@@ -68,6 +70,8 @@ troop.promise(prime, 'Peer', function () {
 });
 
 troop.promise(prime, 'PeerCollection', function (prime) {
+    "use strict";
+
     /**
      * @class prime.PeerCollection
      * @extends sntls.Collection
@@ -81,14 +85,17 @@ troop.promise(prime, 'PeerCollection', function (prime) {
      */
 });
 
-dessert.addTypes(/** @lends dessert */{
-    isPeer: function (expr) {
-        return prime.Peer.isBaseOf(expr);
-    },
+(function () {
+    "use strict";
 
-    isPeerOptional: function (expr) {
-        return typeof expr === 'undefined' ||
-               prime.Peer.isBaseOf(expr);
-    }
-});
+    dessert.addTypes(/** @lends dessert */{
+        isPeer: function (expr) {
+            return prime.Peer.isBaseOf(expr);
+        },
 
+        isPeerOptional: function (expr) {
+            return typeof expr === 'undefined' ||
+                   prime.Peer.isBaseOf(expr);
+        }
+    });
+}());
