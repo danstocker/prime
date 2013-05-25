@@ -77,14 +77,16 @@ troop.promise(prime, 'Peer', function () {
 (function () {
     "use strict";
 
+    var Peer = prime.Peer;
+
     dessert.addTypes(/** @lends dessert */{
         isPeer: function (expr) {
-            return prime.Peer.isBaseOf(expr);
+            return Peer.isBaseOf(expr);
         },
 
         isPeerOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   prime.Peer.isBaseOf(expr);
+                   Peer.isBaseOf(expr);
         }
     });
 }());

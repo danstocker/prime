@@ -127,14 +127,16 @@ troop.promise(prime, 'Node', function () {
 (function () {
     "use strict";
 
+    var Node = prime.Node;
+
     dessert.addTypes(/** @lends dessert */{
         isNode: function (expr) {
-            return prime.Node.isBaseOf(expr);
+            return Node.isBaseOf(expr);
         },
 
         isNodeOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   prime.Node.isBaseOf(expr);
+                   Node.isBaseOf(expr);
         }
     });
 }());

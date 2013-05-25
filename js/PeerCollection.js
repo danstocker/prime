@@ -74,6 +74,7 @@ troop.promise(prime, 'PeerCollection', function () {
              * Sets peer in collection
              * @param {string} load Peer node load
              * @param {prime.Peer} peer Peer
+             * @return {prime.PeerCollection}
              */
             setItem: function (load, peer) {
                 dessert.assert(!this.getItem(load), "Peer already exists.");
