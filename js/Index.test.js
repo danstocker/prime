@@ -91,7 +91,13 @@
     });
 
     test("Querying", function () {
-        var index = prime.Index.create()
+        var index;
+
+        index = prime.Index.create();
+
+        equal(typeof index.getEntryByTotal(4), 'undefined', "Empty index");
+
+        index = prime.Index.create()
             .addEntry('foo', 5)
             .addEntry('bar', 1)
             .addEntry('hello', 2);
@@ -106,7 +112,7 @@
 
         index = prime.Index.create();
 
-        equal(typeof index.getRandomEntry(), 'undefined', "Empty index returns undefined");
+        equal(typeof index.getRandomEntry(), 'undefined', "Empty index");
 
         index = prime.Index.create()
             .addEntry('foo', 5)

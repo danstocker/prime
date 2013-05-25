@@ -221,7 +221,7 @@ troop.promise(prime, 'Index', function () {
              */
             getRandomEntry: function () {
                 var nextTotal = this.nextTotal,
-                    total = Math.random() * nextTotal,
+                    total = Math.round(Math.random() * nextTotal),
                     load = this._loads[this._totals.spliceIndexOf(total)];
 
                 if (typeof load !== 'undefined' || !nextTotal) {
