@@ -2,19 +2,18 @@
  * Peer Collection
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'PeerCollection', function () {
+troop.promise(prime, 'Peers', function () {
     "use strict";
 
-    var base = sntls.Collection.of(prime.Peer);
+    var base = prime.PeerCollection;
 
     /**
-     * @class prime.PeerCollection
-     * @extends sntls.Collection
-     * @extends prime.Peer
+     * @class prime.Peers
+     * @extends prime.PeerCollection
      * @extends sntls.Profiled
      */
-    prime.PeerCollection = base.extend()
-        .addConstant(/** @lends prime.PeerCollection */{
+    prime.Peers = base.extend()
+        .addConstant(/** @lends prime.Peers */{
             /**
              * Default value to be added to peer tread, when none is specified.
              */
@@ -31,10 +30,10 @@ troop.promise(prime, 'PeerCollection', function () {
             PEER_COUNTER_NAME: 'peers'
         })
         .addTrait(sntls.Profiled)
-        .addMethod(/** @lends prime.PeerCollection */{
+        .addMethod(/** @lends prime.Peers */{
             /**
-             * @name prime.PeerCollection.create
-             * @return {prime.PeerCollection}
+             * @name prime.Peers.create
+             * @return {prime.Peers}
              */
 
             /**
@@ -74,7 +73,7 @@ troop.promise(prime, 'PeerCollection', function () {
              * Sets peer in collection
              * @param {string} load Peer node load
              * @param {prime.Peer} peer Peer
-             * @return {prime.PeerCollection}
+             * @return {prime.Peers}
              */
             setItem: function (load, peer) {
                 dessert.assert(!this.getItem(load), "Peer already exists.");
@@ -106,7 +105,7 @@ troop.promise(prime, 'PeerCollection', function () {
             /**
              * Adds new peer to tread.
              * @param {prime.Peer} peer New peer.
-             * @return {prime.PeerCollection}
+             * @return {prime.Peers}
              */
             addPeer: function (peer) {
                 var load = peer.node.load;
@@ -119,7 +118,7 @@ troop.promise(prime, 'PeerCollection', function () {
 
             /**
              * Rebuilds weighted index.
-             * @return {prime.PeerCollection}
+             * @return {prime.Peers}
              */
             rebuildIndex: function () {
                 this._index.rebuild();
@@ -130,7 +129,7 @@ troop.promise(prime, 'PeerCollection', function () {
              * Strengthens a peer in the collection, adds peer if necessary.
              * @param {prime.Node} node Peer node.
              * @param {number} [wear] Peer wear (incremental connection weight).
-             * @return {prime.PeerCollection}
+             * @return {prime.Peers}
              */
             tread: function (node, wear) {
                 wear = wear || this.DEFAULT_WEAR;
@@ -165,16 +164,16 @@ troop.promise(prime, 'PeerCollection', function () {
 (function () {
     "use strict";
 
-    var PeerCollection = prime.PeerCollection;
+    var Peers = prime.Peers;
 
     dessert.addTypes(/** @lends dessert */{
         isPeers: function (expr) {
-            return PeerCollection.isBaseOf(expr);
+            return Peers.isBaseOf(expr);
         },
 
         isPeersOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   PeerCollection.isBaseOf(expr);
+                   Peers.isBaseOf(expr);
         }
     });
 }());

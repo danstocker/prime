@@ -62,7 +62,7 @@
             .to(graph.getItem('hello'))
             .to(graph.getItem('world'));
 
-        prime.PeerCollection.addMock({
+        prime.Peers.addMock({
             rebuildIndex: function () {
                 ok(true, "Rebuilding index for node");
             }
@@ -70,7 +70,7 @@
 
         graph.rebuildIndexes();
 
-        prime.PeerCollection.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Node fetcher", function () {

@@ -12,7 +12,7 @@
         hello = prime.Node.create('hello');
         equal(hello.load, 'hello', "Single new node");
 
-        ok(hello.peers.isA(prime.PeerCollection), "Peers object created");
+        ok(hello.peers.isA(prime.Peers), "Peers object created");
     });
 
     test("Strengthening", function () {
@@ -24,7 +24,7 @@
 
         equal(typeof foo.peers.getPeer(bar), 'undefined', "Peer tread before connecting");
 
-        prime.PeerCollection.addMock({
+        prime.Peers.addMock({
             tread: function (node, wear) {
                 switch (i) {
                 case 0:
@@ -42,7 +42,7 @@
         i = 0;
         foo.to(bar, 5);
 
-        prime.PeerCollection.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Connecting", function () {
@@ -52,7 +52,7 @@
             bar = prime.Node.create('bar'),
             car = prime.Node.create('car');
 
-        prime.PeerCollection.addMock({
+        prime.Peers.addMock({
             tread: function (node, wear) {
                 // TODO: test is crude, should be refined
                 ok(node.load in {foo: 1, car: 1, bar: 1}, "Peer added");
@@ -66,7 +66,7 @@
             .connectTo(bar)
             .connectTo(car);
 
-        prime.PeerCollection.removeMocks();
+        prime.Peers.removeMocks();
     });
 
     test("Peer testing", function () {

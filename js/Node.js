@@ -44,15 +44,15 @@ troop.promise(prime, 'Node', function () {
 
                 /**
                  * Collection of node references connected to current node
-                 * @type {prime.PeerCollection}
+                 * @type {prime.Peers}
                  */
-                this.peers = prime.PeerCollection.create(profile);
+                this.peers = prime.Peers.create(profile);
             },
 
             /**
              * Simple getter for peer collection.
              * To be used with specified collection methods.
-             * @return {prime.PeerCollection}
+             * @return {prime.Peers}
              */
             getPeers: function () {
                 return this.peers;
@@ -81,7 +81,7 @@ troop.promise(prime, 'Node', function () {
                 /**
                  * Taking random peer.
                  * @type {prime.Node}
-                 * @see prime.PeerCollection.getRandomPeer
+                 * @see prime.Peers.getRandomPeer
                  */
                 var next = this.peers.getRandomPeer().node;
 
