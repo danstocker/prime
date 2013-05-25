@@ -102,7 +102,13 @@
     });
 
     test("Random query", function () {
-        var index = prime.Index.create()
+        var index;
+
+        index = prime.Index.create();
+
+        equal(typeof index.getRandomEntry(), 'undefined', "Empty index returns undefined");
+
+        index = prime.Index.create()
             .addEntry('foo', 5)
             .addEntry('bar', 1)
             .addEntry('hello', 2)

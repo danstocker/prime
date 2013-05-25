@@ -220,15 +220,16 @@ troop.promise(prime, 'Index', function () {
              * @return {string} Random entry load.
              */
             getRandomEntry: function () {
-                var total = Math.random() * this.nextTotal,
+                var nextTotal = this.nextTotal,
+                    total = Math.random() * nextTotal,
                     load = this._loads[this._totals.spliceIndexOf(total)];
 
-                if (typeof load === 'undefined') {
+                if (typeof load !== 'undefined' || !nextTotal) {
+                    // valid entry was hit OR index is empty
+                    return load;
+                } else {
                     // empty slot was hit, trying again
                     return this.getRandomEntry();
-                } else {
-                    // valid entry was hit
-                    return load;
                 }
             }
         });
