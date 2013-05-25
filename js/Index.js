@@ -27,6 +27,11 @@ troop.promise(prime, 'Index', function () {
         })
         .addMethod(/** @lends prime.Index */{
             /**
+             * @name prime.Index.create
+             * @return {prime.Index}
+             */
+
+            /**
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {

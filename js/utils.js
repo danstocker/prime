@@ -8,8 +8,7 @@ troop.promise(prime, 'utils', function () {
     "use strict";
 
     /**
-     * @class prime.utils
-     * @extends troop.Base
+     * @namespace
      */
     prime.utils = troop.Base.extend()
         .addMethod(/** @lends prime.utils */{

@@ -27,6 +27,11 @@ troop.promise(prime, 'Peer', function () {
         })
         .addMethod(/** @lends prime.Peer */{
             /**
+             * @name prime.Peer.create
+             * @return {prime.Peer}
+             */
+
+            /**
              * Initializes a new peer.
              * @param {prime.Node} node Peer node.
              * @param {sntls.ProfileCollection} [profile]
