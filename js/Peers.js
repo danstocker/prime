@@ -5,12 +5,14 @@
 troop.promise(prime, 'Peers', function () {
     "use strict";
 
+    var base = prime.PeerCollection;
+
     /**
      * @class prime.Peers
-     * @extends troop.Base
+     * @extends prime.PeerCollection
      * @extends sntls.Profiled
      */
-    prime.Peers = troop.Base.extend()
+    prime.Peers = base.extend()
         .addConstant(/** @lends prime.Peers */{
             /**
              * Default value to be added to peer tread, when none is specified.
@@ -39,14 +41,9 @@ troop.promise(prime, 'Peers', function () {
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {
-                this.initProfiled(this.PROFILE_ID, profile);
+                base.init.call(this);
 
-                /**
-                 * Collection of peers involved.
-                 * @type {prime.PeerCollection}
-                 * @private
-                 */
-                this._peerCollection = prime.PeerCollection.create();
+                this.initProfiled(this.PROFILE_ID, profile);
 
                 /**
                  * Weighted index of peer information.
@@ -61,15 +58,7 @@ troop.promise(prime, 'Peers', function () {
              * @return {prime.Peer}
              */
             getPeer: function (load) {
-                return this._peerCollection.getItem(load);
-            },
-
-            /**
-             * Retrieves number of peers in this collection.
-             * @return {Number}
-             */
-            getPeerCount: function () {
-                return this._peerCollection.count;
+                return this.getItem(load);
             },
 
             /**
@@ -77,7 +66,39 @@ troop.promise(prime, 'Peers', function () {
              * @returns {prime.Peer}
              */
             getRandomPeer: function () {
-                return this._peerCollection.getItem(this._index.getRandomEntry());
+                return this.getItem(this._index.getRandomEntry());
+            },
+
+            /**
+             * Sets peer in collection
+             * @param {string} load Peer node load
+             * @param {prime.Peer} peer Peer
+             */
+            setItem: function (load, peer) {
+                dessert.assert(!this.getItem(load), "Peer already exists.");
+
+                // adding peer to peer registry
+                base.setItem.call(this, load, peer);
+
+                // increasing peer count
+                this.profile.inc(this.PEER_COUNTER_NAME);
+
+                // adding peer details to index
+                this._index.addEntry(load, peer.getTread());
+
+                return this;
+            },
+
+            deleteItem: function () {
+                dessert.assert(false, "Can't remove from peer collection");
+            },
+
+            clone: function () {
+                dessert.assert(false, "Can't clone peer collection");
+            },
+
+            clear: function () {
+                dessert.assert(false, "Can't remove from peer collection");
             },
 
             /**
@@ -86,19 +107,10 @@ troop.promise(prime, 'Peers', function () {
              * @return {prime.Peers}
              */
             addPeer: function (peer) {
-                var load = peer.node.load,
-                    peers = this._peerCollection;
+                var load = peer.node.load;
 
-                dessert.assert(!peers.getItem(load), "Peer already exists.");
-
-                // adding peer to peer registry
-                peers.setItem(load, peer);
-
-                // increasing peer count
-                this.profile.inc(this.PEER_COUNTER_NAME);
-
-                // adding peer details to index
-                this._index.addEntry(load, peer.getTread());
+                // setting peer
+                this.setItem(load, peer);
 
                 return this;
             },
@@ -122,7 +134,7 @@ troop.promise(prime, 'Peers', function () {
                 wear = wear || this.DEFAULT_WEAR;
 
                 var load = node.load,
-                    peer = this._peerCollection.getItem(load);
+                    peer = this.getItem(load);
 
                 if (!peer) {
                     // adding new peer
@@ -143,7 +155,7 @@ troop.promise(prime, 'Peers', function () {
             },
 
             toJSON: function () {
-                return this._peerCollection.items;
+                return this.items;
             }
         });
 });
@@ -151,14 +163,16 @@ troop.promise(prime, 'Peers', function () {
 (function () {
     "use strict";
 
+    var Peers = prime.Peers;
+
     dessert.addTypes(/** @lends dessert */{
         isPeers: function (expr) {
-            return prime.Peers.isBaseOf(expr);
+            return Peers.isBaseOf(expr);
         },
 
         isPeersOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   prime.Peers.isBaseOf(expr);
+                   Peers.isBaseOf(expr);
         }
     });
 }());
