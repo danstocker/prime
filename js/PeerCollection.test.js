@@ -2,7 +2,7 @@
 (function () {
     "use strict";
 
-    module("Peers");
+    module("PeerCollection");
 
     test("Addition", function () {
         var load = 'hello',
@@ -19,12 +19,12 @@
         });
 
         peer = prime.Peer.create(node).wear(2);
-        peers = prime.Peers.create()
+        peers = prime.PeerCollection.create()
             .addPeer(peer);
         equal(peers.getItem('hello'), peer, "Peer added to by-load buffer");
         equal(peers.count, 1, "Peer count");
 
-        peers = prime.Peers.create()
+        peers = prime.PeerCollection.create()
             .tread(node, 2);
         equal(peers.getItem('hello').node.load, load, "Node added to by-load buffer");
         equal(peers.getItem('hello').getTread(), 2, "Newly added node's tread is 1 (default)");
@@ -33,7 +33,7 @@
     });
 
     test("Modification", function () {
-        var peers = prime.Peers.create(),
+        var peers = prime.PeerCollection.create(),
             node = prime.Node.create('load'),
             i = 0;
 
@@ -59,7 +59,7 @@
     });
 
     test("Querying", function () {
-        var peers = prime.Peers.create()
+        var peers = prime.PeerCollection.create()
                 .addPeer(prime.Peer.create(prime.Node.create('foo')).wear(1))
                 .addPeer(prime.Peer.create(prime.Node.create('bar')).wear(1))
                 .addPeer(prime.Peer.create(prime.Node.create('hello')).wear(1)),
@@ -78,9 +78,9 @@
             }
         });
 
-        prime.Peers.create()
+        prime.PeerCollection.create()
             .rebuildIndex();
 
         prime.Index.removeMocks();
     });
-}(prime.Peers, prime.utils, prime.Peer, prime.Node, prime.Index ));
+}(prime.PeerCollection, prime.utils, prime.Peer, prime.Node, prime.Index ));

@@ -74,22 +74,6 @@ troop.promise(prime, 'Peer', function () {
         });
 });
 
-troop.promise(prime, 'PeerCollection', function (prime) {
-    "use strict";
-
-    /**
-     * @class prime.PeerCollection
-     * @extends sntls.Collection
-     * @extends prime.Peer
-     */
-    prime.PeerCollection = sntls.Collection.of(prime.Peer);
-
-    /**
-     * @name prime.PeerCollection.create
-     * @return {prime.PeerCollection}
-     */
-});
-
 (function () {
     "use strict";
 

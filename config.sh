@@ -10,7 +10,7 @@ js/namespace.js
 js/utils.js
 js/Index.js
 js/Peer.js
-js/Peers.js
+js/PeerCollection.js
 js/Node.js
 js/Graph.js
 js/exports.js

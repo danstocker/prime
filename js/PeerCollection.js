@@ -2,18 +2,19 @@
  * Peer Collection
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Peers', function () {
+troop.promise(prime, 'PeerCollection', function () {
     "use strict";
 
-    var base = prime.PeerCollection;
+    var base = sntls.Collection.of(prime.Peer);
 
     /**
-     * @class prime.Peers
-     * @extends prime.PeerCollection
+     * @class prime.PeerCollection
+     * @extends sntls.Collection
+     * @extends prime.Peer
      * @extends sntls.Profiled
      */
-    prime.Peers = base.extend()
-        .addConstant(/** @lends prime.Peers */{
+    prime.PeerCollection = base.extend()
+        .addConstant(/** @lends prime.PeerCollection */{
             /**
              * Default value to be added to peer tread, when none is specified.
              */
@@ -30,10 +31,10 @@ troop.promise(prime, 'Peers', function () {
             PEER_COUNTER_NAME: 'peers'
         })
         .addTrait(sntls.Profiled)
-        .addMethod(/** @lends prime.Peers */{
+        .addMethod(/** @lends prime.PeerCollection */{
             /**
-             * @name prime.Peers.create
-             * @return {prime.Peers}
+             * @name prime.PeerCollection.create
+             * @return {prime.PeerCollection}
              */
 
             /**
@@ -104,7 +105,7 @@ troop.promise(prime, 'Peers', function () {
             /**
              * Adds new peer to tread.
              * @param {prime.Peer} peer New peer.
-             * @return {prime.Peers}
+             * @return {prime.PeerCollection}
              */
             addPeer: function (peer) {
                 var load = peer.node.load;
@@ -117,7 +118,7 @@ troop.promise(prime, 'Peers', function () {
 
             /**
              * Rebuilds weighted index.
-             * @return {prime.Peers}
+             * @return {prime.PeerCollection}
              */
             rebuildIndex: function () {
                 this._index.rebuild();
@@ -128,7 +129,7 @@ troop.promise(prime, 'Peers', function () {
              * Strengthens a peer in the collection, adds peer if necessary.
              * @param {prime.Node} node Peer node.
              * @param {number} [wear] Peer wear (incremental connection weight).
-             * @return {prime.Peers}
+             * @return {prime.PeerCollection}
              */
             tread: function (node, wear) {
                 wear = wear || this.DEFAULT_WEAR;
@@ -163,7 +164,7 @@ troop.promise(prime, 'Peers', function () {
 (function () {
     "use strict";
 
-    var Peers = prime.Peers;
+    var Peers = prime.PeerCollection;
 
     dessert.addTypes(/** @lends dessert */{
         isPeers: function (expr) {
