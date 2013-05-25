@@ -9,8 +9,9 @@
         "url" : "https://github.com/danstocker/prime.git"
     },
     "dependencies": {
-        "dessert": ">=0.2.8",
-        "troop"  : ">=0.3.6"
+        "dessert": "~0.2.8",
+        "troop"  : "~0.3.6",
+        "sntls"  : "~0.7.1"
     },
     "files"       : ["out/prime.js"],
     "main"        : "out/prime.js"
