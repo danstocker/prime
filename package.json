@@ -1,0 +1,17 @@
+{
+    "name"        : "prime",
+    "version"     : "0.3.1",
+    "description" : "Association engine",
+    "keywords"    : ["data", "in-memory", "database", "graph", "random", "weighted", "query"],
+    "author"      : "Dan Stocker <dan@kwaia.com>",
+    "repository"  : {
+        "type": "git",
+        "url" : "https://github.com/danstocker/prime.git"
+    },
+    "dependencies": {
+        "dessert": ">=0.2.8",
+        "troop"  : ">=0.3.6"
+    },
+    "files"       : ["out/prime.js"],
+    "main"        : "out/prime.js"
+}
