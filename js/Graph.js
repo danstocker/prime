@@ -31,11 +31,12 @@ troop.promise(prime, 'Graph', function () {
              */
 
             /**
+             * @param {object} [items] Initial collection items ie. nodes
              */
-            init: function () {
+            init: function (items) {
                 this.initProfiled(this.PROFILE_ID);
 
-                base.init.call(this);
+                base.init.call(this, items);
             },
 
             /**
@@ -168,3 +169,16 @@ troop.promise(prime, 'Graph', function () {
             }
         });
 });
+
+(function () {
+    "use strict";
+
+    sntls.Hash.addMethod(/** @lends sntls.Hash */{
+        /**
+         * @return {prime.Graph}
+         */
+        toGraph: function () {
+            return prime.Graph.create(this.items);
+        }
+    });
+}());

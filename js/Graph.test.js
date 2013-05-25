@@ -1,9 +1,22 @@
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, raises */
-/*global dessert, prime */
+/*global dessert, sntls, prime */
 (function () {
     "use strict";
 
     module("Graph");
+
+    test("Type conversion", function () {
+        var hash = sntls.Hash.create({
+                foo: prime.Node.create('foo'),
+                bar: prime.Node.create('bar')
+            }),
+            graph;
+
+        graph = hash.toGraph();
+
+        ok(graph.isA(prime.Graph), "Hash converted to Graph");
+        equal(graph.count, 2, "Graph counts nodes");
+    });
 
     test("Node addition", function () {
         var graph = prime.Graph.create();
