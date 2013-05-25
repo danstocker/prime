@@ -124,6 +124,22 @@ troop.promise(prime, 'Node', function () {
     });
 });
 
+troop.promise(prime, 'NodeCollection', function () {
+    "use strict";
+
+    /**
+     * @class prime.NodeCollection
+     * @extends sntls.Collection
+     * @extends prime.Node
+     */
+    prime.NodeCollection = sntls.Collection.of(prime.Node);
+
+    /**
+     * @name prime.NodeCollection.create
+     * @return {prime.NodeCollection}
+     */
+});
+
 (function () {
     "use strict";
 

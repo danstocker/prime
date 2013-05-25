@@ -8,12 +8,11 @@
 troop.promise(prime, 'Graph', function () {
     "use strict";
 
-    var base = sntls.Collection.of(prime.Node);
+    var base = prime.NodeCollection;
 
     /**
      * @class prime.Graph
-     * @extends sntls.Collection
-     * @extends prime.Node
+     * @extends prime.NodeCollection
      * @extends sntls.Profiled
      */
     prime.Graph = base.extend()
