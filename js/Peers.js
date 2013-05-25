@@ -36,7 +36,6 @@ troop.promise(prime, 'Peers', function () {
 
             /**
              * Initializes peer collection.
-             * @constructor
              * @param {sntls.ProfileCollection} [profile]
              */
             init: function (profile) {

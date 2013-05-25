@@ -30,7 +30,6 @@ troop.promise(prime, 'Node', function () {
 
             /**
              * Initializes node.
-             * @constructor
              * @param {string} load Node load.
              * @param {sntls.ProfileCollection} [profile]
              */
