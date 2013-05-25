@@ -5,21 +5,16 @@
 
     module("Graph");
 
-    test("Creation", function () {
-        var graph = /** @type prime.Graph */ prime.Graph.create();
-        ok(graph._nodeCollection.isA(prime.NodeCollection), "Node collection on graph is of correct type");
-    });
-
     test("Node addition", function () {
         var graph = prime.Graph.create();
 
-        equal(graph._nodeCollection.count, 0, "Node count before addition");
+        equal(graph.count, 0, "Node count before addition");
 
         graph.addNode(prime.Node.create('foo'));
-        equal(graph._nodeCollection.count, 1, "Node count after single addition");
+        equal(graph.count, 1, "Node count after single addition");
 
         graph.addNode(prime.Node.create('bar'), prime.Node.create('hello'));
-        equal(graph._nodeCollection.count, 3, "Node count after multiple addition");
+        equal(graph.count, 3, "Node count after multiple addition");
     });
 
     test("Node retrieval", function () {
@@ -33,7 +28,7 @@
         strictEqual(graph.fetchNode('bar'), barNode, "Retrieved attached node");
 
         // newly created
-        equal(graph._nodeCollection.getItem('hello'), undefined, "Node doesn't exist on graph");
+        equal(graph.getItem('hello'), undefined, "Node doesn't exist on graph");
         notStrictEqual(graph.fetchNode('hello'), prime.Node.create('hello'), "Retrieved non-attached node");
     });
 
@@ -49,10 +44,10 @@
             prime.Node.create('world')
         );
 
-        graph._nodeCollection.getItem('foo')
-            .to(graph._nodeCollection.getItem('bar'))
-            .to(graph._nodeCollection.getItem('hello'))
-            .to(graph._nodeCollection.getItem('world'));
+        graph.getItem('foo')
+            .to(graph.getItem('bar'))
+            .to(graph.getItem('hello'))
+            .to(graph.getItem('world'));
 
         prime.PeerCollection.addMock({
             rebuildIndex: function () {
@@ -72,7 +67,7 @@
         strictEqual(graph.fetchNode('foo'), $('foo'), "Retrieves the same node as accessor method");
 
         $('hello');
-        ok(graph._nodeCollection.getItem('hello').isA(prime.Node), "Creates a new node on demand");
+        ok(graph.getItem('hello').isA(prime.Node), "Creates a new node on demand");
     });
 
     test("Connecting node pairs", function () {

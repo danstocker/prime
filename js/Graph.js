@@ -8,12 +8,15 @@
 troop.promise(prime, 'Graph', function () {
     "use strict";
 
+    var base = sntls.Collection.of(prime.Node);
+
     /**
      * @class prime.Graph
-     * @extends troop.Base
+     * @extends sntls.Collection
+     * @extends prime.Node
      * @extends sntls.Profiled
      */
-    prime.Graph = troop.Base.extend()
+    prime.Graph = base.extend()
         .addTrait(sntls.Profiled)
         .addConstant(/** @lends prime.Graph */{
             /**
@@ -32,12 +35,7 @@ troop.promise(prime, 'Graph', function () {
             init: function () {
                 this.initProfiled(this.PROFILE_ID);
 
-                /**
-                 * Registry all nodes in the system.
-                 * @type {prime.NodeCollection}
-                 * @private
-                 */
-                this._nodeCollection = prime.NodeCollection.create();
+                base.init.call(this);
             },
 
             /**
@@ -49,12 +47,11 @@ troop.promise(prime, 'Graph', function () {
             fetchNode: function (load) {
                 dessert.isString(load, "Invalid node load");
 
-                var nodeCollection = this._nodeCollection,
-                    node = nodeCollection.getItem(load);
+                var node = this.getItem(load);
 
                 if (!node) {
                     node = prime.Node.create(load, this.profile);
-                    nodeCollection.setItem(load, node);
+                    this.setItem(load, node);
                 }
 
                 return node;
@@ -116,19 +113,40 @@ troop.promise(prime, 'Graph', function () {
             },
 
             /**
+             * Sets a node on the graph
+             * @param {string} load
+             * @param {prime.Node} node
+             */
+            setItem: function (load, node) {
+                dessert.isNode(node, "Invalid node");
+                base.setItem.call(this, load, node);
+                return this;
+            },
+
+            deleteItem: function () {
+                dessert.assert(false, "Can't remove node from graph");
+            },
+
+            clone: function () {
+                dessert.assert(false, "Can't clone graph");
+            },
+
+            clear: function () {
+                dessert.assert(false, "Can't remove nodes from graph");
+            },
+
+            /**
              * Adds node(s) to the current graph.
              * @param {prime.Node} node
              * Argument may be followed by any number of subsequent nodes.
              * @return {prime.Graph}
              */
             addNode: function (node) {
-                var nodeCollection = this._nodeCollection,
-                    i;
+                var i;
 
                 for (i = 0; i < arguments.length; i++) {
                     node = arguments[i];
-                    dessert.isNode(node, "Invalid node");
-                    nodeCollection.setItem(node.load, node);
+                    this.setItem(node.load, node);
                 }
 
                 return this;
@@ -139,14 +157,14 @@ troop.promise(prime, 'Graph', function () {
              * @return {prime.Graph}
              */
             rebuildIndexes: function () {
-                this._nodeCollection.getPeers()
+                this.getPeers()
                     .callOnEachItem('rebuildIndex');
 
                 return this;
             },
 
             toJSON: function () {
-                return this._nodeCollection.items;
+                return this.items;
             }
         });
 });
