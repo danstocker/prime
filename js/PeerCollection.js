@@ -165,16 +165,16 @@ troop.promise(prime, 'PeerCollection', function () {
 (function () {
     "use strict";
 
-    var Peers = prime.PeerCollection;
+    var PeerCollection = prime.PeerCollection;
 
     dessert.addTypes(/** @lends dessert */{
         isPeers: function (expr) {
-            return Peers.isBaseOf(expr);
+            return PeerCollection.isBaseOf(expr);
         },
 
         isPeersOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   Peers.isBaseOf(expr);
+                   PeerCollection.isBaseOf(expr);
         }
     });
 }());
