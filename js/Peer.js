@@ -4,7 +4,7 @@
  * Describes connection between two nodes.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Peer', function () {
+troop.postpone(prime, 'Peer', function () {
     "use strict";
 
     /**
@@ -14,7 +14,7 @@ troop.promise(prime, 'Peer', function () {
      */
     prime.Peer = troop.Base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant(/** @lends prime.Peer */{
+        .addConstants(/** @lends prime.Peer */{
             /**
              * Identifies peer profile in the profile collection.
              */
@@ -25,7 +25,7 @@ troop.promise(prime, 'Peer', function () {
              */
             TREAD_COUNTER_NAME: 'tread'
         })
-        .addMethod(/** @lends prime.Peer */{
+        .addMethods(/** @lends prime.Peer */{
             /**
              * @name prime.Peer.create
              * @return {prime.Peer}
@@ -74,7 +74,7 @@ troop.promise(prime, 'Peer', function () {
         });
 });
 
-troop.promise(prime, 'PeerCollection', function () {
+troop.postpone(prime, 'PeerCollection', function () {
     "use strict";
 
     /**

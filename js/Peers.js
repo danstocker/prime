@@ -2,7 +2,7 @@
  * Peer Collection
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Peers', function () {
+troop.postpone(prime, 'Peers', function () {
     "use strict";
 
     var base = prime.PeerCollection;
@@ -13,7 +13,7 @@ troop.promise(prime, 'Peers', function () {
      * @extends sntls.Profiled
      */
     prime.Peers = base.extend()
-        .addConstant(/** @lends prime.Peers */{
+        .addConstants(/** @lends prime.Peers */{
             /**
              * Default value to be added to peer tread, when none is specified.
              */
@@ -30,7 +30,7 @@ troop.promise(prime, 'Peers', function () {
             PEER_COUNTER_NAME: 'peers'
         })
         .addTrait(sntls.Profiled)
-        .addMethod(/** @lends prime.Peers */{
+        .addMethods(/** @lends prime.Peers */{
             /**
              * @name prime.Peers.create
              * @return {prime.Peers}

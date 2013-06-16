@@ -1,4 +1,4 @@
-Prime
+prime
 =====
 
 *Prime* is a JavaScript graph database designed for one kind of queries: *random*.
@@ -15,8 +15,6 @@ Requires
 - [Dessert](https://github.com/danstocker/dessert): for assertions
 - [Troop](https://github.com/production-minds/troop): for OOP
 - [Sntls](https://github.com/danstocker/sntls): for collections and profiles
-
-Check `js/namespace.js` for version numbers.
 
 Examples
 --------

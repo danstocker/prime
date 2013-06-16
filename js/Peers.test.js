@@ -11,7 +11,7 @@
 
         expect(8); // 2x2 from mocks
 
-        prime.Index.addMock({
+        prime.Index.addMocks({
             addEntry: function (load, weight) {
                 equal(load, 'hello', "Peer load");
                 equal(weight, 2, "Peer tread");
@@ -39,7 +39,7 @@
 
         expect(5); // 2x .add(), 1x .remove()
 
-        prime.Index.addMock({
+        prime.Index.addMocks({
             removeEntry: function (load) {
                 equal(load, 'load', "Removing load from index");
                 return this;
@@ -72,7 +72,7 @@
     test("Miscellaneous", function () {
         expect(1);
 
-        prime.Index.addMock({
+        prime.Index.addMocks({
             rebuild: function () {
                 ok(true, "Weighted index rebuilt");
             }

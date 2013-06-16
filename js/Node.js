@@ -4,7 +4,7 @@
  * Nodes are the central building blocks of the Association Engine.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Node', function () {
+troop.postpone(prime, 'Node', function () {
     "use strict";
 
     /**
@@ -13,7 +13,7 @@ troop.promise(prime, 'Node', function () {
      * @extends troop.Base
      */
     prime.Node = troop.Base.extend()
-        .addConstant(/** @lends prime.Node */{
+        .addConstants(/** @lends prime.Node */{
             /**
              * Probability of sub-sequential hops.
              * Must be 0 < reach < 1.
@@ -22,7 +22,7 @@ troop.promise(prime, 'Node', function () {
              */
             REACH: 0.5
         })
-        .addMethod(/** @lends prime.Node */{
+        .addMethods(/** @lends prime.Node */{
             /**
              * @name prime.Node.create
              * @return {prime.Node}
@@ -118,13 +118,13 @@ troop.promise(prime, 'Node', function () {
     /**
      * Shortcuts
      */
-    prime.Node.addMethod(/** @lends prime.Node */{
+    prime.Node.addMethods(/** @lends prime.Node */{
         hop: prime.Node.getRandomPeerNode,
         to : prime.Node.connectTo
     });
 });
 
-troop.promise(prime, 'NodeCollection', function () {
+troop.postpone(prime, 'NodeCollection', function () {
     "use strict";
 
     /**

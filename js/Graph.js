@@ -5,7 +5,7 @@
  * Such as serialization and de-serialization, and re-initialization.
  */
 /*global dessert, troop, sntls, prime */
-troop.promise(prime, 'Graph', function () {
+troop.postpone(prime, 'Graph', function () {
     "use strict";
 
     var base = prime.NodeCollection;
@@ -17,13 +17,13 @@ troop.promise(prime, 'Graph', function () {
      */
     prime.Graph = base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant(/** @lends prime.Graph */{
+        .addConstants(/** @lends prime.Graph */{
             /**
              * Identifies graph profile in the profile collection.
              */
             PROFILE_ID: 'graph'
         })
-        .addMethod(/** @lends prime.Graph */{
+        .addMethods(/** @lends prime.Graph */{
             /**
              * @name prime.Graph.create
              * @return {prime.Graph}
@@ -172,7 +172,7 @@ troop.promise(prime, 'Graph', function () {
 (function () {
     "use strict";
 
-    sntls.Hash.addMethod(/** @lends sntls.Hash */{
+    sntls.Hash.addMethods(/** @lends sntls.Hash */{
         /**
          * @return {prime.Graph}
          */

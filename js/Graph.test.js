@@ -62,7 +62,7 @@
             .to(graph.getItem('hello'))
             .to(graph.getItem('world'));
 
-        prime.Peers.addMock({
+        prime.Peers.addMocks({
             rebuildIndex: function () {
                 ok(true, "Rebuilding index for node");
             }
@@ -88,7 +88,7 @@
 
         var graph = prime.Graph.create();
 
-        prime.Node.addMock({
+        prime.Node.addMocks({
             connectTo: function (remoteNode, forwardWear, backwardsWear) {
                 ok(dessert.validators.isNode(remoteNode), "Remote node ok");
                 equal(this.load, 'hello', "Own load");
@@ -111,7 +111,7 @@
 
         equal(_('foo'), 'foo', "Builder returns node instance");
 
-        prime.Node.addMock({
+        prime.Node.addMocks({
             to: function () {
                 ok(true, "prime.Node.to called");
             }

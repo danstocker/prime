@@ -1,5 +1,5 @@
 /.idea/
-/lib/
+/node_modules/
 /out/
-/build*.sh
-/targets.sh
+/doc/
+/*.tgz

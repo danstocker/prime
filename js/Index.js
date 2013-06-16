@@ -4,7 +4,7 @@
  * Index of weighted entries. Weight serves as a basis for random retrieval.
  */
 /*global troop, sntls, prime */
-troop.promise(prime, 'Index', function () {
+troop.postpone(prime, 'Index', function () {
     "use strict";
 
     /**
@@ -14,7 +14,7 @@ troop.promise(prime, 'Index', function () {
      */
     prime.Index = troop.Base.extend()
         .addTrait(sntls.Profiled)
-        .addConstant(/** @lends prime.Index */{
+        .addConstants(/** @lends prime.Index */{
             /**
              * Identifies index profile in the profile collection.
              */
@@ -25,7 +25,7 @@ troop.promise(prime, 'Index', function () {
              */
             SLOT_COUNTER_NAME: 'slots'
         })
-        .addMethod(/** @lends prime.Index */{
+        .addMethods(/** @lends prime.Index */{
             /**
              * @name prime.Index.create
              * @return {prime.Index}
