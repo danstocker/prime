@@ -26,6 +26,6 @@
         "common-gruntfile"    : "git://github.com/danstocker/common-gruntfile.git#0.1.5",
         "QUnitAdapter"        : "https://dl.dropboxusercontent.com/u/9258903/packages/QUnitAdapter-0.1.0.tgz"
     },
-    "files"       : ["out/prime.js"],
-    "main"        : "out/prime.js"
+    "files"       : ["prime.js"],
+    "main"        : "prime.js"
 }
