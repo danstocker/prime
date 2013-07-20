@@ -83,4 +83,4 @@
 
         prime.Index.removeMocks();
     });
-}(prime.Peers, prime.utils, prime.Peer, prime.Node, prime.Index ));
+}(prime.Peers, prime.Utils, prime.Peer, prime.Node, prime.Index ));

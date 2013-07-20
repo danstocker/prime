@@ -94,7 +94,7 @@ troop.postpone(prime, 'Index', function () {
 
                 if (slots.hasOwnProperty(weight)) {
                     // there is an available empty slot
-                    pos = prime.utils.firstProperty(slots[weight]);
+                    pos = prime.Utils.firstProperty(slots[weight]);
 
                     // filling slot
                     this._loads[pos] = load;
@@ -103,7 +103,7 @@ troop.postpone(prime, 'Index', function () {
                     // removing slot
                     delete slots[weight][pos];
                     this.profile.dec(this.SLOT_COUNTER_NAME);
-                    if (prime.utils.isEmpty(slots[weight])) {
+                    if (prime.Utils.isEmpty(slots[weight])) {
                         // all empty slots for `weight` used up
                         delete slots[weight];
                     }

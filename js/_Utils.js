@@ -4,14 +4,14 @@
  * Various general utility functions used by the Association Engine.
  */
 /*global troop, prime */
-troop.postpone(prime, 'utils', function () {
+troop.postpone(prime, 'Utils', function () {
     "use strict";
 
     /**
      * @namespace
      */
-    prime.utils = troop.Base.extend()
-        .addMethods(/** @lends prime.utils */{
+    prime.Utils = troop.Base.extend()
+        .addMethods(/** @lends prime.Utils */{
             /**
              * Tests whether an object is empty.
              * @param {object} object Test object.

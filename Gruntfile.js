@@ -6,7 +6,7 @@ module.exports = function (grunt) {
         files: [
             'js/license.js',
             'js/namespace.js',
-            'js/utils.js',
+            'js/_Utils.js',
             'js/Index.js',
             'js/Node.js',
             'js/Peer.js',
