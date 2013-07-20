@@ -22,7 +22,7 @@
         peers = prime.Peers.create()
             .addPeer(peer);
         equal(peers.getItem('hello'), peer, "Peer added to by-load buffer");
-        equal(peers.count, 1, "Peer count");
+        equal(peers.getKeyCount(), 1, "Peer count");
 
         peers = prime.Peers.create()
             .tread(node, 2);

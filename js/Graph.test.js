@@ -15,19 +15,19 @@
         graph = hash.toGraph();
 
         ok(graph.isA(prime.Graph), "Hash converted to Graph");
-        equal(graph.count, 2, "Graph counts nodes");
+        equal(graph.getKeyCount(), 2, "Graph counts nodes");
     });
 
     test("Node addition", function () {
         var graph = prime.Graph.create();
 
-        equal(graph.count, 0, "Node count before addition");
+        equal(graph.getKeyCount(), 0, "Node count before addition");
 
         graph.addNode(prime.Node.create('foo'));
-        equal(graph.count, 1, "Node count after single addition");
+        equal(graph.getKeyCount(), 1, "Node count after single addition");
 
         graph.addNode(prime.Node.create('bar'), prime.Node.create('hello'));
-        equal(graph.count, 3, "Node count after multiple addition");
+        equal(graph.getKeyCount(), 3, "Node count after multiple addition");
     });
 
     test("Node retrieval", function () {
