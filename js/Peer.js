@@ -8,6 +8,14 @@ troop.postpone(prime, 'Peer', function () {
     "use strict";
 
     /**
+     * @name prime.Peer.create
+     * @function
+     * @param {prime.Node} node Peer node.
+     * @param {sntls.ProfileCollection} [profile]
+     * @return {prime.Peer}
+     */
+
+    /**
      * @class prime.Peer
      * @extends troop.Base
      * @extends sntls.Profiled
@@ -25,16 +33,12 @@ troop.postpone(prime, 'Peer', function () {
              */
             TREAD_COUNTER_NAME: 'tread'
         })
-        .addMethods(/** @lends prime.Peer */{
-            /**
-             * @name prime.Peer.create
-             * @return {prime.Peer}
-             */
-
+        .addMethods(/** @lends prime.Peer# */{
             /**
              * Initializes a new peer.
              * @param {prime.Node} node Peer node.
              * @param {sntls.ProfileCollection} [profile]
+             * @ignore
              */
             init: function (node, profile) {
                 this.initProfiled(this.PROFILE_ID, profile);
@@ -93,16 +97,14 @@ troop.postpone(prime, 'PeerCollection', function () {
 (function () {
     "use strict";
 
-    var Peer = prime.Peer;
-
     dessert.addTypes(/** @lends dessert */{
         isPeer: function (expr) {
-            return Peer.isBaseOf(expr);
+            return prime.Peer.isBaseOf(expr);
         },
 
         isPeerOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   Peer.isBaseOf(expr);
+                   prime.Peer.isBaseOf(expr);
         }
     });
 }());

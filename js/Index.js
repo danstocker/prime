@@ -8,6 +8,13 @@ troop.postpone(prime, 'Index', function () {
     "use strict";
 
     /**
+     * @name prime.Index.create
+     * @function
+     * @param {sntls.ProfileCollection} [profile]
+     * @return {prime.Index}
+     */
+
+    /**
      * @class prime.Index
      * @extends troop.Base
      * @extends sntls.Profiled
@@ -25,14 +32,10 @@ troop.postpone(prime, 'Index', function () {
              */
             SLOT_COUNTER_NAME: 'slots'
         })
-        .addMethods(/** @lends prime.Index */{
-            /**
-             * @name prime.Index.create
-             * @return {prime.Index}
-             */
-
+        .addMethods(/** @lends prime.Index# */{
             /**
              * @param {sntls.ProfileCollection} [profile]
+             * @ignore
              */
             init: function (profile) {
                 this.initProfiled(this.PROFILE_ID, profile);

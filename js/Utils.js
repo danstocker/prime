@@ -8,7 +8,8 @@ troop.postpone(prime, 'Utils', function () {
     "use strict";
 
     /**
-     * @namespace
+     * @class prime.Utils
+     * @extends troop.Base
      */
     prime.Utils = troop.Base.extend()
         .addMethods(/** @lends prime.Utils */{

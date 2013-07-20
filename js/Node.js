@@ -8,6 +8,14 @@ troop.postpone(prime, 'Node', function () {
     "use strict";
 
     /**
+     * @name prime.Node.create
+     * @function
+     * @param {string} load Node load.
+     * @param {sntls.ProfileCollection} [profile]
+     * @return {prime.Node}
+     */
+
+    /**
      * Conceptual node. Basic component of the association engine.
      * @class prime.Node
      * @extends troop.Base
@@ -22,16 +30,12 @@ troop.postpone(prime, 'Node', function () {
              */
             REACH: 0.5
         })
-        .addMethods(/** @lends prime.Node */{
-            /**
-             * @name prime.Node.create
-             * @return {prime.Node}
-             */
-
+        .addMethods(/** @lends prime.Node# */{
             /**
              * Initializes node.
              * @param {string} load Node load.
              * @param {sntls.ProfileCollection} [profile]
+             * @ignore
              */
             init: function (load, profile) {
                 dessert.isString(load, "Invalid node load");
@@ -118,10 +122,11 @@ troop.postpone(prime, 'Node', function () {
     /**
      * Shortcuts
      */
-    prime.Node.addMethods(/** @lends prime.Node */{
-        hop: prime.Node.getRandomPeerNode,
-        to : prime.Node.connectTo
-    });
+    prime.Node
+        .addMethods(/** @lends prime.Node# */{
+            hop: prime.Node.getRandomPeerNode,
+            to : prime.Node.connectTo
+        });
 });
 
 troop.postpone(prime, 'NodeCollection', function () {
@@ -143,16 +148,14 @@ troop.postpone(prime, 'NodeCollection', function () {
 (function () {
     "use strict";
 
-    var Node = prime.Node;
-
     dessert.addTypes(/** @lends dessert */{
         isNode: function (expr) {
-            return Node.isBaseOf(expr);
+            return prime.Node.isBaseOf(expr);
         },
 
         isNodeOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                   Node.isBaseOf(expr);
+                   prime.Node.isBaseOf(expr);
         }
     });
 }());

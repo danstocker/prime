@@ -8,6 +8,13 @@ troop.postpone(prime, 'Peers', function () {
     var base = prime.PeerCollection;
 
     /**
+     * @name prime.Peers.create
+     * @function
+     * @param {sntls.ProfileCollection} [profile]
+     * @return {prime.Peers}
+     */
+
+    /**
      * @class prime.Peers
      * @extends prime.PeerCollection
      * @extends sntls.Profiled
@@ -30,15 +37,11 @@ troop.postpone(prime, 'Peers', function () {
             PEER_COUNTER_NAME: 'peers'
         })
         .addTrait(sntls.Profiled)
-        .addMethods(/** @lends prime.Peers */{
-            /**
-             * @name prime.Peers.create
-             * @return {prime.Peers}
-             */
-
+        .addMethods(/** @lends prime.Peers# */{
             /**
              * Initializes peer collection.
              * @param {sntls.ProfileCollection} [profile]
+             * @ignore
              */
             init: function (profile) {
                 base.init.call(this);
@@ -90,14 +93,23 @@ troop.postpone(prime, 'Peers', function () {
                 return this;
             },
 
+            /**
+             * @ignore
+             */
             deleteItem: function () {
                 dessert.assert(false, "Can't remove from peer collection");
             },
 
+            /**
+             * @ignore
+             */
             clone: function () {
                 dessert.assert(false, "Can't clone peer collection");
             },
 
+            /**
+             * @ignore
+             */
             clear: function () {
                 dessert.assert(false, "Can't remove from peer collection");
             },

@@ -11,6 +11,13 @@ troop.postpone(prime, 'Graph', function () {
     var base = prime.NodeCollection;
 
     /**
+     * @name prime.Graph.create
+     * @function
+     * @param {object} [items] Initial collection items ie. nodes
+     * @return {prime.Graph}
+     */
+
+    /**
      * @class prime.Graph
      * @extends prime.NodeCollection
      * @extends sntls.Profiled
@@ -23,14 +30,10 @@ troop.postpone(prime, 'Graph', function () {
              */
             PROFILE_ID: 'graph'
         })
-        .addMethods(/** @lends prime.Graph */{
-            /**
-             * @name prime.Graph.create
-             * @return {prime.Graph}
-             */
-
+        .addMethods(/** @lends prime.Graph# */{
             /**
              * @param {object} [items] Initial collection items ie. nodes
+             * @ignore
              */
             init: function (items) {
                 this.initProfiled(this.PROFILE_ID);
@@ -106,7 +109,7 @@ troop.postpone(prime, 'Graph', function () {
              * Generates a function that can be used to create and
              * connect nodes on the current graph, ie. to build the graph.
              * @return {function}
-             * @see prime.Graph.connectNodes
+             * @see prime.Graph#connectNodes
              */
             getConnector: function () {
                 return this.connectNodes.bind(this);
@@ -116,6 +119,7 @@ troop.postpone(prime, 'Graph', function () {
              * Sets a node on the graph
              * @param {string} load
              * @param {prime.Node} node
+             * @return {prime.Graph}
              */
             setItem: function (load, node) {
                 dessert.isNode(node, "Invalid node");
@@ -123,14 +127,23 @@ troop.postpone(prime, 'Graph', function () {
                 return this;
             },
 
+            /**
+             * @ignore
+             */
             deleteItem: function () {
                 dessert.assert(false, "Can't remove node from graph");
             },
 
+            /**
+             * @ignore
+             */
             clone: function () {
                 dessert.assert(false, "Can't clone graph");
             },
 
+            /**
+             * @ignore
+             */
             clear: function () {
                 dessert.assert(false, "Can't remove nodes from graph");
             },
