@@ -1,14 +1,16 @@
 {
-    "name"        : "prime",
-    "version"     : "0.3.2",
-    "description" : "Association engine",
-    "keywords"    : ["data", "in-memory", "database", "graph", "random", "weighted", "query"],
-    "author"      : "Dan Stocker <dan@kwaia.com>",
-    "repository"  : {
+    "name"           : "prime",
+    "version"        : "0.3.2",
+    "description"    : "Association engine",
+    "keywords"       : ["data", "in-memory", "database", "graph", "random", "weighted", "query"],
+    "author"         : "Dan Stocker <dan@kwaia.com>",
+    "copyright"      : "Copyright (c) 2012 Dan Stocker",
+    "license"        : "MIT",
+    "repository"     : {
         "type": "git",
         "url" : "https://github.com/danstocker/prime.git"
     },
-    "dependencies": {
+    "dependencies"   : {
         "dessert": "~0.3.2",
         "troop"  : "~0.5.1",
         "sntls"  : "~0.13.0"
@@ -26,6 +28,6 @@
         "common-gruntfile"    : "git://github.com/danstocker/common-gruntfile.git#0.1.5",
         "QUnitAdapter"        : "https://dl.dropboxusercontent.com/u/9258903/packages/QUnitAdapter-0.1.0.tgz"
     },
-    "files"       : ["prime.js"],
-    "main"        : "prime.js"
+    "files"          : ["prime.js"],
+    "main"           : "prime.js"
 }
