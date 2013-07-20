@@ -1,4 +1,4 @@
-prime
+Prime
 =====
 
 *Prime* is a JavaScript graph database designed for one kind of queries: *random*.
@@ -27,54 +27,44 @@ Usage
 
 ### Creating a graph
 
-```javascript
-var graph = prime.Graph.create();
-```
+    var graph = prime.Graph.create();
 
 ### Fetching nodes from the graph
 
 Or, creating one on demand.
 
-```javascript
-var $ = graph.getFetcher(),
-    node;
+    var $ = graph.getFetcher(),
+        node;
 
-node = $('foo');
-// or
-node = graph.fetchNode('foo');
-```
+    node = $('foo');
+    // or
+    node = graph.fetchNode('foo');
 
 ### Building the graph
 
 Quickly connecting nodes that are created on the fly.
 
-```javascript
-var _ = graph.getConnector();
+    var _ = graph.getConnector();
 
-_('food',
-    _('fruit',
-        'apple',
-        'pear'),
-    _('turkey'));
-_('animal',
-    _('bird',
-        'turkey'),
-    _('feline',
-        'cat',
-        'lion'));
-```
+    _('food',
+        _('fruit',
+            'apple',
+            'pear'),
+        _('turkey'));
+    _('animal',
+        _('bird',
+            'turkey'),
+        _('feline',
+            'cat',
+            'lion'));
 
 ### Modifying the graph
 
-```javascript
-// adds 3 to edge weight between 'food' and 'fruit'
-$('food').to($('fruit'), 3);
-```
+    // adds 3 to edge weight between 'food' and 'fruit'
+    $('food').to($('fruit'), 3);
 
 ### Hopping
 
 Hopping is a series of semi-random jumps between connected nodes.
 
-```javascript
-var found = $('food').hop().load; // one of all connected nodes
-```
+    var found = $('food').hop().load; // one of all connected nodes
