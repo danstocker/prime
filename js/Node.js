@@ -77,7 +77,7 @@ troop.postpone(prime, 'Node', function () {
              * @returns {prime.Node}
              */
             getRandomPeerNode: function () {
-                if (!this.peers.count) {
+                if (!this.peers.keyCount) {
                     // node has no peers, hops to itself
                     return this;
                 }
