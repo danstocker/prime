@@ -38,7 +38,7 @@ troop.postpone(prime, 'Index', function () {
              * @ignore
              */
             init: function (profile) {
-                this.initProfiled(this.PROFILE_ID, profile);
+                sntls.Profiled.init.call(this, this.PROFILE_ID, profile);
 
                 /**
                  * List of peers in order identical to _totals.

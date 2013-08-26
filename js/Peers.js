@@ -46,7 +46,7 @@ troop.postpone(prime, 'Peers', function () {
             init: function (profile) {
                 base.init.call(this);
 
-                this.initProfiled(this.PROFILE_ID, profile);
+                sntls.Profiled.init.call(this, this.PROFILE_ID, profile);
 
                 /**
                  * Weighted index of peer information.

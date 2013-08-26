@@ -41,7 +41,7 @@ troop.postpone(prime, 'Peer', function () {
              * @ignore
              */
             init: function (node, profile) {
-                this.initProfiled(this.PROFILE_ID, profile);
+                sntls.Profiled.init.call(this, this.PROFILE_ID, profile);
 
                 /**
                  * Peer node

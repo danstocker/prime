@@ -1,6 +1,6 @@
 {
     "name"           : "prime",
-    "version"        : "0.3.2",
+    "version"        : "0.3.3",
     "description"    : "Association engine",
     "keywords"       : ["data", "in-memory", "database", "graph", "random", "weighted", "query"],
     "author"         : "Dan Stocker <dan@kwaia.com>",
@@ -12,8 +12,8 @@
     },
     "dependencies"   : {
         "dessert": "~0.3.2",
-        "troop"  : "~0.5.1",
-        "sntls"  : "~0.13.0"
+        "troop"  : "~0.7.0",
+        "sntls"  : "~0.15.0"
     },
     "devDependencies": {
         "phil"                : "~0.2.3",

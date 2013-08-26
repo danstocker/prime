@@ -36,7 +36,7 @@ troop.postpone(prime, 'Graph', function () {
              * @ignore
              */
             init: function (items) {
-                this.initProfiled(this.PROFILE_ID);
+                sntls.Profiled.init.call(this, this.PROFILE_ID);
 
                 base.init.call(this, items);
             },
